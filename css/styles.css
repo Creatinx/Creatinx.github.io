@@ -1,0 +1,5 @@
+#hero-canvas{opacity:0.6;}
+aside{max-height:calc(100vh - 8rem);overflow-y:auto;}
+#mobile-menu{transition:all 0.3s ease;}
+code[class*="language-"],pre[class*="language-"]{text-shadow:none!important;}
+@media print{nav,footer,#hero-canvas{display:none!important;}main{padding-top:0!important;}}

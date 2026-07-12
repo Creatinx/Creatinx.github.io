@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gryce Engine | Gryce Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link rel="stylesheet" href="../css/themes.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="min-h-screen transition-colors duration-300">
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b nav-border">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<a href="../en/" class="flex items-center gap-2.5 group">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
+<span class="text-white font-bold text-sm">G</span>
+</div>
+<span class="font-bold text-lg tracking-tight nav-text">Gryce</span>
+</a>
+<div class="hidden md:flex items-center gap-1">
+<a href="../en/" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">Home</a>
+<a href="../en/docs/getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">Docs</a>
+<a href="../en/about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">About</a>
+<a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all inline-flex items-center gap-1.5">
+<i data-lucide="github" class="w-4 h-4"></i>GitHub</a>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<button id="theme-btn" class="p-2 rounded-lg nav-btn transition-all" aria-label="Theme">
+<i data-lucide="palette" class="w-4 h-4"></i></button>
+<div id="theme-menu" class="hidden absolute right-0 mt-2 w-40 rounded-xl shadow-2xl border theme-menu-border theme-menu-bg overflow-hidden">
+<button data-theme="dark" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-800 border border-gray-600"></span> Dark</button>
+<button data-theme="light" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-black/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-100 border border-gray-300"></span> Light</button>
+<button data-theme="ocean" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-blue-900 border border-blue-500"></span> Ocean</button>
+<button data-theme="forest" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-green-900 border border-green-500"></span> Forest</button>
+<button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> Sunset</button>
+</div>
+</div>
+<a href="../zh/" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
+</div>
+</div>
+</div>
+<div id="mobile-menu" class="hidden md:hidden border-t nav-border">
+<div class="px-4 py-3 space-y-1">
+<a href="../en/" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Home</a>
+<a href="../en/docs/getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Docs</a>
+<a href="../en/about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">About</a>
+</div>
+</div>
+</nav>
+<main>
+<!-- Hero -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+<canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<div class="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-8 aos-init" data-aos="fade-down">
+<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> C++23 Learning Project
+</div>
+<h1 class="hero-title text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 aos-init" data-aos="zoom-in" data-aos-duration="800">
+<span class="hero-gradient-text">Gryce</span> <span class="hero-title-secondary">Engine</span>
+</h1>
+<p class="hero-subtitle text-xl sm:text-2xl lg:text-3xl font-light mb-4 max-w-3xl mx-auto aos-init" data-aos="fade-up" data-aos-delay="200">A C++ Game Engine (Work-in-Progress)</p>
+<p class="hero-desc text-base sm:text-lg mb-10 max-w-2xl mx-auto opacity-70 aos-init" data-aos="fade-up" data-aos-delay="400">OpenGL & Vulkan · ECS · Multi-threaded Rendering — A learning project</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 aos-init" data-aos="fade-up" data-aos-delay="600">
+<a href="../en/docs/getting-started.html" class="hero-cta-primary px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center gap-2">
+<i data-lucide="rocket" class="w-5 h-5"></i> Get Started
+</a>
+<a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="hero-cta-secondary px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105 border flex items-center gap-2">
+<i data-lucide="github" class="w-5 h-5"></i> View on GitHub
+</a>
+</div>
+<div class="mt-20 flex items-center justify-center gap-8 opacity-50 text-sm font-medium aos-init" data-aos="fade-up" data-aos-delay="800">
+<span class="flex items-center gap-2"><i data-lucide="box" class="w-4 h-4"></i> ECS</span>
+<span class="flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> RHI</span>
+<span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> C++23</span>
+<span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Vulkan</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--bg-primary)] to-transparent"></div>
+</section>
+
+<!-- Features -->
+<section class="py-24 relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="features-section-title text-3xl sm:text-4xl font-bold mb-4 aos-init" data-aos="fade-up">Core Features</h2>
+<p class="features-section-subtitle text-lg opacity-70 max-w-2xl mx-auto aos-init" data-aos="fade-up" data-aos-delay="100">Built to learn, not to ship</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="100">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="cpu" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Multi-Backend Rendering</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">OpenGL 4.6 and Vulkan 1.2 backends with unified RHI abstraction. Render thread + command buffer architecture for parallel CPU/GPU workloads.</p>
+</div>
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="200">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="boxes" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Entity Component System</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">Sparse-set based ECS with automatic component pooling. Godot/Unity hybrid Entity API with parent-child hierarchy support.</p>
+</div>
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="300">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="activity" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Physics Integration</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">Pluggable physics backends: Jolt Physics 3D, Box2D 2D, and a lightweight built-in 2D physics world.</p>
+</div>
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="400">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="volume-2" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Spatial Audio</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">miniaudio-powered audio engine with 3D spatial audio. AudioSource and AudioListener components attach to Entities.</p>
+</div>
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="500">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="file-code" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Asset Pipeline</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">Async asset loading with background threads. Supports OBJ, FBX, glTF via Assimp, PNG/JPG textures, and custom .gesc scene formats.</p>
+</div>
+
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init" data-aos="fade-up" data-aos-delay="600">
+<div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+<i data-lucide="calculator" class="w-6 h-6"></i>
+</div>
+<h3 class="text-lg font-bold mb-3 feature-card-title">Custom Math Library</h3>
+<p class="text-sm leading-relaxed opacity-70 feature-card-text">Column-major Matrix4f with ortho, perspective, look_at, rotate, scale, translate. Vector2f/3f/4f with full operator overloading.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Architecture -->
+<section class="py-24 relative border-y section-border">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init" data-aos="fade-up">Architecture</h2>
+<p class="text-lg opacity-70 max-w-2xl mx-auto aos-init" data-aos="fade-up" data-aos-delay="100">Render thread + command buffer with RHI abstraction</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="aos-init" data-aos="fade-right">
+<div class="arch-diagram p-6 rounded-2xl border space-y-4">
+<div class="arch-box p-4 rounded-xl border text-center font-semibold text-sm"><i data-lucide="monitor" class="w-4 h-4 inline mr-1"></i> Main Thread<div class="text-xs font-normal opacity-60 mt-1">Logic / Game Loop / ECS</div></div>
+<div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 opacity-50"></i></div>
+<div class="arch-box p-4 rounded-xl border text-center font-semibold text-sm"><i data-lucide="layers" class="w-4 h-4 inline mr-1"></i> RenderCommandBuffer<div class="text-xs font-normal opacity-60 mt-1">Double-buffered queue</div></div>
+<div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 opacity-50"></i></div>
+<div class="arch-box p-4 rounded-xl border text-center font-semibold text-sm"><i data-lucide="cpu" class="w-4 h-4 inline mr-1"></i> Render Thread<div class="text-xs font-normal opacity-60 mt-1">IRenderBackend execution</div></div>
+<div class="flex justify-center gap-4"><i data-lucide="arrow-down" class="w-5 h-5 opacity-50"></i><i data-lucide="arrow-down" class="w-5 h-5 opacity-50"></i></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="arch-box p-3 rounded-lg border text-center text-xs font-medium"><i data-lucide="circle" class="w-3 h-3 inline mr-1"></i> OpenGL 4.6</div>
+<div class="arch-box p-3 rounded-lg border text-center text-xs font-medium"><i data-lucide="triangle" class="w-3 h-3 inline mr-1"></i> Vulkan 1.2</div>
+</div>
+</div>
+</div>
+<div class="space-y-6 aos-init" data-aos="fade-left">
+<div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="zap" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">Multi-threaded Rendering</h3><p class="text-sm opacity-70 leading-relaxed">Main thread generates commands while render thread executes them. Mutex + condition_variable synchronization with double buffering.</p></div></div>
+<div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="shuffle" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">RHI Abstraction</h3><p class="text-sm opacity-70 leading-relaxed">IRenderBackend interface provides a unified API. Swap between OpenGL and Vulkan at runtime without changing game code.</p></div></div>
+<div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="shield" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">Type-safe Commands</h3><p class="text-sm opacity-70 leading-relaxed">RenderCommandTyped structs with RenderCommandType enum. Consecutive state-setting commands are merged as a batch optimization.</p></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Code Preview -->
+<section class="py-24 relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init" data-aos="fade-up">Example Code</h2>
+</div>
+<div class="code-window rounded-2xl border overflow-hidden shadow-2xl aos-init" data-aos="zoom-in" data-aos-duration="1000">
+<div class="code-window-header px-4 py-3 border-b flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-red-500"></span>
+<span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+<span class="w-3 h-3 rounded-full bg-green-500"></span>
+<span class="ml-3 text-xs font-mono opacity-50">editor/main.cpp</span>
+</div>
+<div class="code-window-body overflow-x-auto">
+<pre class="m-0"><code class="language-cpp">// Gryce Engine &mdash; Minimal setup example
+#include &lt;gryce/engine.h&gt;
+
+using namespace gryce_engine;
+
+int main() {
+    Window window("Gryce Demo", 1280, 720);
+    auto context = RenderContext::create(RenderBackend::OpenGL, window);
+    World world;
+    auto camera = world.scene().create_entity("Camera");
+    camera.add_component&lt;Camera&gt;(60.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    auto mesh = AssetManager::load&lt;Mesh&gt;("res:/models/cube.obj");
+    auto shader = AssetManager::load&lt;Shader&gt;("res:/shaders/basic.glsl");
+    while (window.is_open()) {
+        window.poll_events();
+        world.update(window.delta_time());
+        world.render();
+        context->present();
+    }
+    return 0;
+}</code></pre>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Quick Start -->
+<section class="py-24 relative border-y section-border">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init" data-aos="fade-up">Quick Start</h2>
+<p class="text-lg opacity-70 max-w-2xl mx-auto aos-init" data-aos="fade-up" data-aos-delay="100">Clone, build, and tinker — no promises</p>
+</div>
+<div class="max-w-3xl mx-auto space-y-4">
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init" data-aos="fade-right"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</div><div class="flex-1"><h3 class="font-semibold mb-1">Clone the repository</h3><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">git clone https://github.com/Creatinx/Gryce-Engine.git &amp;&amp; cd Gryce-Engine</code></div></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init" data-aos="fade-right" data-aos-delay="100"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</div><div class="flex-1"><h3 class="font-semibold mb-1">Install dependencies (MSYS2 UCRT64)</h3><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja</code></div></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init" data-aos="fade-right" data-aos-delay="200"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</div><div class="flex-1"><h3 class="font-semibold mb-1">Build with one command</h3><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">python build.py --jobs 8</code></div></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init" data-aos="fade-right" data-aos-delay="300"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">4</div><div class="flex-1"><h3 class="font-semibold mb-1">Run the editor</h3><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">./build/Debug/bin/Debug/gryce.exe</code></div></div></div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="border-t footer-border mt-20">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<div class="flex items-center gap-2.5 mb-4">
+<div class="w-7 h-7 rounded-md bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
+<span class="text-white font-bold text-xs">G</span>
+</div>
+<span class="font-bold text-base nav-text">Gryce Engine</span>
+</div>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++ game engine built from scratch as a learning project. It explores graphics API internals, compiler-adjacent tooling, and engine architecture without relying on existing engine frameworks.</p>
+</div>
+<div>
+<h3 class="font-semibold text-sm mb-4 footer-heading">Docs</h3>
+<ul class="space-y-2">
+<li><a href="../en/docs/getting-started.html" class="footer-link text-sm transition-colors">Getting Started</a></li>
+<li><a href="../en/docs/architecture.html" class="footer-link text-sm transition-colors">Architecture</a></li>
+<li><a href="../en/docs/render.html" class="footer-link text-sm transition-colors">Render System</a></li>
+<li><a href="../en/docs/ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
+<li><a href="../en/docs/physics.html" class="footer-link text-sm transition-colors">Physics</a></li>
+<li><a href="../en/docs/audio.html" class="footer-link text-sm transition-colors">Audio</a></li>
+<li><a href="../en/docs/assets.html" class="footer-link text-sm transition-colors">Assets</a></li>
+<li><a href="../en/docs/math.html" class="footer-link text-sm transition-colors">Math Library</a></li>
+<li><a href="../en/docs/build.html" class="footer-link text-sm transition-colors">Build System</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-semibold text-sm mb-4 footer-heading">About</h3>
+<p class="footer-text text-sm leading-relaxed mb-4">C++23 &middot; CMake &middot; OpenGL 4.6 / Vulkan 1.2</p>
+<div class="flex gap-3">
+<a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="footer-icon-btn p-2 rounded-lg transition-all">
+<i data-lucide="github" class="w-4 h-4"></i></a>
+</div>
+</div>
+</div>
+<div class="border-t footer-border mt-8 pt-8 text-center">
+<p class="footer-text text-xs">© 2026/6 Creatinx. MIT License.</p>
+</div>
+</div>
+</footer>
+<script src="../js/themes.js"></script>
+<script src="../js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+lucide.createIcons();
+AOS.init({ duration: 700, once: true, offset: 50 });
+if (typeof Prism !== 'undefined') Prism.highlightAll();
+});
+</script>
+</body>
+</html>
