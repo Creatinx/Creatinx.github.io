@@ -73,9 +73,9 @@
 </div>
 <div class="space-y-8 about-content">
 <div class="about-card p-8 rounded-2xl border">
-<p class="text-base leading-relaxed mb-4">Gryce Engine 是一个从零手写的 C++ 游戏引擎，主要用于学习图形 API、编译器周边工具与引擎架构。没有使用现成引擎框架。</p>
-<p class="text-base leading-relaxed mb-4">目前已实现 OpenGL 4.6 和早期 Vulkan 1.2 后端（简单 RHI 抽象）、自定义 ECS（稀疏集存储）、可插拔物理/音频模块。大量功能仍在实验阶段。</p>
-<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。尚未达到生产可用状态。</p>
+<p class="text-base leading-relaxed mb-4">Gryce Engine 是一款从零手写的 C++23 游戏引擎。支持 OpenGL 4.6 与 Vulkan 1.2 双后端渲染，自定义 ECS，多线程命令缓冲区渲染，以及可插拔物理/音频模块。</p>
+<p class="text-base leading-relaxed mb-4">双后端渲染：OpenGL 4.6 与 Vulkan 1.2，通过 RHI 抽象层统一。自定义 ECS 采用稀疏集组件存储。物理支持 Jolt 3D、Box2D 2D 与内置 2D 三种后端。音频基于 miniaudio。资源异步加载，集成 Assimp、stb_image、nlohmann/json。</p>
+<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。提供 Python build.py 一键构建脚本。</p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">Standard</div></div>
@@ -96,7 +96,7 @@
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个从零手写的 C++ 游戏引擎，主要用于学习图形 API、编译器周边工具与引擎架构。没有使用现成引擎框架。</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一款从零手写的 C++23 游戏引擎。支持 OpenGL 4.6 与 Vulkan 1.2 双后端渲染，自定义 ECS，多线程命令缓冲区渲染，以及可插拔物理/音频模块。</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">文档</h3>

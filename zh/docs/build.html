@@ -17,23 +17,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<link rel="stylesheet" href="../css/themes.css">
-<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../../css/themes.css">
+<link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b nav-border">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center justify-between h-16">
-<a href="../zh/" class="flex items-center gap-2.5 group">
+<a href="../" class="flex items-center gap-2.5 group">
 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
 <span class="text-white font-bold text-sm">G</span>
 </div>
 <span class="font-bold text-lg tracking-tight nav-text">Gryce</span>
 </a>
 <div class="hidden md:flex items-center gap-1">
-<a href="../zh/" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">首页</a>
-<a href="../zh/docs/getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">文档</a>
-<a href="../zh/about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">关于</a>
+<a href="../" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">首页</a>
+<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">文档</a>
+<a href="../about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">关于</a>
 <a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all inline-flex items-center gap-1.5">
 <i data-lucide="github" class="w-4 h-4"></i>GitHub</a>
 </div>
@@ -49,16 +49,16 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> Sunset</button>
 </div>
 </div>
-<a href="../en/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">en</a>
+<a href="../../en/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">en</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
 </div>
 <div id="mobile-menu" class="hidden md:hidden border-t nav-border">
 <div class="px-4 py-3 space-y-1">
-<a href="../zh/" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">首页</a>
-<a href="../zh/docs/getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">文档</a>
-<a href="../zh/about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">关于</a>
+<a href="../" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">首页</a>
+<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">文档</a>
+<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">关于</a>
 </div>
 </div>
 </nav>
@@ -68,15 +68,15 @@
 <aside class="hidden lg:block lg:col-span-1">
 <div class="sticky top-24 space-y-1">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mb-2">文档</div>
-<a href="../zh/docs/getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">快速开始</a>
-<a href="../zh/docs/architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">架构概览</a>
-<a href="../zh/docs/render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">渲染系统</a>
-<a href="../zh/docs/ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">实体组件系统</a>
-<a href="../zh/docs/physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">物理系统</a>
-<a href="../zh/docs/audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">音频系统</a>
-<a href="../zh/docs/assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">资源管理</a>
-<a href="../zh/docs/math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">数学库</a>
-<a href="../zh/docs/build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">构建系统</a>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">快速开始</a>
+<a href="./architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">架构概览</a>
+<a href="./render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">渲染系统</a>
+<a href="./ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">实体组件系统</a>
+<a href="./physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">物理系统</a>
+<a href="./audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">音频系统</a>
+<a href="./assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">资源管理</a>
+<a href="./math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">数学库</a>
+<a href="./build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">构建系统</a>
 </div>
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
@@ -84,15 +84,15 @@
 <span class="font-medium text-sm">目录: 构建系统</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
-<a href="../zh/docs/getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">快速开始</a>
-<a href="../zh/docs/architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">架构概览</a>
-<a href="../zh/docs/render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">渲染系统</a>
-<a href="../zh/docs/ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">实体组件系统</a>
-<a href="../zh/docs/physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">物理系统</a>
-<a href="../zh/docs/audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">音频系统</a>
-<a href="../zh/docs/assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">资源管理</a>
-<a href="../zh/docs/math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">数学库</a>
-<a href="../zh/docs/build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">构建系统</a>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">快速开始</a>
+<a href="./architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">架构概览</a>
+<a href="./render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">渲染系统</a>
+<a href="./ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">实体组件系统</a>
+<a href="./physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">物理系统</a>
+<a href="./audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">音频系统</a>
+<a href="./assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">资源管理</a>
+<a href="./math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">数学库</a>
+<a href="./build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">构建系统</a>
 </div>
 </div>
 <article class="lg:col-span-3 docs-content">
@@ -109,7 +109,7 @@ python build.py --clean-all       # 完全清理（重新下载依赖）</code><
 </tbody></table>
 <h2>依赖</h2><p>必需：GLFW, GLEW, GTest, Vulkan SDK, VMA, miniaudio, stb_image</p><p>可选：Assimp, Jolt Physics, Box2D</p><p>自动获取：glm, spdlog（通过 CMake FetchContent）</p>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="../zh/docs/math.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 数学库</span></a>
+<a href="./math.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 数学库</span></a>
 
 </div>
 </article>
@@ -127,20 +127,20 @@ python build.py --clean-all       # 完全清理（重新下载依赖）</code><
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个从零手写的 C++ 游戏引擎，主要用于学习图形 API、编译器周边工具与引擎架构。没有使用现成引擎框架。</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一款从零手写的 C++23 游戏引擎。支持 OpenGL 4.6 与 Vulkan 1.2 双后端渲染，自定义 ECS，多线程命令缓冲区渲染，以及可插拔物理/音频模块。</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">文档</h3>
 <ul class="space-y-2">
-<li><a href="../zh/docs/getting-started.html" class="footer-link text-sm transition-colors">快速开始</a></li>
-<li><a href="../zh/docs/architecture.html" class="footer-link text-sm transition-colors">架构概览</a></li>
-<li><a href="../zh/docs/render.html" class="footer-link text-sm transition-colors">渲染系统</a></li>
-<li><a href="../zh/docs/ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
-<li><a href="../zh/docs/physics.html" class="footer-link text-sm transition-colors">物理系统</a></li>
-<li><a href="../zh/docs/audio.html" class="footer-link text-sm transition-colors">音频系统</a></li>
-<li><a href="../zh/docs/assets.html" class="footer-link text-sm transition-colors">资源管理</a></li>
-<li><a href="../zh/docs/math.html" class="footer-link text-sm transition-colors">数学库</a></li>
-<li><a href="../zh/docs/build.html" class="footer-link text-sm transition-colors">构建系统</a></li>
+<li><a href="./getting-started.html" class="footer-link text-sm transition-colors">快速开始</a></li>
+<li><a href="./architecture.html" class="footer-link text-sm transition-colors">架构概览</a></li>
+<li><a href="./render.html" class="footer-link text-sm transition-colors">渲染系统</a></li>
+<li><a href="./ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
+<li><a href="./physics.html" class="footer-link text-sm transition-colors">物理系统</a></li>
+<li><a href="./audio.html" class="footer-link text-sm transition-colors">音频系统</a></li>
+<li><a href="./assets.html" class="footer-link text-sm transition-colors">资源管理</a></li>
+<li><a href="./math.html" class="footer-link text-sm transition-colors">数学库</a></li>
+<li><a href="./build.html" class="footer-link text-sm transition-colors">构建系统</a></li>
 </ul>
 </div>
 <div>
@@ -157,8 +157,8 @@ python build.py --clean-all       # 完全清理（重新下载依赖）</code><
 </div>
 </div>
 </footer>
-<script src="../js/themes.js"></script>
-<script src="../js/main.js"></script>
+<script src="../../js/themes.js"></script>
+<script src="../../js/main.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 lucide.createIcons();

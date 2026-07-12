@@ -17,23 +17,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<link rel="stylesheet" href="../css/themes.css">
-<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../../css/themes.css">
+<link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b nav-border">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center justify-between h-16">
-<a href="../en/" class="flex items-center gap-2.5 group">
+<a href="../" class="flex items-center gap-2.5 group">
 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
 <span class="text-white font-bold text-sm">G</span>
 </div>
 <span class="font-bold text-lg tracking-tight nav-text">Gryce</span>
 </a>
 <div class="hidden md:flex items-center gap-1">
-<a href="../en/" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">Home</a>
-<a href="../en/docs/getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">Docs</a>
-<a href="../en/about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">About</a>
+<a href="../" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">Home</a>
+<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">Docs</a>
+<a href="../about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">About</a>
 <a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all inline-flex items-center gap-1.5">
 <i data-lucide="github" class="w-4 h-4"></i>GitHub</a>
 </div>
@@ -49,16 +49,16 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> Sunset</button>
 </div>
 </div>
-<a href="../zh/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../zh/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
 </div>
 <div id="mobile-menu" class="hidden md:hidden border-t nav-border">
 <div class="px-4 py-3 space-y-1">
-<a href="../en/" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Home</a>
-<a href="../en/docs/getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Docs</a>
-<a href="../en/about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">About</a>
+<a href="../" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Home</a>
+<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Docs</a>
+<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">About</a>
 </div>
 </div>
 </nav>
@@ -68,15 +68,15 @@
 <aside class="hidden lg:block lg:col-span-1">
 <div class="sticky top-24 space-y-1">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mb-2">Documentation</div>
-<a href="../en/docs/getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Getting Started</a>
-<a href="../en/docs/architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Architecture Overview</a>
-<a href="../en/docs/render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Render System</a>
-<a href="../en/docs/ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Entity Component System</a>
-<a href="../en/docs/physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Physics</a>
-<a href="../en/docs/audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Audio System</a>
-<a href="../en/docs/assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Asset Management</a>
-<a href="../en/docs/math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Math Library</a>
-<a href="../en/docs/build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Build System</a>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Getting Started</a>
+<a href="./architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Architecture Overview</a>
+<a href="./render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Render System</a>
+<a href="./ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Entity Component System</a>
+<a href="./physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Physics</a>
+<a href="./audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Audio System</a>
+<a href="./assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Asset Management</a>
+<a href="./math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Math Library</a>
+<a href="./build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Build System</a>
 </div>
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
@@ -84,15 +84,15 @@
 <span class="font-medium text-sm">Contents: Architecture Overview</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
-<a href="../en/docs/getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Getting Started</a>
-<a href="../en/docs/architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Architecture Overview</a>
-<a href="../en/docs/render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Render System</a>
-<a href="../en/docs/ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Entity Component System</a>
-<a href="../en/docs/physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Physics</a>
-<a href="../en/docs/audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Audio System</a>
-<a href="../en/docs/assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Asset Management</a>
-<a href="../en/docs/math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Math Library</a>
-<a href="../en/docs/build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Build System</a>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Getting Started</a>
+<a href="./architecture.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Architecture Overview</a>
+<a href="./render.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Render System</a>
+<a href="./ecs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Entity Component System</a>
+<a href="./physics.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Physics</a>
+<a href="./audio.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Audio System</a>
+<a href="./assets.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Asset Management</a>
+<a href="./math.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Math Library</a>
+<a href="./build.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all ">Build System</a>
 </div>
 </div>
 <article class="lg:col-span-3 docs-content">
@@ -111,8 +111,8 @@
 <tr><td>platform</td><td><code>gryce_engine::platform</code></td><td>GLFW window, input, Raw Input</td></tr>
 </tbody></table>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="../en/docs/getting-started.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Getting Started</span></a>
-<a href="../en/docs/render.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Render System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./getting-started.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Getting Started</span></a>
+<a href="./render.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Render System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 </article>
 </div>
@@ -129,20 +129,20 @@
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++ game engine built from scratch as a learning project. It explores graphics API internals, compiler-adjacent tooling, and engine architecture without relying on existing engine frameworks.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++23 game engine built from scratch. It features dual rendering backends (OpenGL 4.6 and Vulkan 1.2), a custom ECS, multi-threaded command-buffer rendering, and pluggable physics/audio modules.</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">Docs</h3>
 <ul class="space-y-2">
-<li><a href="../en/docs/getting-started.html" class="footer-link text-sm transition-colors">Getting Started</a></li>
-<li><a href="../en/docs/architecture.html" class="footer-link text-sm transition-colors">Architecture</a></li>
-<li><a href="../en/docs/render.html" class="footer-link text-sm transition-colors">Render System</a></li>
-<li><a href="../en/docs/ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
-<li><a href="../en/docs/physics.html" class="footer-link text-sm transition-colors">Physics</a></li>
-<li><a href="../en/docs/audio.html" class="footer-link text-sm transition-colors">Audio</a></li>
-<li><a href="../en/docs/assets.html" class="footer-link text-sm transition-colors">Assets</a></li>
-<li><a href="../en/docs/math.html" class="footer-link text-sm transition-colors">Math Library</a></li>
-<li><a href="../en/docs/build.html" class="footer-link text-sm transition-colors">Build System</a></li>
+<li><a href="./getting-started.html" class="footer-link text-sm transition-colors">Getting Started</a></li>
+<li><a href="./architecture.html" class="footer-link text-sm transition-colors">Architecture</a></li>
+<li><a href="./render.html" class="footer-link text-sm transition-colors">Render System</a></li>
+<li><a href="./ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
+<li><a href="./physics.html" class="footer-link text-sm transition-colors">Physics</a></li>
+<li><a href="./audio.html" class="footer-link text-sm transition-colors">Audio</a></li>
+<li><a href="./assets.html" class="footer-link text-sm transition-colors">Assets</a></li>
+<li><a href="./math.html" class="footer-link text-sm transition-colors">Math Library</a></li>
+<li><a href="./build.html" class="footer-link text-sm transition-colors">Build System</a></li>
 </ul>
 </div>
 <div>
@@ -159,8 +159,8 @@
 </div>
 </div>
 </footer>
-<script src="../js/themes.js"></script>
-<script src="../js/main.js"></script>
+<script src="../../js/themes.js"></script>
+<script src="../../js/main.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 lucide.createIcons();

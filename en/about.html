@@ -73,9 +73,9 @@
 </div>
 <div class="space-y-8 about-content">
 <div class="about-card p-8 rounded-2xl border">
-<p class="text-base leading-relaxed mb-4">Gryce Engine is a C++ game engine built from scratch as a learning project. It explores graphics API internals, compiler-adjacent tooling, and engine architecture without relying on existing engine frameworks.</p>
-<p class="text-base leading-relaxed mb-4">It currently has OpenGL 4.6 and early Vulkan 1.2 backends behind a simple RHI abstraction, a custom ECS with sparse-set storage, and pluggable physics/audio modules. Many parts are still experimental.</p>
-<p class="text-base leading-relaxed">Developed on Windows with MSYS2 UCRT64 GCC (C++23), CMake + Ninja. Not production-ready.</p>
+<p class="text-base leading-relaxed mb-4">Gryce Engine is a C++23 game engine built from scratch. It features dual rendering backends (OpenGL 4.6 and Vulkan 1.2), a custom ECS, multi-threaded command-buffer rendering, and pluggable physics/audio modules.</p>
+<p class="text-base leading-relaxed mb-4">Dual backends: OpenGL 4.6 and Vulkan 1.2 via RHI abstraction. Custom ECS with sparse-set component storage. Pluggable physics (Jolt 3D, Box2D 2D, built-in 2D) and audio (miniaudio). Async asset loading with Assimp, stb_image, and nlohmann/json.</p>
+<p class="text-base leading-relaxed">Developed on Windows with MSYS2 UCRT64 GCC (C++23), CMake + Ninja. Python build.py for one-click builds.</p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">Standard</div></div>
@@ -96,7 +96,7 @@
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++ game engine built from scratch as a learning project. It explores graphics API internals, compiler-adjacent tooling, and engine architecture without relying on existing engine frameworks.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++23 game engine built from scratch. It features dual rendering backends (OpenGL 4.6 and Vulkan 1.2), a custom ECS, multi-threaded command-buffer rendering, and pluggable physics/audio modules.</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">Docs</h3>
