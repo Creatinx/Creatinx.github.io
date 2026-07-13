@@ -68,19 +68,20 @@
 <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center mx-auto mb-6 shadow-2xl">
 <span class="text-white font-bold text-3xl">G</span>
 </div>
-<h1 class="text-4xl sm:text-5xl font-bold mb-4">About Gryce Engine</h1>
-<p class="text-lg opacity-70 max-w-2xl mx-auto">C++23 &middot; CMake &middot; OpenGL 4.6 / Vulkan 1.2</p>
+<h1 class="text-4xl sm:text-5xl font-bold mb-4">About Gryce</h1>
+<p class="text-lg opacity-70 max-w-2xl mx-auto">An early-stage C++23 game framework by Creatinx. No editor yet.</p>
 </div>
 <div class="space-y-8 about-content">
 <div class="about-card p-8 rounded-2xl border">
-<p class="text-base leading-relaxed mb-4">Gryce Engine is a C++23 game engine built from scratch. It features dual rendering backends (OpenGL 4.6 and Vulkan 1.2), a custom ECS, multi-threaded command-buffer rendering, and pluggable physics/audio modules.</p>
-<p class="text-base leading-relaxed mb-4">Dual backends: OpenGL 4.6 and Vulkan 1.2 via RHI abstraction. Custom ECS with sparse-set component storage. Pluggable physics (Jolt 3D, Box2D 2D, built-in 2D) and audio (miniaudio). Async asset loading with Assimp, stb_image, and nlohmann/json.</p>
-<p class="text-base leading-relaxed">Developed on Windows with MSYS2 UCRT64 GCC (C++23), CMake + Ninja. Python build.py for one-click builds.</p>
+<p class="text-base leading-relaxed mb-4"><strong>Gryce is an early-stage C++23 game framework by Creatinx.</strong> It is not a full engine — there is no editor, no asset pipeline GUI, and no visual scripting. What exists is a collection of handwritten core layers (ECS, RHI, math, scene graph) built on top of mature third-party libraries.</p>
+<p class="text-base leading-relaxed mb-4"><strong>Third-party dependencies:</strong> GLFW (window/input), GLEW (OpenGL loader), Vulkan SDK + VMA (Vulkan backend), miniaudio (audio), Jolt Physics (3D physics), Box2D (2D physics), Assimp (model loading), stb_image (textures), nlohmann/json (scenes), glm (optional math), spdlog (logging). These are not optional — the framework will not compile without them.</p>
+<p class="text-base leading-relaxed mb-4"><strong>Handwritten layers:</strong> Entity Component System (sparse-set storage), Render Hardware Interface (OpenGL + Vulkan backends), custom math library (Vector2f/3f/4f, Matrix4f), scene graph (Entity, Transform, prefab), async asset loader, render thread + command buffer architecture.</p>
+<p class="text-base leading-relaxed">Developed on Windows with MSYS2 UCRT64 GCC (C++23), CMake + Ninja. Python build.py for one-click builds. <strong>&copy; 2026/6 Creatinx. MIT License.</strong></p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">Standard</div></div>
 <div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">2</div><div class="text-sm opacity-60">Render Backends</div></div>
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">10+</div><div class="text-sm opacity-60">Core Modules</div></div>
+<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">10+</div><div class="text-sm opacity-60">Dependencies</div></div>
 </div>
 </div>
 </div>
@@ -96,7 +97,7 @@
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine is a C++23 game engine built from scratch. It features dual rendering backends (OpenGL 4.6 and Vulkan 1.2), a custom ECS, multi-threaded command-buffer rendering, and pluggable physics/audio modules.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce is an early-stage C++23 game framework by Creatinx. It relies on GLFW, GLEW, miniaudio, Jolt Physics, Box2D, Assimp, Vulkan SDK, VMA, stb_image, glm, spdlog, and nlohmann/json. The ECS, RHI, math, and scene layers are custom. No editor yet — this is a framework, not a full engine. \u00a9 2026/6 Creatinx. MIT License.</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">Docs</h3>

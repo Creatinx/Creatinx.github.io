@@ -68,19 +68,20 @@
 <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center mx-auto mb-6 shadow-2xl">
 <span class="text-white font-bold text-3xl">G</span>
 </div>
-<h1 class="text-4xl sm:text-5xl font-bold mb-4">关于 Gryce Engine</h1>
-<p class="text-lg opacity-70 max-w-2xl mx-auto">C++23 &middot; CMake &middot; OpenGL 4.6 / Vulkan 1.2</p>
+<h1 class="text-4xl sm:text-5xl font-bold mb-4">关于 Gryce</h1>
+<p class="text-lg opacity-70 max-w-2xl mx-auto">Creatinx 开发的早期 C++23 游戏框架。尚无编辑器。</p>
 </div>
 <div class="space-y-8 about-content">
 <div class="about-card p-8 rounded-2xl border">
-<p class="text-base leading-relaxed mb-4">Gryce Engine 是一款从零手写的 C++23 游戏引擎。支持 OpenGL 4.6 与 Vulkan 1.2 双后端渲染，自定义 ECS，多线程命令缓冲区渲染，以及可插拔物理/音频模块。</p>
-<p class="text-base leading-relaxed mb-4">双后端渲染：OpenGL 4.6 与 Vulkan 1.2，通过 RHI 抽象层统一。自定义 ECS 采用稀疏集组件存储。物理支持 Jolt 3D、Box2D 2D 与内置 2D 三种后端。音频基于 miniaudio。资源异步加载，集成 Assimp、stb_image、nlohmann/json。</p>
-<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。提供 Python build.py 一键构建脚本。</p>
+<p class="text-base leading-relaxed mb-4"><strong>Gryce 是 Creatinx 开发的早期 C++23 游戏框架。</strong>它不是一个完整的引擎 —— 没有编辑器、没有资源管线 GUI、没有可视化脚本。目前已实现的是一套手写核心层（ECS、RHI、数学库、场景图），建立在成熟的第三方库之上。</p>
+<p class="text-base leading-relaxed mb-4"><strong>第三方依赖：</strong>GLFW（窗口/输入）、GLEW（OpenGL 加载器）、Vulkan SDK + VMA（Vulkan 后端）、miniaudio（音频）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、stb_image（纹理）、nlohmann/json（场景）、glm（可选数学库）、spdlog（日志）。这些不是可选的 —— 缺少任何一个框架都无法编译。</p>
+<p class="text-base leading-relaxed mb-4"><strong>手写层：</strong>实体组件系统（稀疏集存储）、渲染硬件接口（OpenGL + Vulkan 后端）、自定义数学库（Vector2f/3f/4f, Matrix4f）、场景图（Entity, Transform, Prefab）、异步资源加载器、渲染线程 + 命令缓冲区架构。</p>
+<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。Python build.py 一键构建脚本。<strong>\u00a9 2026/6 Creatinx. MIT 协议。</strong></p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">Standard</div></div>
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">2</div><div class="text-sm opacity-60">Render Backends</div></div>
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">10+</div><div class="text-sm opacity-60">Core Modules</div></div>
+<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">标准</div></div>
+<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">2</div><div class="text-sm opacity-60">渲染后端</div></div>
+<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">10+</div><div class="text-sm opacity-60">第三方依赖</div></div>
 </div>
 </div>
 </div>
@@ -96,7 +97,7 @@
 </div>
 <span class="font-bold text-base nav-text">Gryce Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一款从零手写的 C++23 游戏引擎。支持 OpenGL 4.6 与 Vulkan 1.2 双后端渲染，自定义 ECS，多线程命令缓冲区渲染，以及可插拔物理/音频模块。</p>
+<p class="footer-text text-sm leading-relaxed">Gryce 是 Creatinx 开发的早期 C++23 游戏框架。依赖 GLFW、GLEW、miniaudio、Jolt Physics、Box2D、Assimp、Vulkan SDK、VMA、stb_image、glm、spdlog、nlohmann/json 等第三方库。ECS、RHI、数学库、场景层为手写。尚无编辑器 — 目前只是一个框架，不是完整的引擎。\u00a9 2026/6 Creatinx. MIT 协议。</p>
 </div>
 <div>
 <h3 class="font-semibold text-sm mb-4 footer-heading">文档</h3>
