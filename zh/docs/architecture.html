@@ -97,19 +97,48 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">架构概览</h1>
-<h2>高层设计</h2><p>Gryce Engine 采用分层架构，各子系统之间界限清晰：</p>
-<h2>渲染线程 + 命令缓冲区</h2><p>引擎使用<strong>多线程渲染架构</strong>：</p><ul><li><strong>主线程</strong>：生成渲染命令，推入 <code>RenderCommandBuffer</code></li><li><strong>渲染线程</strong>：从缓冲区获取命令，通过 <code>IRenderBackend</code> 执行</li><li><strong>同步</strong>：双缓冲队列，使用 <code>std::mutex</code> + <code>std::condition_variable</code></li></ul>
-<h2>RHI 抽象层</h2><p><code>IRenderBackend</code> 接口为 OpenGL 和 Vulkan 提供统一 API：</p><ul><li>生命周期：<code>init()</code> / <code>shutdown()</code></li><li>帧循环：<code>begin_frame()</code> / <code>end_frame()</code></li><li>状态：<code>set_viewport</code>、<code>set_depth_test</code>、<code>set_blend</code>、<code>clear</code></li><li>资源：<code>create_mesh</code>、<code>create_shader</code>、<code>create_texture</code></li><li>绘制：<code>draw_mesh</code>、<code>draw_indexed</code></li></ul>
-<h2>模块概览</h2><table class="docs-table"><thead><tr><th>模块</th><th>命名空间</th><th>用途</th></tr></thead><tbody>
-<tr><td>render</td><td><code>gryce_engine::render</code></td><td>OpenGL/Vulkan 后端、着色器、网格、RHI</td></tr>
-<tr><td>ecs</td><td><code>gryce_engine::ecs</code></td><td>World、System、组件存储</td></tr>
-<tr><td>scene</td><td><code>gryce_engine::scene</code></td><td>场景图、Entity、Transform</td></tr>
-<tr><td>math</td><td><code>gryce_engine::math</code></td><td>向量、矩阵、相机</td></tr>
-<tr><td>physics</td><td><code>gryce_engine::physics</code></td><td>Jolt、Box2D、内置物理</td></tr>
-<tr><td>audio</td><td><code>gryce_engine::audio</code></td><td>miniaudio 引擎、空间音频</td></tr>
-<tr><td>assets</td><td><code>gryce_engine::assets</code></td><td>资源管理器、异步加载</td></tr>
-<tr><td>platform</td><td><code>gryce_engine::platform</code></td><td>GLFW 窗口、输入、Raw Input</td></tr>
-</tbody></table>
+
+<h2>高层设计</h2>
+<p>Gryce Engine 采用严格的分层架构，自上而下依次为 <strong>应用层 / 编辑器层</strong>、<strong>核心引擎层</strong> 与 <strong>平台抽象层</strong>。各子系统通过显式接口交互，避免跨层直接调用。核心设计目标包括：跨后端渲染（OpenGL 4.6 / Vulkan 1.2）、多线程命令缓冲区、可插拔物理与音频模块，以及面向数据（Data-Oriented）的 ECS 架构。</p>
+
+<h2>渲染线程 + 命令缓冲区</h2>
+<p>引擎采用<strong>生产者-消费者多线程渲染架构</strong>，将 CPU 端的渲染命令生成与 GPU 端的实际执行解耦：</p>
+<ul>
+<li><strong>主线程（Producer）</strong>：在 <code>world.render()</code> 阶段生成所有渲染命令（如 <code>DrawMesh</code>、<code>SetViewport</code>），并通过 <code>RenderCommandBuffer::submit()</code> 推入双缓冲队列的前端缓冲区。</li>
+<li><strong>渲染线程（Consumer）</strong>：由 <code>RenderThread</code> 维护独立线程，在 <code>thread_loop()</code> 中通过 <code>std::mutex</code> + <code>std::condition_variable</code> 等待前端缓冲区的交换信号。交换完成后，渲染线程调用 <code>RenderCommandBuffer::acquire()</code> 取得后端缓冲区，并通过 <code>IRenderBackend</code> 顺序执行。</li>
+<li><strong>双缓冲队列（Double Buffering）</strong>：使用两个固定容量的命令数组。主线程写入 Buffer A 时，渲染线程读取 Buffer B；每帧结束时通过原子操作交换读写索引，无需阻塞主线程的下一帧逻辑更新。</li>
+</ul>
+<pre><code class="language-cpp">// 主线程：生成命令并提交
+command_buffer.submit(draw_cmds);   // 推入前端缓冲
+
+// 渲染线程：获取并执行
+auto cmds = command_buffer.acquire(); // 取得后端缓冲
+for (auto&amp; cmd : cmds) backend->execute(cmd);</code></pre>
+
+<h2>RHI 抽象层</h2>
+<p><code>IRenderBackend</code> 是 OpenGL 与 Vulkan 的统一抽象接口，定义了资源生命周期、帧循环、管线状态与绘制原语。任何具体后端（<code>GLBackend</code>、<code>VulkanBackend</code>）均需实现以下核心操作：</p>
+<ul>
+<li><strong>生命周期</strong>：<code>init()</code> 初始化图形 API 上下文；<code>shutdown()</code> 有序释放设备与队列。</li>
+<li><strong>帧循环</strong>：<code>begin_frame()</code> 获取下一帧交换链图像或清除后台缓冲区；<code>end_frame()</code> 提交命令并执行 Present。</li>
+<li><strong>状态</strong>：<code>set_viewport(x, y, w, h)</code>、<code>set_depth_test(enable)</code>、<code>set_blend(enable, src, dst)</code>、<code>clear(color, depth, stencil)</code>。</li>
+<li><strong>资源创建</strong>：<code>create_mesh(desc)</code>、<code>create_shader(desc)</code>、<code>create_texture(desc)</code>、<code>create_framebuffer(desc)</code>，均返回不透明句柄（<code>RenderResourceHandle</code>）。</li>
+<li><strong>绘制</strong>：<code>draw_mesh(handle, instance_count)</code>、<code>draw_indexed(handle, index_count, index_offset)</code>。</li>
+</ul>
+
+<h2>模块概览</h2>
+<table class="docs-table">
+<thead><tr><th>模块</th><th>命名空间</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>render</td><td><code>gryce_engine::render</code></td><td>OpenGL/Vulkan 后端、着色器、网格、RHI 抽象、2D batching、命令缓冲区</td></tr>
+<tr><td>ecs</td><td><code>gryce_engine::ecs</code></td><td>World、ISystem、Entity 管理、ComponentStore 稀疏集存储</td></tr>
+<tr><td>scene</td><td><code>gryce_engine::scene</code></td><td>场景图、Entity 父子层级、Transform 层级更新</td></tr>
+<tr><td>math</td><td><code>gryce_engine::math</code></td><td>Vector2f/3f/4f、Matrix4f（列主序）、相机工具函数</td></tr>
+<tr><td>physics</td><td><code>gryce_engine::physics</code></td><td>PhysicsFactory、JoltPhysicsWorld3D、Box2DWorld2D、BuiltInPhysicsWorld2D</td></tr>
+<tr><td>audio</td><td><code>gryce_engine::audio</code></td><td>AudioEngine（miniaudio 后端）、AudioSource、AudioListener 空间音频</td></tr>
+<tr><td>assets</td><td><code>gryce_engine::assets</code></td><td>AssetManager 路径缓存、AsyncLoader 异步加载、ResourcePath 虚拟根目录</td></tr>
+<tr><td>platform</td><td><code>gryce_engine::platform</code></td><td>GLFW 窗口管理、键盘/鼠标输入、Raw Input 支持</td></tr>
+</tbody>
+</table>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./getting-started.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 快速开始</span></a>
 <a href="./render.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 渲染系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

@@ -97,17 +97,53 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Asset Management</h1>
-<h2>AssetManager</h2><pre><code class="language-cpp">auto mesh = AssetManager::load&lt;Mesh&gt;("res:/models/cube.obj");
-auto tex = AssetManager::load&lt;Texture&gt;("res:/textures/grass.png");</code></pre>
-<h2>Async Loading</h2><pre><code class="language-cpp">auto handle = AsyncLoader::load_async("res:/models/hero.fbx");
-if (handle.is_ready()) {
-    auto model = handle.get_result();
-}</code></pre>
-<h2>Supported Formats</h2><table class="docs-table"><thead><tr><th>Type</th><th>Formats</th><th>Library</th></tr></thead><tbody>
+
+<h2>AssetManager</h2>
+<p>Centralized synchronous asset loader with path-based caching. Supports <code>Mesh</code>, <code>Texture</code>, <code>Shader</code>, and <code>Scene</code> types.</p>
+<pre><code class="language-cpp">class AssetManager {
+public:
+    template&lt;typename T&gt;
+    static std::shared_ptr&lt;T&gt; load(const std::string&amp; path);
+
+    static bool is_loaded(const std::string&amp; path);
+    static void unload(const std::string&amp; path);
+    static void clear_all();
+};</code></pre>
+
+<h2>AsyncLoader</h2>
+<p>Background asset loading with <code>std::hardware_concurrency()</code> worker threads. Deduplicates in-flight requests by path and drives a state machine on the main thread.</p>
+<pre><code class="language-cpp">class AsyncLoader {
+public:
+    template&lt;typename T&gt;
+    Handle&lt;T&gt; load_async(const std::string&amp; path, std::function&lt;void(std::shared_ptr&lt;T&gt;)&gt; callback);
+
+    void poll(); // call on main thread to process completed loads
+    void pause_render_thread(); // ensures GPU-safe upload
+};</code></pre>
+<p>States: <strong>Pending</strong> &rarr; <strong>Loading</strong> (worker thread) &rarr; <strong>Ready</strong> or <strong>Failed</strong> (main thread after <code>poll()</code>).</p>
+
+<h2>ResourcePath</h2>
+<p>Virtual file system prefix. <code>res:/</code> resolves to the project root.</p>
+<pre><code class="language-cpp">std::string resolved = ResourcePath::resolve("res:/textures/grass.png");
+// -> "D:/Gryce-Engine/textures/grass.png"</code></pre>
+
+<h2>Supported Formats</h2>
+<table class="docs-table"><thead><tr><th>Type</th><th>Formats</th><th>Library</th></tr></thead><tbody>
 <tr><td>Models</td><td>OBJ, FBX, glTF, DAE</td><td>Assimp</td></tr>
 <tr><td>Textures</td><td>PNG, JPG, BMP, TGA</td><td>stb_image</td></tr>
 <tr><td>Scenes</td><td>.gesc (JSON)</td><td>nlohmann/json</td></tr>
 </tbody></table>
+
+<h2>Usage Example</h2>
+<pre><code class="language-cpp">auto mesh = AssetManager::load&lt;Mesh&gt;("res:/models/cube.obj");
+auto tex = AssetManager::load&lt;Texture&gt;("res:/textures/grass.png");
+
+auto handle = AsyncLoader::load_async&lt;Mesh&gt;("res:/models/hero.fbx", [](auto result) {
+    // callback invoked on main thread after poll()
+});
+if (handle.is_ready()) {
+    auto model = handle.get_result();
+}</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./audio.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Audio System</span></a>
 <a href="./math.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Math Library</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

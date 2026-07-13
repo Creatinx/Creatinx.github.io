@@ -97,20 +97,69 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">快速开始</h1>
-<h2>环境要求</h2><ul><li>Windows 10/11，MSYS2 UCRT64 环境</li><li>GCC 13+（支持 C++23）</li><li>CMake 3.28+</li><li>Ninja 构建系统</li><li>Python 3.10+（用于构建脚本）</li></ul>
-<h2>安装</h2><pre><code class="language-bash">git clone https://github.com/Creatinx/Gryce-Engine.git
-cd Gryce-Engine
-pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-glew mingw-w64-ucrt-x86_64-glfw
-python build.py --jobs 8
-./build/Debug/bin/Debug/gryce.exe</code></pre>
-<h2>项目结构</h2><pre><code>Gryce-Engine/
-├── core/          # 引擎库
+
+<h2>环境要求</h2>
+<p>Gryce Engine 在 Windows 平台采用 MSYS2 UCRT64 工具链进行开发。开始之前，请确保系统满足以下最低要求：</p>
+<ul>
+<li><strong>操作系统</strong>：Windows 10/11（64-bit）</li>
+<li><strong>编译环境</strong>：MSYS2 UCRT64</li>
+<li><strong>编译器</strong>：GCC 13+（需完整支持 C++23）</li>
+<li><strong>构建工具</strong>：CMake 3.28+、Ninja</li>
+<li><strong>脚本依赖</strong>：Python 3.10+（用于 build.py 一键构建）</li>
+</ul>
+
+<h2>安装步骤</h2>
+<p>1. 克隆仓库到本地：</p>
+<pre><code class="language-bash">git clone https://github.com/Creatinx/Gryce-Engine.git
+cd Gryce-Engine</code></pre>
+<p>2. 在 MSYS2 UCRT64 终端中安装系统级依赖：</p>
+<pre><code class="language-bash">pacman -S mingw-w64-ucrt-x86_64-gcc \
+          mingw-w64-ucrt-x86_64-cmake \
+          mingw-w64-ucrt-x86_64-ninja \
+          mingw-w64-ucrt-x86_64-glew \
+          mingw-w64-ucrt-x86_64-glfw</code></pre>
+<p>3. 使用 build.py 执行首次编译（默认 Debug 配置）：</p>
+<pre><code class="language-bash">python build.py --jobs 8</code></pre>
+<p>4. 运行生成的可执行文件进行验证：</p>
+<pre><code class="language-bash">./build/Debug/bin/Debug/gryce.exe</code></pre>
+
+<h2>项目目录结构</h2>
+<p>仓库根目录采用清晰的模块化布局：</p>
+<pre><code>Gryce-Engine/
+├── core/          # 引擎核心库（渲染、ECS、物理、音频等）
 ├── editor/        # 编辑器可执行文件
-├── tests/         # 单元测试
-├── examples/      # 示例项目
-├── cmake/         # CMake 模块
-├── docs/          # 文档
-└── build.py       # 一键构建脚本</code></pre>
+├── tests/         # 单元测试（基于 GTest）
+├── examples/      # 示例项目与 Demo
+├── cmake/         # CMake 自定义模块与工具链文件
+├── docs/          # 文档与网站源文件
+├── third_party/   # 外部依赖缓存（FetchContent / 手动放置）
+└── build.py       # 一键构建脚本（Debug/Release/Clean）</code></pre>
+
+<h2>build.py 使用示例</h2>
+<p>build.py 是项目的入口构建脚本，封装了 CMake 配置、依赖获取、编译与清理的完整流程：</p>
+<pre><code class="language-bash"># Debug 配置并行构建（默认）
+python build.py --jobs 8
+
+# Release 配置，启用 LTO 与全量优化
+python build.py Release --jobs 8
+
+# 仅清理构建产物，保留第三方依赖缓存
+python build.py --clean
+
+# 完全清理（包括重新下载外部依赖）
+python build.py --clean-all
+
+# 输出完整编译命令，用于排查构建错误
+python build.py --verbose</code></pre>
+<table class="docs-table">
+<thead><tr><th>命令</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><code>--jobs N</code></td><td>指定并行编译任务数，建议与 CPU 逻辑核心数一致</td></tr>
+<tr><td><code>--clean</code></td><td>删除 build/ 目录但保留 third_party/ 缓存</td></tr>
+<tr><td><code>--clean-all</code></td><td>彻底清理 build/ 与 third_party/，下次构建将重新拉取依赖</td></tr>
+<tr><td><code>--verbose</code></td><td>打印完整 ninja 编译命令与 CMake 配置日志</td></tr>
+</tbody>
+</table>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <span></span>
 <a href="./architecture.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 架构概览</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

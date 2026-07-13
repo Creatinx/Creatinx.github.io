@@ -97,17 +97,91 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">资源管理</h1>
-<h2>AssetManager</h2><pre><code class="language-cpp">auto mesh = AssetManager::load&lt;Mesh&gt;("res:/models/cube.obj");
-auto tex = AssetManager::load&lt;Texture&gt;("res:/textures/grass.png");</code></pre>
-<h2>异步加载</h2><pre><code class="language-cpp">auto handle = AsyncLoader::load_async("res:/models/hero.fbx");
-if (handle.is_ready()) {
-    auto model = handle.get_result();
+
+<h2>AssetManager</h2>
+<p>全局单例资源管理器，提供基于路径缓存的同步加载接口。同一路径的重复调用将直接返回已缓存实例，避免磁盘 I/O 与重复解析。支持 <code>Mesh</code>、<code>Texture</code>、<code>Shader</code>、<code>Scene</code> 等资源类型。</p>
+<pre><code class="language-cpp">class AssetManager {
+public:
+    template&lt;typename T&gt;
+    static std::shared_ptr&lt;T&gt; load(const std::string&amp; path);
+
+    template&lt;typename T&gt;
+    static bool is_loaded(const std::string&amp; path);
+
+    static void unload(const std::string&amp; path);   // 卸载指定路径的所有资源
+    static void unload_all();                      // 清空全部缓存
+    static size_t cache_size();                    // 当前缓存条目数
+};
+
+// 使用示例
+auto mesh = AssetManager::load&lt;Mesh&gt;(  "res:/models/cube.obj");
+auto tex  = AssetManager::load&lt;Texture&gt;("res:/textures/grass.png");
+auto mat  = AssetManager::load&lt;Shader&gt;( "res:/shaders/lit.glsl");</code></pre>
+
+<h2>AsyncLoader</h2>
+<p>基于工作线程池的异步资源加载器。线程数默认为 <code>std::thread::hardware_concurrency()</code>，按路径去重：同一路径的并发请求共享同一个加载任务。内部状态机为 <code>Pending → Loading → Ready / Failed</code>，主线程每帧调用 <code>poll()</code> 以执行 GPU 安全上传回调。</p>
+<pre><code class="language-cpp">class AsyncLoader {
+public:
+    using LoadCallback = std::function&lt;void(std::shared_ptr&lt;IAsset&gt;)&gt;;
+
+    // 发起异步加载，返回任务句柄
+    static AsyncHandle load_async(const std::string&amp; path, LoadCallback on_ready = nullptr);
+
+    // 主线程轮询，执行已完成任务的回调（含 GPU 上传）
+    static void poll();
+
+    // 暂停 / 恢复渲染线程（用于 GPU 资源安全上传）
+    static void pause_render_thread();
+    static void resume_render_thread();
+
+    static size_t pending_count();
+    static size_t loading_count();
+};
+
+class AsyncHandle {
+public:
+    bool is_ready() const;
+    bool is_failed() const;
+    std::shared_ptr&lt;IAsset&gt; get_result() const;  // 仅在 Ready 后安全调用
+};</code></pre>
+
+<h2>ResourcePath</h2>
+<p>虚拟路径解析器，将 <code>"res:/"</code> 前缀映射到项目根目录下的 <code>resources/</code> 文件夹，支持运行时重定向与路径规范化。</p>
+<pre><code class="language-cpp">class ResourcePath {
+public:
+    static std::string resolve(const std::string&amp; virtual_path);
+    static void set_root(const std::string&amp; abs_root);  // 重定向资源根目录
+};
+
+// 解析示例
+auto abs_path = ResourcePath::resolve("res:/textures/grass.png");
+// 结果: "D:/Gryce-Engine/resources/textures/grass.png"</code></pre>
+
+<h2>支持的格式</h2>
+<table class="docs-table">
+<thead><tr><th>类型</th><th>格式</th><th>解析库</th></tr></thead>
+<tbody>
+<tr><td>模型</td><td>OBJ, FBX, glTF, DAE, 3DS</td><td>Assimp</td></tr>
+<tr><td>纹理</td><td>PNG, JPG, BMP, TGA, HDR</td><td>stb_image</td></tr>
+<tr><td>场景</td><td>.gesc（JSON）</td><td>nlohmann/json</td></tr>
+<tr><td>着色器</td><td>.glsl / .spv（SPIR-V）</td><td>内置解析器 / glslang</td></tr>
+<tr><td>音频</td><td>OGG, MP3, WAV, FLAC</td><td>miniaudio 解码器</td></tr>
+</tbody>
+</table>
+
+<h2>异步加载示例</h2>
+<pre><code class="language-cpp">// 在初始化阶段发起异步加载
+auto handle = AsyncLoader::load_async("res:/models/hero.fbx",
+    [](std::shared_ptr&lt;IAsset&gt; asset) {
+        auto mesh = std::static_pointer_cast&lt;Mesh&gt;(asset);
+        // 此处位于主线程，可安全执行 GPU 上传
+    });
+
+// 主循环中每帧轮询
+while (running) {
+    AsyncLoader::poll();  // 执行已完成任务的回调
+    // ...
 }</code></pre>
-<h2>支持的格式</h2><table class="docs-table"><thead><tr><th>类型</th><th>格式</th><th>库</th></tr></thead><tbody>
-<tr><td>模型</td><td>OBJ, FBX, glTF, DAE</td><td>Assimp</td></tr>
-<tr><td>纹理</td><td>PNG, JPG, BMP, TGA</td><td>stb_image</td></tr>
-<tr><td>场景</td><td>.gesc (JSON)</td><td>nlohmann/json</td></tr>
-</tbody></table>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./audio.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 音频系统</span></a>
 <a href="./math.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 数学库</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

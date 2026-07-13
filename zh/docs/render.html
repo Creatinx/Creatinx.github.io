@@ -97,13 +97,132 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">渲染系统</h1>
-<h2>OpenGL 后端</h2><ul><li><strong>GLBackend</strong>：glewInit、厂商信息日志、支持 <code>WGL_NV_delay_before_swap</code> 的缓冲区交换</li><li><strong>GLShader</strong>：顶点 + 片段着色器编译、uniform 设置器</li><li><strong>GLMesh</strong>：VAO/VBO/EBO 管理</li><li><strong>GLRenderer2D</strong>：矩形、圆形、多边形、文本的 CPU 端批处理，含字体图集</li></ul>
-<h2>Vulkan 后端</h2><ul><li><strong>VulkanDevice</strong>：物理设备选择，含图形 + 呈现队列的逻辑设备</li><li><strong>VulkanSwapchain</strong>：<code>VkSwapchainKHR</code> 管理</li><li><strong>VulkanBuffer / VulkanTexture</strong>：VMA 分配的缓冲区与图像</li><li><strong>VulkanShader</strong>：含描述符集布局的 SPIR-V 模块</li></ul>
-<h2>2D 渲染</h2><pre><code class="language-cpp">renderer2d->draw_rect(
-    {100.0f, 100.0f}, {200.0f, 150.0f},
-    {1.0f, 0.5f, 0.2f, 1.0f}
-);
-renderer2d->flush();</code></pre>
+
+<h2>IRenderBackend</h2>
+<p>所有渲染后端的公共基类，声明了设备生命周期、帧循环、资源创建与绘制接口。应用层通过 <code>IRenderBackend*</code> 指针操作，无需关心底层是 OpenGL 还是 Vulkan。</p>
+<pre><code class="language-cpp">class IRenderBackend {
+public:
+    virtual bool init(const RenderBackendDesc&amp; desc) = 0;
+    virtual void shutdown() = 0;
+    virtual void begin_frame() = 0;
+    virtual void end_frame() = 0;
+    virtual void set_viewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) = 0;
+    virtual void set_depth_test(bool enable) = 0;
+    virtual void set_blend(bool enable, BlendFactor src, BlendFactor dst) = 0;
+    virtual void clear(const ClearDesc&amp; desc) = 0;
+    virtual RenderResourceHandle create_mesh(const MeshDesc&amp; desc) = 0;
+    virtual RenderResourceHandle create_shader(const ShaderDesc&amp; desc) = 0;
+    virtual RenderResourceHandle create_texture(const TextureDesc&amp; desc) = 0;
+    virtual RenderResourceHandle create_framebuffer(const FramebufferDesc&amp; desc) = 0;
+    virtual void draw_mesh(RenderResourceHandle mesh, uint32_t instance_count = 1) = 0;
+    virtual void draw_indexed(RenderResourceHandle mesh, uint32_t index_count, uint32_t index_offset = 0) = 0;
+};</code></pre>
+
+<h2>GLBackend</h2>
+<p>OpenGL 4.6 后端实现。初始化阶段调用 <code>glewInit()</code> 加载扩展，并在控制台输出 GPU vendor / renderer / version 日志。Windows 平台额外检测 <code>WGL_NV_delay_before_swap</code> 扩展，以支持更精细的帧同步控制。</p>
+
+<h3>GLShader</h3>
+<p>封装顶点与片段着色器的编译、链接及 uniform 上传。编译失败时自动打印 info log。所有 <code>set_*</code> 系列方法在 uniform 不存在时静默返回（<code>get_uniform_location</code> 返回 -1 时不触发错误）。</p>
+<pre><code class="language-cpp">class GLShader {
+public:
+    bool compile(const std::string&amp; vs_src, const std::string&amp; fs_src);
+    void bind() const;
+    void set_int(const std::string&amp; name, int value);
+    void set_float(const std::string&amp; name, float value);
+    void set_vec2(const std::string&amp; name, const Vector2f&amp; v);
+    void set_vec3(const std::string&amp; name, const Vector3f&amp; v);
+    void set_vec4(const std::string&amp; name, const Vector4f&amp; v);
+    void set_mat4(const std::string&amp; name, const Matrix4f&amp; m);
+private:
+    int get_uniform_location(const std::string&amp; name) const;
+    uint32_t program_id = 0;
+};</code></pre>
+
+<h3>GLMesh</h3>
+<p>管理 VAO / VBO / EBO 三元组。通过 <code>upload_vertices()</code> 将 CPU 顶点数据上传到 GPU；<code>set_layout()</code> 配置顶点属性指针；<code>draw()</code> 绑定 VAO 后执行 <code>glDrawArrays</code> 或 <code>glDrawElements</code>。</p>
+<pre><code class="language-cpp">class GLMesh {
+public:
+    void upload_vertices(const void* data, size_t size, uint32_t vertex_count);
+    void set_layout(const std::vector&lt;VertexAttrib&gt;&amp; attribs);
+    void set_index_data(const uint32_t* indices, uint32_t index_count);
+    void draw() const;
+    void draw_indexed() const;
+private:
+    uint32_t vao = 0, vbo = 0, ebo = 0;
+    uint32_t vertex_count = 0, index_count = 0;
+};</code></pre>
+
+<h3>GLRenderer2D</h3>
+<p>CPU 端 batching 的 2D 渲染器。单帧内收集所有 <code>draw_rect</code>、<code>draw_circle</code>、<code>draw_polygon</code>、<code>draw_text</code> 调用，在 <code>flush()</code> 时一次性提交合并后的顶点数据，减少 draw call 数量。</p>
+<pre><code class="language-cpp">class GLRenderer2D {
+public:
+    void draw_rect(const Vector2f&amp; pos, const Vector2f&amp; size, const Vector4f&amp; color);
+    void draw_circle(const Vector2f&amp; center, float radius, const Vector4f&amp; color, uint32_t segments = 32);
+    void draw_polygon(const std::vector&lt;Vector2f&gt;&amp; points, const Vector4f&amp; color);
+    void draw_text(const std::string&amp; text, const Vector2f&amp; pos, float scale, const Vector4f&amp; color);
+    void flush();  // 提交当前 batch 到 GPU
+private:
+    std::vector&lt;Vertex2D&gt; vertex_batch;
+    std::shared_ptr&lt;FontAtlas&gt; font_atlas;
+};</code></pre>
+
+<h2>RenderCommandBuffer &amp; RenderThread</h2>
+<p>多线程渲染的核心同步设施。<code>RenderCommandBuffer</code> 维护双缓冲数组与读写锁；<code>RenderThread</code> 在独立线程中循环等待并执行命令。</p>
+<pre><code class="language-cpp">class RenderCommandBuffer {
+public:
+    void submit(const std::vector&lt;RenderCommand&gt;&amp; cmds); // 主线程写入
+    std::vector&lt;RenderCommand&gt; acquire();                // 渲染线程读取
+    void swap();                                          // 交换双缓冲索引
+private:
+    std::array&lt;std::vector&lt;RenderCommand&gt;, 2&gt; buffers;
+    std::mutex mtx;
+    std::condition_variable cv;
+    uint8_t write_index = 0;
+    uint8_t read_index = 1;
+    bool new_frame_ready = false;
+};
+
+class RenderThread {
+public:
+    void start(IRenderBackend* backend, RenderCommandBuffer* cmd_buffer);
+    void stop();
+    void thread_loop();
+    void execute(const std::vector&lt;RenderCommand&gt;&amp; cmds);
+private:
+    std::thread thread;
+    std::atomic&lt;bool&gt; running{false};
+    IRenderBackend* backend = nullptr;
+    RenderCommandBuffer* cmd_buffer = nullptr;
+};</code></pre>
+
+<h2>Vulkan 后端</h2>
+
+<h3>VulkanBackend</h3>
+<p>Vulkan 1.2 后端实现，负责 instance、surface、device、swapchain、command pools 与同步原语（fence / semaphore）的初始化与销毁。帧循环使用双缓冲或三缓冲的 command buffer 池。</p>
+
+<h3>VulkanDevice</h3>
+<p>封装物理设备枚举、队列族选择与逻辑设备创建。自动选择具备 <code>VK_QUEUE_GRAPHICS_BIT</code> 与 <code>VK_QUEUE_COMPUTE_BIT</code> 的独立队列族，并创建 graphics + present 双队列。集成 VMA（Vulkan Memory Allocator）用于所有 buffer / image 的内存分配。</p>
+
+<h3>VulkanSwapchain</h3>
+<p>管理 <code>VkSwapchainKHR</code> 生命周期，包括 surface 格式选择、present mode 选择（优先 <code>VK_PRESENT_MODE_FIFO_KHR</code>）、图像视图创建与帧缓冲区的动态重建（窗口大小变化时自动触发）。</p>
+
+<h3>VulkanBuffer / VulkanTexture</h3>
+<p>基于 VMA 分配的 GPU 资源。<code>VulkanBuffer</code> 支持 staging buffer 上传与 device-local 常驻模式。<code>VulkanTexture</code> 支持 2D / 2D array / cubemap，自动生成 mipmap chain 与合适的图像布局转换 barrier。</p>
+
+<h3>VulkanShader</h3>
+<p>从 SPIR-V 二进制模块创建 <code>VkShaderModule</code>，并基于反射信息自动构建 <code>descriptor set layouts</code> 与 <code>pipeline layout</code>。支持 uniform buffer、combined image sampler 与 storage buffer 三种 descriptor 类型。</p>
+<pre><code class="language-cpp">class VulkanShader {
+public:
+    bool load_spirv(const std::vector&lt;uint32_t&gt;&amp; vert_spv,
+                    const std::vector&lt;uint32_t&gt;&amp; frag_spv);
+    void bind(VkCommandBuffer cmd);
+    void push_constants(VkCommandBuffer cmd, const void* data, size_t size);
+private:
+    VkShaderModule vert_module = VK_NULL_HANDLE;
+    VkShaderModule frag_module = VK_NULL_HANDLE;
+    VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
+    std::vector&lt;VkDescriptorSetLayout&gt; set_layouts;
+};</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./architecture.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 架构概览</span></a>
 <a href="./ecs.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 实体组件系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

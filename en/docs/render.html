@@ -97,13 +97,131 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Render System</h1>
-<h2>OpenGL Backend</h2><ul><li><strong>GLBackend</strong>: glewInit, vendor logging, buffer swap with <code>WGL_NV_delay_before_swap</code> support</li><li><strong>GLShader</strong>: Vertex + fragment compilation, uniform setters</li><li><strong>GLMesh</strong>: VAO/VBO/EBO management</li><li><strong>GLRenderer2D</strong>: CPU-side batching for rects, circles, polygons, text with font atlas</li></ul>
-<h2>Vulkan Backend</h2><ul><li><strong>VulkanDevice</strong>: Physical device selection, graphics + present queues</li><li><strong>VulkanSwapchain</strong>: <code>VkSwapchainKHR</code> management</li><li><strong>VulkanBuffer / VulkanTexture</strong>: VMA-allocated buffers and images</li><li><strong>VulkanShader</strong>: SPIR-V modules with descriptor set layouts</li></ul>
-<h2>2D Rendering</h2><pre><code class="language-cpp">renderer2d->draw_rect(
-    {100.0f, 100.0f}, {200.0f, 150.0f},
-    {1.0f, 0.5f, 0.2f, 1.0f}
-);
-renderer2d->flush();</code></pre>
+
+<h2>IRenderBackend</h2>
+<p>The central RHI interface implemented by both OpenGL and Vulkan backends.</p>
+<pre><code class="language-cpp">class IRenderBackend {
+public:
+    virtual bool init() = 0;
+    virtual void shutdown() = 0;
+    virtual void begin_frame() = 0;
+    virtual void end_frame() = 0;
+    virtual void set_viewport(int x, int y, int w, int h) = 0;
+    virtual void set_depth_test(bool enabled) = 0;
+    virtual void set_blend(bool enabled, BlendMode mode) = 0;
+    virtual void clear(float r, float g, float b, float a) = 0;
+    virtual MeshHandle create_mesh(const VertexLayout&amp; layout) = 0;
+    virtual ShaderHandle create_shader(const std::string&amp; vs, const std::string&amp; fs) = 0;
+    virtual TextureHandle create_texture(int w, int h, const void* data) = 0;
+    virtual FramebufferHandle create_framebuffer(int w, int h) = 0;
+    virtual void draw_mesh(MeshHandle mesh, ShaderHandle shader) = 0;
+    virtual void draw_indexed(MeshHandle mesh, ShaderHandle shader, uint32_t index_count) = 0;
+};</code></pre>
+
+<h2>GLBackend</h2>
+<p>OpenGL 4.6 backend implementation. Performs <code>glewInit</code> on startup, logs GPU vendor info, and supports <code>WGL_NV_delay_before_swap</code> for frame pacing.</p>
+
+<h3>GLShader</h3>
+<p>Wraps vertex and fragment shader compilation, uniform uploads, and program linking.</p>
+<pre><code class="language-cpp">class GLShader {
+public:
+    bool compile(const std::string&amp; vertex_src, const std::string&amp; fragment_src);
+    void set_int(const std::string&amp; name, int value);
+    void set_float(const std::string&amp; name, float value);
+    void set_vec2(const std::string&amp; name, float x, float y);
+    void set_vec3(const std::string&amp; name, float x, float y, float z);
+    void set_vec4(const std::string&amp; name, float x, float y, float z, float w);
+    void set_mat4(const std::string&amp; name, const float* m);
+    int get_uniform_location(const std::string&amp; name); // returns -1 if missing
+};</code></pre>
+
+<h3>GLMesh</h3>
+<p>Manages VAO, VBO, and EBO. Uploads vertex data and draws via <code>glDrawArrays</code> or indexed drawing.</p>
+<pre><code class="language-cpp">class GLMesh {
+public:
+    void upload_vertices(const void* data, size_t size, const VertexLayout&amp; layout);
+    void set_layout(const VertexLayout&amp; layout);
+    void draw();
+    void draw_indexed(uint32_t count);
+};</code></pre>
+
+<h3>GLRenderer2D</h3>
+<p>CPU-side batching renderer for 2D primitives and text.</p>
+<pre><code class="language-cpp">class GLRenderer2D {
+public:
+    void draw_rect(const Vector2f&amp; pos, const Vector2f&amp; size, const Vector4f&amp; color);
+    void draw_circle(const Vector2f&amp; center, float radius, const Vector4f&amp; color);
+    void draw_polygon(const std::vector&lt;Vector2f&gt;&amp; points, const Vector4f&amp; color);
+    void draw_text(const std::string&amp; text, const Vector2f&amp; pos, float scale, const Vector4f&amp; color);
+    void flush(); // submits batched geometry
+};</code></pre>
+
+<h2>RenderCommandBuffer</h2>
+<p>Double-buffered command queue with mutex and condition variable. Main thread <code>submit()</code>s commands; render thread <code>acquire()</code>s them.</p>
+<pre><code class="language-cpp">class RenderCommandBuffer {
+public:
+    void submit(RenderCommand cmd);
+    std::vector&lt;RenderCommand&gt; acquire();
+};</code></pre>
+
+<h2>RenderThread</h2>
+<p>Dedicated background thread that loops, waiting for commands and executing them on the active backend.</p>
+<pre><code class="language-cpp">class RenderThread {
+public:
+    void start(IRenderBackend* backend);
+    void stop();
+    void thread_loop(); // waits on condition_variable, executes acquired commands
+};</code></pre>
+
+<h2>VulkanBackend</h2>
+<p>Vulkan 1.2 backend managing instance, surface, logical device, and swapchain.</p>
+
+<h3>VulkanDevice</h3>
+<p>Selects a physical device with graphics and present queues. Uses VMA for memory management.</p>
+<pre><code class="language-cpp">class VulkanDevice {
+public:
+    bool create(VkInstance instance, VkSurfaceKHR surface);
+    VkPhysicalDevice physical_device() const;
+    VkDevice device() const;
+    uint32_t graphics_queue_family() const;
+    uint32_t present_queue_family() const;
+};</code></pre>
+
+<h3>VulkanSwapchain</h3>
+<p>Manages <code>VkSwapchainKHR</code> lifecycle, image views, and framebuffers.</p>
+<pre><code class="language-cpp">class VulkanSwapchain {
+public:
+    bool create(VulkanDevice* device, int width, int height);
+    void recreate(int width, int height);
+    VkSwapchainKHR handle() const;
+    uint32_t image_count() const;
+};</code></pre>
+
+<h3>VulkanBuffer / VulkanTexture</h3>
+<p>VMA-allocated GPU resources.</p>
+<pre><code class="language-cpp">class VulkanBuffer {
+public:
+    bool create(VulkanDevice* device, size_t size, VkBufferUsageFlags usage, VmaMemoryUsage mem_usage);
+    void upload(const void* data, size_t size);
+    VkBuffer handle() const;
+};
+
+class VulkanTexture {
+public:
+    bool create(VulkanDevice* device, int w, int h, const void* data);
+    VkImageView view() const;
+    VkSampler sampler() const;
+};</code></pre>
+
+<h3>VulkanShader</h3>
+<p>SPIR-V modules with descriptor set layouts and pipeline layouts.</p>
+<pre><code class="language-cpp">class VulkanShader {
+public:
+    bool load_spirv(const std::string&amp; vert_path, const std::string&amp; frag_path);
+    void bind(VkCommandBuffer cmd);
+    void set_push_constant(VkCommandBuffer cmd, const std::string&amp; name, const void* data);
+    VkPipelineLayout pipeline_layout() const;
+};</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./architecture.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Architecture Overview</span></a>
 <a href="./ecs.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Entity Component System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

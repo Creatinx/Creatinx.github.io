@@ -97,16 +97,77 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">物理系统</h1>
-<h2>Physics Factory</h2><pre><code class="language-cpp">auto world3d = PhysicsFactory::create_world_3d(PhysicsBackend::Jolt);
-auto world2d = PhysicsFactory::create_world_2d(PhysicsBackend::Box2D);</code></pre>
-<h2>Jolt Physics (3D)</h2><p>通过 Jolt Physics 5.2 实现完整的刚体动力学、碰撞检测和射线检测。</p>
-<h2>Box2D (2D)</h2><p>通过 Box2D 3.0 实现 2D 物理，支持刚体、fixture 和关节。</p>
-<h2>BuiltIn Physics (2D)</h2><p>轻量级 2D 物理，无外部依赖。必须通过 <code>PhysicsBackend::BuiltIn</code> 显式选择。</p>
-<h2>PhysicalMaterial</h2><pre><code class="language-cpp">PhysicalMaterial mat;
-mat.friction = 0.5f;
-mat.restitution = 0.3f;
-mat.density = 1.0f;
-entity.add_component&lt;PhysicalMaterial&gt;(mat);</code></pre>
+
+<h2>PhysicsFactory</h2>
+<p>物理世界的工厂入口，根据 <code>PhysicsBackend</code> 枚举创建 3D 或 2D 物理世界实例。所有后端均实现统一的 <code>IPhysicsWorld3D</code> / <code>IPhysicsWorld2D</code> 接口，上层逻辑无需感知底层是 Jolt、Box2D 还是内置物理。</p>
+<pre><code class="language-cpp">enum class PhysicsBackend { Jolt, Box2D, BuiltIn };
+
+class PhysicsFactory {
+public:
+    static std::unique_ptr&lt;IPhysicsWorld3D&gt; create_world_3d(PhysicsBackend backend);
+    static std::unique_ptr&lt;IPhysicsWorld2D&gt; create_world_2d(PhysicsBackend backend);
+};</code></pre>
+
+<h2>JoltPhysicsWorld3D</h2>
+<p>基于 Jolt Physics 的完整 3D 刚体动力学实现，支持动态/静态/运动学刚体、复杂碰撞形状（box、sphere、capsule、mesh、heightfield）、连续碰撞检测（CCD）与射线/形状投射检测。全局工厂与类型注册通过 <code>std::call_once</code> 保证线程安全的一次性初始化。</p>
+<pre><code class="language-cpp">class JoltPhysicsWorld3D : public IPhysicsWorld3D {
+public:
+    bool init() override;
+    void shutdown() override;
+    void step(float dt, int collision_steps = 1) override;
+
+    BodyID add_rigid_body(const RigidBodyDesc&amp; desc);
+    void remove_body(BodyID id);
+    void set_body_position(BodyID id, const Vector3f&amp; pos);
+    void set_body_velocity(BodyID id, const Vector3f&amp; vel);
+
+    // 射线检测
+    bool ray_cast(const Vector3f&amp; origin, const Vector3f&amp; direction,
+                  float max_dist, RayCastResult&amp; out_result);
+
+    // 碰撞事件回调（每帧结束后触发）
+    void set_collision_listener(CollisionListener* listener);
+};</code></pre>
+
+<h2>Box2DWorld2D</h2>
+<p>基于 Box2D 的 2D 物理世界，提供 body、fixture、joint 的完整生命周期管理。支持圆形、矩形、多边形 fixture，以及 revolute、prismatic、distance 等关节类型。</p>
+<pre><code class="language-cpp">class Box2DWorld2D : public IPhysicsWorld2D {
+public:
+    bool init(const Vector2f&amp; gravity) override;
+    void shutdown() override;
+    void step(float dt, int velocity_iterations = 8, int position_iterations = 3) override;
+
+    BodyID create_body(const BodyDef&amp; def);
+    void destroy_body(BodyID id);
+    FixtureID create_fixture(BodyID body, const FixtureDef&amp; def);
+    void destroy_fixture(BodyID body, FixtureID fixture);
+    JointID create_revolute_joint(const RevoluteJointDef&amp; def);
+    void destroy_joint(JointID id);
+};</code></pre>
+
+<h2>BuiltInPhysicsWorld2D</h2>
+<p>引擎自研的轻量级 2D 物理，零外部依赖，显式 opt-in。采用 AABB 粗检测 + SAT 精检测的混合碰撞检测管线，支持圆形与凸多边形。适用于对包体大小敏感或无需复杂物理的 2D 项目。必须通过 <code>PhysicsBackend::BuiltIn</code> 显式选择。</p>
+<pre><code class="language-cpp">class BuiltInPhysicsWorld2D : public IPhysicsWorld2D {
+public:
+    bool init(const Vector2f&amp; gravity) override;
+    void step(float dt) override;
+    void add_circle_body(const Vector2f&amp; pos, float radius, float mass, bool is_static);
+    void add_polygon_body(const std::vector&lt;Vector2f&gt;&amp; vertices, float mass, bool is_static);
+    void apply_force(EntityID id, const Vector2f&amp; force);
+};</code></pre>
+
+<h2>PhysicalMaterial</h2>
+<p>附加到 Entity 的物理材质组件，用于覆盖全局默认摩擦与弹性系数。可在运行时通过 <code>PhysicsMaterial</code> 组件动态调整。</p>
+<pre><code class="language-cpp">struct PhysicalMaterial {
+    float friction = 0.5f;      // 摩擦系数 [0, 1]
+    float restitution = 0.3f;   // 弹性系数 [0, 1]
+    float density = 1.0f;       // 密度（kg/m³ 或 kg/m²）
+};
+
+// 使用示例
+auto entity = scene.create_entity("Ball");
+entity.add_component&lt;PhysicalMaterial&gt;(PhysicalMaterial{0.4f, 0.8f, 2.0f});
+entity.add_component&lt;SphereCollider&gt;(1.0f);</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./ecs.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 实体组件系统</span></a>
 <a href="./audio.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 音频系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

@@ -97,13 +97,28 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Getting Started</h1>
-<h2>Prerequisites</h2><ul><li>Windows 10/11 with MSYS2 UCRT64 environment</li><li>GCC 13+ (C++23 support)</li><li>CMake 3.28+</li><li>Ninja build system</li><li>Python 3.10+ (for build script)</li></ul>
-<h2>Installation</h2><pre><code class="language-bash">git clone https://github.com/Creatinx/Gryce-Engine.git
+
+<h2>Prerequisites</h2>
+<p>Before building Gryce Engine, ensure your development environment meets the following requirements:</p>
+<ul>
+<li><strong>Windows 10/11</strong> with MSYS2 UCRT64 environment</li>
+<li><strong>GCC 13+</strong> with C++23 support</li>
+<li><strong>CMake 3.28+</strong></li>
+<li><strong>Ninja</strong> build system</li>
+<li><strong>Python 3.10+</strong> (for the build script)</li>
+</ul>
+
+<h2>Installation</h2>
+<p>Clone the repository and install dependencies via MSYS2, then run the build script:</p>
+<pre><code class="language-bash">git clone https://github.com/Creatinx/Gryce-Engine.git
 cd Gryce-Engine
 pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-glew mingw-w64-ucrt-x86_64-glfw
 python build.py --jobs 8
 ./build/Debug/bin/Debug/gryce.exe</code></pre>
-<h2>Project Structure</h2><pre><code>Gryce-Engine/
+
+<h2>Project Structure</h2>
+<p>The repository is organized as follows:</p>
+<pre><code>Gryce-Engine/
 ├── core/          # Engine library
 ├── editor/        # Editor executable
 ├── tests/         # Unit tests
@@ -111,6 +126,25 @@ python build.py --jobs 8
 ├── cmake/         # CMake modules
 ├── docs/          # Documentation
 └── build.py       # One-click build script</code></pre>
+
+<h2>Optional Dependencies</h2>
+<p>Some features require additional dependencies that are fetched automatically or installed manually:</p>
+<ul>
+<li><strong>Assimp</strong> — additional model format support (FBX, glTF, DAE)</li>
+<li><strong>Jolt Physics</strong> — 3D rigid body physics</li>
+<li><strong>Box2D</strong> — 2D physics</li>
+</ul>
+
+<h2>Build Example</h2>
+<p>The simplest way to build is using <code>build.py</code>:</p>
+<pre><code class="language-bash"># Debug build (default)
+python build.py --jobs 8
+
+# Release build
+python build.py Release --jobs 8
+
+# Clean and rebuild
+python build.py --clean --jobs 8</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <span></span>
 <a href="./architecture.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Architecture Overview</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

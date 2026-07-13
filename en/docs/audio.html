@@ -97,18 +97,55 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Audio System</h1>
-<h2>AudioEngine</h2><pre><code class="language-cpp">AudioEngine::init();
+
+<h2>AudioEngine</h2>
+<p>Global audio subsystem backed by miniaudio. Must be initialized before any <code>AudioSource</code> or <code>AudioListener</code> is created.</p>
+<pre><code class="language-cpp">class AudioEngine {
+public:
+    static bool init();
+    static void shutdown();
+    static bool is_initialized();
+};</code></pre>
+
+<h2>AudioSource</h2>
+<p>Component attached to an <code>Entity</code>. Supports 3D spatial positioning, looping, and volume control.</p>
+<pre><code class="language-cpp">class AudioSource {
+public:
+    bool load(const std::string&amp; path);
+    void play();
+    void stop();
+    void pause();
+    void set_volume(float volume); // 0.0 .. 1.0
+    void set_loop(bool loop);
+    void set_position(const Vector3f&amp; pos);
+    void set_pitch(float pitch);
+};</code></pre>
+
+<h2>AudioListener</h2>
+<p>Typically attached to the camera entity. Defines the ears of the 3D audio world.</p>
+<pre><code class="language-cpp">class AudioListener {
+public:
+    void set_position(const Vector3f&amp; pos);
+    void set_orientation(const Vector3f&amp; look_dir, const Vector3f&amp; up_dir);
+    void set_velocity(const Vector3f&amp; vel);
+};</code></pre>
+
+<h2>Usage Example</h2>
+<pre><code class="language-cpp">AudioEngine::init();
+
+auto source = entity.add_component&lt;AudioSource&gt;();
+source-&gt;load("res:/audio/bgm.ogg");
+source-&gt;set_loop(true);
+source-&gt;set_volume(0.8f);
+source-&gt;play();
+
+auto listener = camera_entity.add_component&lt;AudioListener&gt;();
+listener-&gt;set_position(camera_pos);
+listener-&gt;set_orientation(look_dir, up_dir);
+
 // ... game loop ...
+
 AudioEngine::shutdown();</code></pre>
-<h2>AudioSource</h2><pre><code class="language-cpp">auto source = entity.add_component&lt;AudioSource&gt;();
-source.load("res:/audio/bgm.ogg");
-source.set_loop(true);
-source.set_volume(0.8f);
-source.play();
-source.set_position({10.0f, 0.0f, 5.0f});</code></pre>
-<h2>AudioListener</h2><pre><code class="language-cpp">auto listener = camera_entity.add_component&lt;AudioListener&gt;();
-listener.set_position(camera_pos);
-listener.set_orientation(look_dir, up_dir);</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./physics.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Physics</span></a>
 <a href="./assets.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Asset Management</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

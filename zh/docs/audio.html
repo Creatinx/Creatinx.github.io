@@ -97,18 +97,72 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">音频系统</h1>
-<h2>AudioEngine</h2><pre><code class="language-cpp">AudioEngine::init();
-// ... 游戏主循环 ...
-AudioEngine::shutdown();</code></pre>
-<h2>AudioSource</h2><pre><code class="language-cpp">auto source = entity.add_component&lt;AudioSource&gt;();
-source.load("res:/audio/bgm.ogg");
-source.set_loop(true);
-source.set_volume(0.8f);
-source.play();
-source.set_position({10.0f, 0.0f, 5.0f});</code></pre>
-<h2>AudioListener</h2><pre><code class="language-cpp">auto listener = camera_entity.add_component&lt;AudioListener&gt;();
+
+<h2>AudioEngine</h2>
+<p>音频系统的全局入口，基于 miniaudio 后端封装。负责设备枚举、上下文初始化、主混音器与总线（bus）管理。必须在应用启动时调用 <code>init()</code>，在退出前调用 <code>shutdown()</code> 以释放音频设备。</p>
+<pre><code class="language-cpp">class AudioEngine {
+public:
+    static bool init();     // 初始化 miniaudio context 与默认设备
+    static void shutdown(); // 停止所有播放并释放资源
+    static bool is_initialized();
+    static void set_master_volume(float volume);  // 总音量 [0, 1]
+    static float get_master_volume();
+};</code></pre>
+
+<h2>AudioSource</h2>
+<p>附加到 Entity 的音频源组件。支持 2D 与 3D 空间音频，可独立控制播放、暂停、循环、音量与空间位置。多个 <code>AudioSource</code> 可同时活跃，由 miniaudio 的 mixer 自动合并到输出设备。</p>
+<pre><code class="language-cpp">class AudioSource : public Component {
+public:
+    bool load(const std::string&amp; path);   // 支持 .ogg / .mp3 / .wav
+    void play();
+    void pause();
+    void stop();
+    bool is_playing() const;
+
+    void set_volume(float volume);        // 局部音量 [0, 1]
+    void set_loop(bool loop);
+    void set_pitch(float pitch);          // 播放速率倍率
+    void set_position(const Vector3f&amp; pos); // 3D 空间位置
+    void set_range(float min_dist, float max_dist); // 衰减范围
+};</code></pre>
+
+<h2>AudioListener</h2>
+<p>通常附加到相机（Camera）Entity，定义 3D 音频的接收点。场景中同一时间仅有一个 <code>AudioListener</code> 生效（后续可扩展为多 listener 混音）。</p>
+<pre><code class="language-cpp">class AudioListener : public Component {
+public:
+    void set_position(const Vector3f&amp; pos);
+    void set_orientation(const Vector3f&amp; look_dir, const Vector3f&amp; up_dir);
+    void set_velocity(const Vector3f&amp; vel); // 用于多普勒效应
+};</code></pre>
+
+<h2>完整使用示例</h2>
+<pre><code class="language-cpp">// 初始化
+AudioEngine::init();
+
+// 创建 BGM 音源
+auto bgm_entity = scene.create_entity("BGM");
+auto&amp; bgm = bgm_entity.add_component&lt;AudioSource&gt;();
+bgm.load("res:/audio/bgm.ogg");
+bgm.set_loop(true);
+bgm.set_volume(0.6f);
+bgm.play();
+
+// 创建 3D 音效
+auto sfx_entity = scene.create_entity("ExplosionSFX");
+sfx_entity.add_component&lt;Transform&gt;().position = {10.0f, 0.0f, 5.0f};
+auto&amp; sfx = sfx_entity.add_component&lt;AudioSource&gt;();
+sfx.load("res:/audio/explosion.wav");
+sfx.set_position({10.0f, 0.0f, 5.0f});
+sfx.set_range(1.0f, 50.0f);
+sfx.play();
+
+// 相机绑定 Listener
+auto&amp; listener = camera_entity.add_component&lt;AudioListener&gt;();
 listener.set_position(camera_pos);
-listener.set_orientation(look_dir, up_dir);</code></pre>
+listener.set_orientation(look_dir, up_dir);
+
+// 退出
+AudioEngine::shutdown();</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./physics.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 物理系统</span></a>
 <a href="./assets.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 资源管理</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

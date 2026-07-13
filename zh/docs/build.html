@@ -97,17 +97,83 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">构建系统</h1>
-<h2>Python 构建脚本</h2><pre><code class="language-bash">python build.py --jobs 8          # Debug 构建
-python build.py Release --jobs 8  # Release 构建
-python build.py --clean           # 清理重建（保留依赖缓存）
-python build.py --clean-all       # 完全清理（重新下载依赖）</code></pre>
-<h2>CMake 选项</h2><table class="docs-table"><thead><tr><th>选项</th><th>默认值</th><th>说明</th></tr></thead><tbody>
-<tr><td><code>GRYCE_BUILD_TESTS</code></td><td>ON</td><td>构建单元测试</td></tr>
-<tr><td><code>GRYCE_ENABLE_SANITIZERS</code></td><td>OFF</td><td>Debug 模式启用 ASan/UBSan</td></tr>
-<tr><td><code>GRYCE_ENABLE_LTO</code></td><td>ON</td><td>Release 模式启用链接时优化</td></tr>
-<tr><td><code>GRYCE_BUILD_SHARED</code></td><td>OFF</td><td>构建共享库</td></tr>
-</tbody></table>
-<h2>依赖</h2><p>必需：GLFW, GLEW, GTest, Vulkan SDK, VMA, miniaudio, stb_image</p><p>可选：Assimp, Jolt Physics, Box2D</p><p>自动获取：glm, spdlog（通过 CMake FetchContent）</p>
+
+<h2>build.py</h2>
+<p>build.py 是 Gryce Engine 的统一构建入口脚本，封装了 CMake 配置生成、依赖获取、编译执行与清理的完整流程。脚本内部自动检测 MSYS2 UCRT64 环境，并设置正确的工具链与生成器。</p>
+<pre><code class="language-bash"># Debug 配置并行构建（默认）
+python build.py --jobs 8
+
+# Release 配置构建，启用 LTO 与 O3 优化
+python build.py Release --jobs 8
+
+# 仅清理构建产物，保留 third_party 依赖缓存
+python build.py --clean
+
+# 完全清理（包括删除并重新下载外部依赖）
+python build.py --clean-all
+
+# 输出完整编译命令，用于排查构建错误
+python build.py --verbose</code></pre>
+<table class="docs-table">
+<thead><tr><th>参数</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><code>--jobs N</code></td><td>指定并行编译任务数，默认 4</td></tr>
+<tr><td><code>--clean</code></td><td>删除 build/ 目录，保留依赖缓存</td></tr>
+<tr><td><code>--clean-all</code></td><td>彻底清理 build/ 与 third_party/，下次重新拉取</td></tr>
+<tr><td><code>--verbose</code></td><td>打印完整 ninja 命令与 CMake 配置日志</td></tr>
+<tr><td><code>--target NAME</code></td><td>仅构建指定 target（如 gryce-editor、tests）</td></tr>
+</tbody>
+</table>
+
+<h2>CMake 选项</h2>
+<p>以下 CMake 选项可在首次配置时通过 <code>-DOPTION=VALUE</code> 传入，或由 build.py 根据构建类型自动设置：</p>
+<table class="docs-table">
+<thead><tr><th>选项</th><th>默认值</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><code>GRYCE_BUILD_TESTS</code></td><td>ON</td><td>构建单元测试可执行文件（依赖 GTest）</td></tr>
+<tr><td><code>GRYCE_ENABLE_SANITIZERS</code></td><td>OFF</td><td>Debug 模式启用 AddressSanitizer 与 UBSan</td></tr>
+<tr><td><code>GRYCE_ENABLE_LTO</code></td><td>ON</td><td>Release 模式启用链接时优化（LTO/ThinLTO）</td></tr>
+<tr><td><code>GRYCE_BUILD_SHARED</code></td><td>OFF</td><td>构建共享库（DLL）而非静态库</td></tr>
+<tr><td><code>GRYCE_BACKEND_OPENGL</code></td><td>ON</td><td>启用 OpenGL 4.6 后端</td></tr>
+<tr><td><code>GRYCE_BACKEND_VULKAN</code></td><td>ON</td><td>启用 Vulkan 1.2 后端</td></tr>
+</tbody>
+</table>
+
+<h2>依赖列表</h2>
+
+<h3>必需依赖</h3>
+<ul>
+<li><strong>GLFW</strong>：窗口与输入抽象</li>
+<li><strong>GLEW</strong>：OpenGL 扩展加载（OpenGL 后端必需）</li>
+<li><strong>GTest</strong>：单元测试框架（<code>GRYCE_BUILD_TESTS=ON</code> 时必需）</li>
+<li><strong>Vulkan SDK</strong>：Vulkan 头文件、loader 与验证层</li>
+<li><strong>VMA</strong>：Vulkan Memory Allocator</li>
+<li><strong>miniaudio</strong>：音频解码与播放后端（单头文件库）</li>
+<li><strong>stb_image</strong>：图像加载（单头文件库，CDN 自动下载）</li>
+</ul>
+
+<h3>可选依赖</h3>
+<ul>
+<li><strong>Assimp</strong>：模型格式导入（OBJ/FBX/glTF/DAE）</li>
+<li><strong>Jolt Physics</strong>：3D 刚体物理后端</li>
+<li><strong>Box2D</strong>：2D 物理后端</li>
+</ul>
+
+<h3>自动获取（FetchContent）</h3>
+<p>以下库由 CMake <code>FetchContent</code> 在首次配置时自动下载，无需手动安装：</p>
+<ul>
+<li><strong>glm</strong>：备用数学库（引擎优先使用自研 math 模块）</li>
+<li><strong>spdlog</strong>：高性能日志库</li>
+<li><strong>nlohmann/json</strong>：JSON 解析（场景序列化）</li>
+</ul>
+
+<pre><code class="language-bash"># 示例：手动传入 CMake 选项进行构建
+mkdir build &amp;&amp; cd build
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release \
+         -DGRYCE_BUILD_TESTS=OFF \
+         -DGRYCE_ENABLE_LTO=ON \
+         -DGRYCE_BUILD_SHARED=OFF
+ninja -j8</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./math.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 数学库</span></a>
 

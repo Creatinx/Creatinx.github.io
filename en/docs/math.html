@@ -97,25 +97,83 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Math Library</h1>
-<h2>Matrix4f</h2><pre><code class="language-cpp">Matrix4f proj = Matrix4f::perspective(60.0f * deg2rad, 16.0f/9.0f, 0.1f, 1000.0f);
+
+<h2>Vectors</h2>
+
+<h3>Vector2f</h3>
+<pre><code class="language-cpp">class Vector2f {
+public:
+    Vector2f(float x, float y);
+    float dot(const Vector2f&amp; other) const;
+    float length() const;
+    Vector2f normalized() const;
+
+    Vector2f operator+(const Vector2f&amp; other) const;
+    Vector2f operator-(const Vector2f&amp; other) const;
+    Vector2f operator*(float s) const;
+    Vector2f operator/(float s) const;
+};</code></pre>
+
+<h3>Vector3f</h3>
+<pre><code class="language-cpp">class Vector3f {
+public:
+    Vector3f(float x, float y, float z);
+    float dot(const Vector3f&amp; other) const;
+    Vector3f cross(const Vector3f&amp; other) const;
+    float length() const;
+    Vector3f normalized() const;
+
+    Vector3f operator+(const Vector3f&amp; other) const;
+    Vector3f operator-(const Vector3f&amp; other) const;
+    Vector3f operator*(float s) const;
+    Vector3f operator/(float s) const;
+};</code></pre>
+
+<h3>Vector4f</h3>
+<pre><code class="language-cpp">class Vector4f {
+public:
+    Vector4f(float x, float y, float z, float w);
+    float dot(const Vector4f&amp; other) const;
+    float length() const;
+    Vector4f normalized() const;
+
+    Vector4f operator+(const Vector4f&amp; other) const;
+    Vector4f operator-(const Vector4f&amp; other) const;
+    Vector4f operator*(float s) const;
+    Vector4f operator/(float s) const;
+};</code></pre>
+
+<h2>Matrix4f</h2>
+<p>Column-major storage: <code>m[col * 4 + row]</code>.</p>
+<pre><code class="language-cpp">class Matrix4f {
+public:
+    static Matrix4f identity();
+    static Matrix4f from_diagonal(float x, float y, float z, float w);
+    static Matrix4f ortho(float l, float r, float b, float t, float n, float f);
+    static Matrix4f perspective(float fov, float aspect, float n, float f);
+    static Matrix4f look_at(const Vector3f&amp; eye, const Vector3f&amp; center, const Vector3f&amp; up);
+    static Matrix4f rotate(float angle, const Vector3f&amp; axis);
+    static Matrix4f scale(float x, float y, float z);
+    static Matrix4f translate(float x, float y, float z);
+
+    Matrix4f operator*(const Matrix4f&amp; other) const;
+    Vector4f operator*(const Vector4f&amp; v) const;
+    float* data();
+    const float* data() const;
+};</code></pre>
+
+<h2>Usage Example</h2>
+<pre><code class="language-cpp">Matrix4f proj = Matrix4f::perspective(60.0f * deg2rad, 16.0f/9.0f, 0.1f, 1000.0f);
 Matrix4f view = Matrix4f::look_at(eye, center, up);
 Matrix4f model = Matrix4f::translate(pos)
                  * Matrix4f::rotate(angle, axis)
-                 * Matrix4f::scale(sx, sy, sz);</code></pre>
-<h2>Vectors</h2><pre><code class="language-cpp">Vector3f a{1.0f, 2.0f, 3.0f};
+                 * Matrix4f::scale(sx, sy, sz);
+
+Vector3f a{1.0f, 2.0f, 3.0f};
 Vector3f b{4.0f, 5.0f, 6.0f};
 float dot = a.dot(b);
 Vector3f cross = a.cross(b);
 Vector3f normalized = a.normalized();</code></pre>
-<h2>Key Functions</h2><table class="docs-table"><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>identity()</code></td><td>Returns identity matrix</td></tr>
-<tr><td><code>ortho(l,r,b,t,n,f)</code></td><td>Orthographic projection</td></tr>
-<tr><td><code>perspective(fov,aspect,n,f)</code></td><td>Perspective projection</td></tr>
-<tr><td><code>look_at(eye,center,up)</code></td><td>View matrix</td></tr>
-<tr><td><code>translate(x,y,z)</code></td><td>Translation matrix</td></tr>
-<tr><td><code>rotate(angle,axis)</code></td><td>Rotation matrix</td></tr>
-<tr><td><code>scale(x,y,z)</code></td><td>Scaling matrix</td></tr>
-</tbody></table>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./assets.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Asset Management</span></a>
 <a href="./build.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Build System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

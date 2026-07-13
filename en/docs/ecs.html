@@ -97,17 +97,79 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Entity Component System</h1>
-<h2>Entity</h2><pre><code class="language-cpp">auto entity = scene.create_entity("Player");
-entity.add_component&lt;MeshRenderer&gt;(mesh, material);
-entity.add_component&lt;RigidBody&gt;(mass, shape);
-auto&amp; transform = entity.get_component&lt;Transform&gt;();
-transform.position = {0.0f, 5.0f, 0.0f};</code></pre>
-<h2>ComponentStore</h2><pre><code class="language-cpp">world.register_component&lt;Velocity&gt;();
-world.add&lt;Velocity&gt;(entity_id, {1.0f, 0.0f, 0.0f});
-auto&amp; vel = world.get&lt;Velocity&gt;(entity_id);</code></pre>
-<h2>World &amp; Systems</h2><pre><code class="language-cpp">world.add_system&lt;PhysicsSystem&gt;();
-world.add_system&lt;RenderSystem&gt;();
-world.init(); world.update(dt); world.render();</code></pre>
+
+<h2>World</h2>
+<p>Owning container for a <code>Scene</code> and a list of <code>ISystem</code> instances. Systems are sorted by <code>priority()</code> in descending order before initialization.</p>
+<pre><code class="language-cpp">class World {
+public:
+    void add_system(std::unique_ptr&lt;ISystem&gt; system);
+    template&lt;typename T&gt; void add_system() { add_system(std::make_unique&lt;T&gt;()); }
+
+    void init();
+    void fixed_update(float dt);
+    void update(float dt);
+    void render(IRenderBackend* backend);
+    void cleanup();
+
+    Entity create_entity(const std::string&amp; name);
+    Scene&amp; scene();
+};</code></pre>
+
+<h2>Entity</h2>
+<p>Lightweight handle representing an object in the scene. Supports parent-child hierarchy and component attachment.</p>
+<pre><code class="language-cpp">class Entity {
+public:
+    static Entity create_entity(const std::string&amp; name);
+    Entity create_child(const std::string&amp; name);
+
+    template&lt;typename T, typename... Args&gt;
+    T&amp; add_component(Args&amp;&amp;... args);
+
+    template&lt;typename T&gt;
+    T&amp; get_component();
+
+    template&lt;typename T&gt;
+    bool has_component() const;
+
+    template&lt;typename T&gt;
+    void remove_component();
+
+    void set_parent(Entity parent);
+    void destroy(); // recursively destroys children
+};</code></pre>
+
+<h2>ComponentStore</h2>
+<p>Type-erased sparse-set storage for components indexed by <code>entity_id</code>.</p>
+<pre><code class="language-cpp">class ComponentStore {
+public:
+    template&lt;typename T&gt;
+    void register_component();
+
+    template&lt;typename T&gt;
+    void add(EntityID entity, T component);
+
+    template&lt;typename T&gt;
+    void remove(EntityID entity);
+
+    template&lt;typename T&gt;
+    T&amp; get(EntityID entity);
+
+    template&lt;typename T&gt;
+    bool has(EntityID entity) const;
+};</code></pre>
+
+<h2>ISystem</h2>
+<p>Base interface for all game logic systems. Override the lifecycle hooks and return a priority value.</p>
+<pre><code class="language-cpp">class ISystem {
+public:
+    virtual int priority() const { return 0; } // higher = earlier
+
+    virtual void init() {}
+    virtual void fixed_update(float dt) {}
+    virtual void update(float dt) {}
+    virtual void render(IRenderBackend* backend) {}
+    virtual void cleanup() {}
+};</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./render.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Render System</span></a>
 <a href="./physics.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Physics</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

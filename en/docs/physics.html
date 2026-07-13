@@ -97,12 +97,59 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Physics</h1>
-<h2>Physics Factory</h2><pre><code class="language-cpp">auto world3d = PhysicsFactory::create_world_3d(PhysicsBackend::Jolt);
-auto world2d = PhysicsFactory::create_world_2d(PhysicsBackend::Box2D);</code></pre>
-<h2>Jolt Physics (3D)</h2><p>Full rigid body dynamics, collision detection, and raycasting via Jolt Physics 5.2.</p>
-<h2>Box2D (2D)</h2><p>2D physics with bodies, fixtures, and joints via Box2D 3.0.</p>
-<h2>BuiltIn Physics (2D)</h2><p>Lightweight 2D physics with no external dependencies. Must be explicitly opted in via <code>PhysicsBackend::BuiltIn</code>.</p>
-<h2>PhysicalMaterial</h2><pre><code class="language-cpp">PhysicalMaterial mat;
+
+<h2>PhysicsFactory</h2>
+<p>Entry point for creating physics worlds. The backend is selected at runtime via <code>PhysicsBackend</code> enum.</p>
+<pre><code class="language-cpp">enum class PhysicsBackend { Jolt, Box2D, BuiltIn };
+
+class PhysicsFactory {
+public:
+    static std::unique_ptr&lt;IPhysicsWorld3D&gt; create_world_3d(PhysicsBackend backend);
+    static std::unique_ptr&lt;IPhysicsWorld2D&gt; create_world_2d(PhysicsBackend backend);
+};</code></pre>
+
+<h2>JoltPhysicsWorld3D</h2>
+<p>Full 3D rigid body dynamics, collision detection, and raycasting via Jolt Physics 5.2. Global Jolt registration is performed via <code>std::call_once</code> to ensure thread-safe initialization.</p>
+<pre><code class="language-cpp">class JoltPhysicsWorld3D : public IPhysicsWorld3D {
+public:
+    bool init() override;
+    void step(float dt) override;
+    BodyHandle create_rigid_body(const RigidBodyDesc&amp; desc);
+    void raycast(const Vector3f&amp; origin, const Vector3f&amp; dir, float max_dist, RaycastResult&amp; out);
+    void set_gravity(const Vector3f&amp; g);
+};</code></pre>
+
+<h2>Box2DWorld2D</h2>
+<p>2D physics simulation with bodies, fixtures, and joints via Box2D 3.0.</p>
+<pre><code class="language-cpp">class Box2DWorld2D : public IPhysicsWorld2D {
+public:
+    bool init() override;
+    void step(float dt) override;
+    BodyHandle create_body(const BodyDesc&amp; desc);
+    void create_fixture(BodyHandle body, const ShapeDesc&amp; shape, const PhysicalMaterial&amp; mat);
+    void create_joint(BodyHandle a, BodyHandle b, const JointDesc&amp; desc);
+};</code></pre>
+
+<h2>BuiltInPhysicsWorld2D</h2>
+<p>Lightweight 2D physics with zero external dependencies. Must be explicitly opted in via <code>PhysicsBackend::BuiltIn</code>. Suitable for simple games where pulling Box2D is undesirable.</p>
+<pre><code class="language-cpp">class BuiltInPhysicsWorld2D : public IPhysicsWorld2D {
+public:
+    bool init() override;
+    void step(float dt) override;
+    BodyHandle create_body(const BodyDesc&amp; desc);
+    void apply_force(BodyHandle body, const Vector2f&amp; force);
+};</code></pre>
+
+<h2>PhysicalMaterial</h2>
+<p>Surface properties attached to fixtures or rigid bodies.</p>
+<pre><code class="language-cpp">struct PhysicalMaterial {
+    float friction = 0.5f;
+    float restitution = 0.3f;
+    float density = 1.0f;
+};
+
+// Usage with ECS:
+PhysicalMaterial mat;
 mat.friction = 0.5f;
 mat.restitution = 0.3f;
 mat.density = 1.0f;

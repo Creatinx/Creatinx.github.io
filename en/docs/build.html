@@ -97,17 +97,34 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Build System</h1>
-<h2>Python Build Script</h2><pre><code class="language-bash">python build.py --jobs 8          # Debug build
-python build.py Release --jobs 8  # Release build
-python build.py --clean           # Clean rebuild (keep deps)
-python build.py --clean-all       # Full clean (re-download deps)</code></pre>
-<h2>CMake Options</h2><table class="docs-table"><thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead><tbody>
+
+<h2>build.py</h2>
+<p>The one-click Python build script wraps CMake configuration, dependency fetching, and compilation. It automatically detects the MSYS2 UCRT64 environment.</p>
+<pre><code class="language-bash">python build.py --jobs 8              # Debug build (default)
+python build.py Release --jobs 8      # Release build
+python build.py --clean --jobs 8      # Clean rebuild (keep dependencies)
+python build.py --clean-all --jobs 8  # Full clean (re-download dependencies)
+python build.py --verbose --jobs 8    # Verbose output</code></pre>
+
+<h2>CMake Options</h2>
+<table class="docs-table"><thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>GRYCE_BUILD_TESTS</code></td><td>ON</td><td>Build unit tests</td></tr>
-<tr><td><code>GRYCE_ENABLE_SANITIZERS</code></td><td>OFF</td><td>ASan/UBSan in Debug</td></tr>
+<tr><td><code>GRYCE_ENABLE_SANITIZERS</code></td><td>OFF</td><td>Enable ASan/UBSan in Debug builds</td></tr>
 <tr><td><code>GRYCE_ENABLE_LTO</code></td><td>ON</td><td>Link-time optimization in Release</td></tr>
-<tr><td><code>GRYCE_BUILD_SHARED</code></td><td>OFF</td><td>Build shared library</td></tr>
+<tr><td><code>GRYCE_BUILD_SHARED</code></td><td>OFF</td><td>Build engine as a shared library</td></tr>
 </tbody></table>
-<h2>Dependencies</h2><p>Required: GLFW, GLEW, GTest, Vulkan SDK, VMA, miniaudio, stb_image</p><p>Optional: Assimp, Jolt Physics, Box2D</p><p>Auto-fetched: glm, spdlog (via CMake FetchContent)</p>
+
+<h2>Dependencies</h2>
+<p><strong>Required:</strong> GLFW, GLEW, GTest, Vulkan SDK, VMA, miniaudio, stb_image</p>
+<p><strong>Optional:</strong> Assimp, Jolt Physics, Box2D</p>
+<p><strong>Auto-fetched (CMake FetchContent):</strong> glm, spdlog</p>
+
+<h2>Direct CMake Usage</h2>
+<p>If you prefer not to use <code>build.py</code>, invoke CMake directly:</p>
+<pre><code class="language-bash">cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+      -DGRYCE_BUILD_TESTS=ON \
+      -DGRYCE_ENABLE_LTO=ON
+cmake --build build --parallel 8</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./math.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Math Library</span></a>
 

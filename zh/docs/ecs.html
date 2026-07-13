@@ -97,17 +97,128 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">实体组件系统</h1>
-<h2>Entity</h2><pre><code class="language-cpp">auto entity = scene.create_entity("Player");
-entity.add_component&lt;MeshRenderer&gt;(mesh, material);
-entity.add_component&lt;RigidBody&gt;(mass, shape);
-auto&amp; transform = entity.get_component&lt;Transform&gt;();
-transform.position = {0.0f, 5.0f, 0.0f};</code></pre>
-<h2>ComponentStore</h2><pre><code class="language-cpp">world.register_component&lt;Velocity&gt;();
-world.add&lt;Velocity&gt;(entity_id, {1.0f, 0.0f, 0.0f});
-auto&amp; vel = world.get&lt;Velocity&gt;(entity_id);</code></pre>
-<h2>World &amp; Systems</h2><pre><code class="language-cpp">world.add_system&lt;PhysicsSystem&gt;();
+
+<h2>World</h2>
+<p><code>World</code> 是 ECS 架构的中央协调器，持有 <code>Scene</code> 引用以及所有 <code>ISystem</code> 实例的列表。通过模板方法 <code>add_system&lt;T&gt;()</code> 注册系统，并自动按 <code>priority()</code> 降序排序，确保高优先级系统（如物理、输入）先于低优先级系统（如渲染）执行。</p>
+<pre><code class="language-cpp">class World {
+public:
+    template&lt;typename T, typename... Args&gt;
+    T* add_system(Args&amp;&amp;... args);
+
+    void init();
+    void fixed_update(float fixed_dt);  // 固定步长更新（物理）
+    void update(float dt);              // 可变步长更新（逻辑）
+    void render();                      // 生成渲染命令
+    void cleanup();
+
+private:
+    Scene&amp; scene;
+    std::vector&lt;std::unique_ptr&lt;ISystem&gt;&gt; systems;
+    // systems 按 priority() 降序排列
+};</code></pre>
+
+<h2>Entity</h2>
+<p><code>Entity</code> 是轻量级句柄，内部仅存储实体 ID（<code>EntityID</code>）与指向 <code>Scene</code> 的指针。所有组件数据存储在 <code>ComponentStore</code> 中，Entity 本身不占额外内存。支持父子层级关系：子实体的 <code>Transform</code> 会相对于父实体进行局部变换。</p>
+<pre><code class="language-cpp">class Entity {
+public:
+    static Entity create_entity(Scene&amp; scene, const std::string&amp; name = "");
+
+    template&lt;typename T, typename... Args&gt;
+    T&amp; add_component(Args&amp;&amp;... args);
+
+    template&lt;typename T&gt;
+    T&amp; get_component();
+
+    template&lt;typename T&gt;
+    bool has_component() const;
+
+    template&lt;typename T&gt;
+    void remove_component();
+
+    void set_parent(Entity parent);
+    Entity get_parent() const;
+    const std::vector&lt;EntityID&gt;&amp; get_children() const;
+    void destroy();  // 标记销毁，延迟到帧末回收
+
+private:
+    EntityID id = INVALID_ENTITY;
+    Scene* scene = nullptr;
+};</code></pre>
+
+<h2>ComponentStore</h2>
+<p>采用<strong>稀疏集（Sparse Set）</strong>存储的组件容器，兼顾 O(1) 随机访问与高速线性遍历。每个组件类型对应一个 <code>ComponentStore&lt;T&gt;</code> 实例，内部维护 <code>sparse</code> 数组（EntityID → 密集索引映射）与 <code>dense</code> 数组（实际组件数据）。</p>
+<pre><code class="language-cpp">class IComponentStore {
+public:
+    virtual ~IComponentStore() = default;
+    virtual void remove(EntityID entity) = 0;
+};
+
+template&lt;typename T&gt;
+class ComponentStore : public IComponentStore {
+public:
+    void register_component();  // 在 World 中注册类型信息
+
+    T&amp; add(EntityID entity, const T&amp; component);
+    T&amp; add(EntityID entity, T&amp;&amp; component);
+    void remove(EntityID entity) override;
+    T&amp; get(EntityID entity);
+    const T&amp; get(EntityID entity) const;
+    bool has(EntityID entity) const;
+
+    // 线性遍历所有组件（Cache-friendly）
+    std::vector&lt;T&gt;&amp; data() { return dense; }
+    const std::vector&lt;EntityID&gt;&amp; entities() { return dense_entities; }
+
+private:
+    std::vector&lt;size_t&gt; sparse;      // 索引：EntityID，值：dense 索引
+    std::vector&lt;T&gt; dense;            // 紧密排列的组件数据
+    std::vector&lt;EntityID&gt; dense_entities;
+};</code></pre>
+
+<h2>ISystem</h2>
+<p>所有游戏系统的抽象基类。派生类需重写生命周期钩子，并可覆盖 <code>priority()</code> 以调整执行顺序（默认值为 0，数值越大优先级越高）。</p>
+<pre><code class="language-cpp">class ISystem {
+public:
+    virtual ~ISystem() = default;
+    virtual int priority() const { return 0; }
+
+    virtual void init(World&amp; world) {}
+    virtual void fixed_update(World&amp; world, float fixed_dt) {}
+    virtual void update(World&amp; world, float dt) {}
+    virtual void render(World&amp; world) {}
+    virtual void cleanup(World&amp; world) {}
+};</code></pre>
+
+<h2>完整使用示例</h2>
+<pre><code class="language-cpp">class PhysicsSystem : public ISystem {
+public:
+    int priority() const override { return 100; }  // 高优先级
+    void fixed_update(World&amp; world, float fixed_dt) override {
+        // 遍历所有 Velocity + Transform 组件
+    }
+};
+
+class RenderSystem : public ISystem {
+public:
+    int priority() const override { return 10; }   // 低优先级
+    void render(World&amp; world) override {
+        // 提交 MeshRenderer 组件的绘制命令
+    }
+};
+
+// 初始化
+World world(scene);
+world.add_system&lt;PhysicsSystem&gt;();
 world.add_system&lt;RenderSystem&gt;();
-world.init(); world.update(dt); world.render();</code></pre>
+world.init();
+
+// 主循环
+while (running) {
+    world.fixed_update(1.0f / 60.0f);
+    world.update(delta_time);
+    world.render();
+}
+world.cleanup();</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./render.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 渲染系统</span></a>
 <a href="./physics.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 物理系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>

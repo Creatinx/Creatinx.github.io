@@ -1,4 +1,7 @@
 #hero-canvas{opacity:0.6;}
+/* AOS fallback: ensure content is visible even if AOS JS fails to load */
+[data-aos]{opacity:1!important;transform:none!important;transition:none!important;}
+[data-aos].aos-animate{opacity:1!important;transform:none!important;}
 aside{max-height:calc(100vh - 8rem);overflow-y:auto;}
 #mobile-menu{transition:all 0.3s ease;}
 code[class*="language-"],pre[class*="language-"]{text-shadow:none!important;}

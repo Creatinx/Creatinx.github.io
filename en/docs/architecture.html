@@ -97,10 +97,30 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Architecture Overview</h1>
-<h2>High-Level Design</h2><p>Gryce Engine follows a layered architecture with clear separation between subsystems:</p>
-<h2>Render Thread + Command Buffer</h2><p>The engine uses a <strong>multi-threaded rendering architecture</strong>:</p><ul><li><strong>Main thread</strong>: Generates rendering commands, pushes them to <code>RenderCommandBuffer</code></li><li><strong>Render thread</strong>: Acquires commands from the buffer and executes them via <code>IRenderBackend</code></li><li><strong>Synchronization</strong>: Double-buffered queue with <code>std::mutex</code> + <code>std::condition_variable</code></li></ul>
-<h2>RHI Abstraction</h2><p>The <code>IRenderBackend</code> interface provides a unified API for both OpenGL and Vulkan:</p><ul><li>Lifecycle: <code>init()</code> / <code>shutdown()</code></li><li>Frame: <code>begin_frame()</code> / <code>end_frame()</code></li><li>State: <code>set_viewport</code>, <code>set_depth_test</code>, <code>set_blend</code>, <code>clear</code></li><li>Resources: <code>create_mesh</code>, <code>create_shader</code>, <code>create_texture</code></li><li>Drawing: <code>draw_mesh</code>, <code>draw_indexed</code></li></ul>
-<h2>Module Overview</h2><table class="docs-table"><thead><tr><th>Module</th><th>Namespace</th><th>Purpose</th></tr></thead><tbody>
+
+<h2>High-Level Design</h2>
+<p>Gryce Engine follows a layered architecture with clear separation between subsystems. The core layer provides platform abstraction, math primitives, and low-level utilities. Above it sits the render layer with a dual-backend RHI (OpenGL and Vulkan), the ECS layer for game logic, and pluggable modules for physics and audio. The engine is designed for data-oriented composition via ECS rather than deep inheritance hierarchies.</p>
+
+<h2>Render Thread + Command Buffer</h2>
+<p>The engine uses a <strong>multi-threaded rendering architecture</strong> to decouple simulation from GPU submission:</p>
+<ul>
+<li><strong>Main thread</strong>: Generates rendering commands, pushes them to <code>RenderCommandBuffer</code></li>
+<li><strong>Render thread</strong>: Acquires commands from the buffer and executes them via <code>IRenderBackend</code></li>
+<li><strong>Synchronization</strong>: Double-buffered queue with <code>std::mutex</code> + <code>std::condition_variable</code>. The main thread never blocks on GPU work; it records commands into one buffer while the render thread consumes the other.</li>
+</ul>
+
+<h2>RHI Abstraction</h2>
+<p>The <code>IRenderBackend</code> interface provides a unified API for both OpenGL and Vulkan:</p>
+<ul>
+<li><strong>Lifecycle</strong>: <code>init()</code> / <code>shutdown()</code></li>
+<li><strong>Frame</strong>: <code>begin_frame()</code> / <code>end_frame()</code></li>
+<li><strong>State</strong>: <code>set_viewport</code>, <code>set_depth_test</code>, <code>set_blend</code>, <code>clear</code></li>
+<li><strong>Resources</strong>: <code>create_mesh</code>, <code>create_shader</code>, <code>create_texture</code>, <code>create_framebuffer</code></li>
+<li><strong>Drawing</strong>: <code>draw_mesh</code>, <code>draw_indexed</code></li>
+</ul>
+
+<h2>Module Overview</h2>
+<table class="docs-table"><thead><tr><th>Module</th><th>Namespace</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>render</td><td><code>gryce_engine::render</code></td><td>OpenGL/Vulkan backends, shaders, meshes, RHI</td></tr>
 <tr><td>ecs</td><td><code>gryce_engine::ecs</code></td><td>World, systems, component store</td></tr>
 <tr><td>scene</td><td><code>gryce_engine::scene</code></td><td>Scene graph, Entity, Transform</td></tr>

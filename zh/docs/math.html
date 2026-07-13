@@ -97,25 +97,93 @@
 </div>
 <article class="lg:col-span-3 docs-content">
 <h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">数学库</h1>
-<h2>Matrix4f</h2><pre><code class="language-cpp">Matrix4f proj = Matrix4f::perspective(60.0f * deg2rad, 16.0f/9.0f, 0.1f, 1000.0f);
+
+<h2>Vector2f / Vector3f / Vector4f</h2>
+<p>引擎自定义的 SIMD-friendly 向量类型，采用结构体直接布局，无虚函数，可直接作为 uniform 数据上传 GPU。所有运算均提供 constexpr 构造函数与内联运算符重载。</p>
+
+<h3>Vector3f API</h3>
+<pre><code class="language-cpp">struct Vector3f {
+    float x, y, z;
+
+    constexpr Vector3f() : x(0), y(0), z(0) {}
+    constexpr Vector3f(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
+
+    float dot(const Vector3f&amp; other) const;
+    Vector3f cross(const Vector3f&amp; other) const;  // 仅 Vector3f
+    float length() const;
+    float length_sq() const;
+    Vector3f normalized() const;
+    void normalize();
+
+    // 运算符重载
+    Vector3f operator+(const Vector3f&amp; rhs) const;
+    Vector3f operator-(const Vector3f&amp; rhs) const;
+    Vector3f operator*(float s) const;
+    Vector3f operator/(float s) const;
+    Vector3f&amp; operator+=(const Vector3f&amp; rhs);
+    Vector3f&amp; operator-=(const Vector3f&amp; rhs);
+};
+
+// 使用示例
+Vector3f a{1.0f, 2.0f, 3.0f};
+Vector3f b{4.0f, 5.0f, 6.0f};
+float d = a.dot(b);                 // 32.0
+Vector3f c = a.cross(b);            // {-3, 6, -3}
+Vector3f n = a.normalized();        // 单位向量</code></pre>
+
+<h3>Vector2f / Vector4f 差异</h3>
+<ul>
+<li><code>Vector2f</code>：含 <code>dot</code>、<code>length</code>、<code>normalized</code>，无 <code>cross</code>。</li>
+<li><code>Vector4f</code>：含 <code>dot</code>、<code>length</code>、<code>normalized</code>，无 <code>cross</code>。支持 <code>w</code> 分量（常用于齐次坐标）。</li>
+</ul>
+
+<h2>Matrix4f</h2>
+<p>列主序（Column-Major）4×4 矩阵，底层存储为 <code>float m[16]</code>，索引公式为 <code>m[col * 4 + row]</code>。与 OpenGL 默认矩阵布局一致，可直接作为 <code>glUniformMatrix4fv</code> 或 Vulkan push constant 的数据源。</p>
+<pre><code class="language-cpp">class Matrix4f {
+public:
+    float m[16];
+
+    static Matrix4f identity();
+    static Matrix4f from_diagonal(float x, float y, float z, float w);
+
+    // 投影矩阵
+    static Matrix4f ortho(float left, float right, float bottom, float top,
+                          float near_plane, float far_plane);
+    static Matrix4f perspective(float fov_rad, float aspect,
+                                float near_plane, float far_plane);
+
+    // 视图矩阵
+    static Matrix4f look_at(const Vector3f&amp; eye, const Vector3f&amp; center,
+                            const Vector3f&amp; up);
+
+    // 变换矩阵
+    static Matrix4f translate(float x, float y, float z);
+    static Matrix4f translate(const Vector3f&amp; t);
+    static Matrix4f rotate(float angle_rad, const Vector3f&amp; axis);
+    static Matrix4f scale(float x, float y, float z);
+    static Matrix4f scale(const Vector3f&amp; s);
+
+    // 矩阵乘法
+    Matrix4f operator*(const Matrix4f&amp; rhs) const;
+    Vector4f operator*(const Vector4f&amp; rhs) const;
+
+    // 辅助
+    Matrix4f transposed() const;
+    Matrix4f inverted() const;
+    float* data() { return m; }
+    const float* data() const { return m; }
+};</code></pre>
+
+<h2>完整变换示例</h2>
+<pre><code class="language-cpp">// 投影 * 视图 * 模型
+Matrix4f proj = Matrix4f::perspective(60.0f * deg2rad, 16.0f/9.0f, 0.1f, 1000.0f);
 Matrix4f view = Matrix4f::look_at(eye, center, up);
 Matrix4f model = Matrix4f::translate(pos)
                  * Matrix4f::rotate(angle, axis)
-                 * Matrix4f::scale(sx, sy, sz);</code></pre>
-<h2>向量</h2><pre><code class="language-cpp">Vector3f a{1.0f, 2.0f, 3.0f};
-Vector3f b{4.0f, 5.0f, 6.0f};
-float dot = a.dot(b);
-Vector3f cross = a.cross(b);
-Vector3f normalized = a.normalized();</code></pre>
-<h2>关键函数</h2><table class="docs-table"><thead><tr><th>函数</th><th>说明</th></tr></thead><tbody>
-<tr><td><code>identity()</code></td><td>返回单位矩阵</td></tr>
-<tr><td><code>ortho(l,r,b,t,n,f)</code></td><td>正交投影</td></tr>
-<tr><td><code>perspective(fov,aspect,n,f)</code></td><td>透视投影</td></tr>
-<tr><td><code>look_at(eye,center,up)</code></td><td>视图矩阵</td></tr>
-<tr><td><code>translate(x,y,z)</code></td><td>平移矩阵</td></tr>
-<tr><td><code>rotate(angle,axis)</code></td><td>旋转矩阵</td></tr>
-<tr><td><code>scale(x,y,z)</code></td><td>缩放矩阵</td></tr>
-</tbody></table>
+                 * Matrix4f::scale(sx, sy, sz);
+
+Matrix4f mvp = proj * view * model;
+shader.set_mat4("u_mvp", mvp);</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <a href="./assets.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一页: 资源管理</span></a>
 <a href="./build.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一页: 构建系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
