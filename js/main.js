@@ -7,33 +7,56 @@ if(btn&&menu){btn.addEventListener('click',()=>menu.classList.toggle('hidden'));
 const dsbtn=document.getElementById('docs-sidebar-toggle');
 const dsmenu=document.getElementById('docs-sidebar-mobile');
 if(dsbtn&&dsmenu){dsbtn.addEventListener('click',()=>dsmenu.classList.toggle('hidden'));}
-// Hero canvas particle animation
+// Hero canvas — interactive perspective grid
 const canvas=document.getElementById('hero-canvas');
 if(canvas){
 const ctx=canvas.getContext('2d');
-let particles=[];
-const PARTICLE_COUNT=80;
-const CONNECTION_DIST=120;
-function resize(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
-function createParticles(){particles=[];for(let i=0;i<PARTICLE_COUNT;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,radius:Math.random()*2+1});}}
-function getAccent(){const style=getComputedStyle(document.documentElement);const p=style.getPropertyValue('--accent-primary').trim();return p||'#6366f1';}
+let w,h,cx,cy,mx=0,my=0,time=0;
+function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight;cx=w/2;cy=h/2;}
+function getAccent(){const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-primary').trim()||'#6366f1';}
+function getSecondary(){const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-secondary').trim()||'#8b5cf6';}
+window.addEventListener('resize',resize);
+resize();
+document.addEventListener('mousemove',e=>{mx=(e.clientX-cx)/w;my=(e.clientY-cy)/h;});
 function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-const accent=getAccent();
-particles.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;
-if(p.x<0||p.x>canvas.width)p.vx*=-1;
-if(p.y<0||p.y>canvas.height)p.vy*=-1;
-ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-ctx.fillStyle=accent;ctx.globalAlpha=0.4;ctx.fill();
-for(let j=i+1;j<particles.length;j++){
-const q=particles[j];const dx=p.x-q.x;const dy=p.y-q.y;const dist=Math.sqrt(dx*dx+dy*dy);
-if(dist<CONNECTION_DIST){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
-ctx.strokeStyle=accent;ctx.globalAlpha=0.08*(1-dist/CONNECTION_DIST);ctx.stroke();}}
-ctx.globalAlpha=1;});
-requestAnimationFrame(draw);}
-window.addEventListener('resize',()=>{resize();createParticles();});
-resize();createParticles();draw();
+ctx.clearRect(0,0,w,h);
+const accent=getAccent(),secondary=getSecondary();
+const gridSize=60,vanishX=cx+mx*120,vanishY=cy+my*80+80;
+const rows=Math.ceil(h/gridSize)+2,cols=Math.ceil(w/gridSize)+2;
+ctx.lineWidth=1;
+for(let r=-2;r<rows;r++){
+const yBase=(r*gridSize)+((time*0.5)%gridSize);
+const perspective=(yBase-vanishY)/(h-vanishY);
+const y=vanishY+(yBase-vanishY)*Math.max(0.1,Math.min(1,1-perspective*0.3));
+const wave=Math.sin((yBase*0.02)+time*0.03)*2;
+ctx.beginPath();
+ctx.moveTo(0,y+wave);
+ctx.lineTo(w,y+wave);
+ctx.strokeStyle=((r+Math.floor(time*0.5/gridSize))%5===0)?accent:secondary;
+ctx.globalAlpha=0.06;
+ctx.stroke();
 }
+for(let c=-2;c<cols;c++){
+const xBase=(c*gridSize)+((time*0.3)%gridSize);
+const distFromCenter=(xBase-cx)/w;
+const x=xBase+distFromCenter*60+mx*40;
+const wave=Math.sin((xBase*0.015)+time*0.025)*2;
+ctx.beginPath();
+ctx.moveTo(x+wave,0);
+ctx.lineTo(x+wave,h);
+ctx.strokeStyle=((c+Math.floor(time*0.3/gridSize))%5===0)?accent:secondary;
+ctx.globalAlpha=0.06;
+ctx.stroke();
+}
+ctx.globalAlpha=1;
+// draw a faint accent glow at vanishing point
+const grad=ctx.createRadialGradient(vanishX,vanishY,0,vanishX,vanishY,300);
+grad.addColorStop(0,accent+'08');grad.addColorStop(1,'transparent');
+ctx.fillStyle=grad;
+ctx.fillRect(vanishX-300,vanishY-300,600,600);
+time++;
+requestAnimationFrame(draw);}
+draw();}
 // GSAP ScrollTrigger animations — opacity kept at 1 so elements are always visible
 if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){
 gsap.registerPlugin(ScrollTrigger);
