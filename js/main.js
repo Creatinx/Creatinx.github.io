@@ -13,14 +13,14 @@ if(canvas){
 const ctx=canvas.getContext('2d');
 let w,h,cx,cy,mx=0,my=0,time=0;
 function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight;cx=w/2;cy=h/2;}
-function getAccent(){const t=document.documentElement.getAttribute('data-theme');if(t==='light')return'#606060';const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-primary').trim()||'#6366f1';}
-function getSecondary(){const t=document.documentElement.getAttribute('data-theme');if(t==='light')return'#888888';const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-secondary').trim()||'#8b5cf6';}
+function getGridPrimary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.2)':'rgba(255,255,255,0.12)';}
+function getGridSecondary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.06)';}
 window.addEventListener('resize',resize);
 resize();
 document.addEventListener('mousemove',e=>{mx=(e.clientX-cx)/w;my=(e.clientY-cy)/h;});
 function draw(){
 ctx.clearRect(0,0,w,h);
-const accent=getAccent(),secondary=getSecondary();
+const primary=getGridPrimary(),secondary=getGridSecondary();
 const gridSize=60,vanishX=cx+mx*120,vanishY=cy+my*80+80;
 const rows=Math.ceil(h/gridSize)+2,cols=Math.ceil(w/gridSize)+2;
 ctx.lineWidth=1;
@@ -32,8 +32,7 @@ const wave=Math.sin((yBase*0.02)+time*0.03)*2;
 ctx.beginPath();
 ctx.moveTo(0,y+wave);
 ctx.lineTo(w,y+wave);
-ctx.strokeStyle=((r+Math.floor(time*0.5/gridSize))%5===0)?accent:secondary;
-ctx.globalAlpha=0.06;
+ctx.strokeStyle=((r+Math.floor(time*0.5/gridSize))%5===0)?primary:secondary;
 ctx.stroke();
 }
 for(let c=-2;c<cols;c++){
@@ -44,14 +43,13 @@ const wave=Math.sin((xBase*0.015)+time*0.025)*2;
 ctx.beginPath();
 ctx.moveTo(x+wave,0);
 ctx.lineTo(x+wave,h);
-ctx.strokeStyle=((c+Math.floor(time*0.3/gridSize))%5===0)?accent:secondary;
-ctx.globalAlpha=0.06;
+ctx.strokeStyle=((c+Math.floor(time*0.3/gridSize))%5===0)?primary:secondary;
 ctx.stroke();
 }
-ctx.globalAlpha=1;
 // draw a faint accent glow at vanishing point
+const accent=document.documentElement.getAttribute('data-theme')==='light'?'rgba(0,0,0,0.04)':'rgba(255,255,255,0.04)';
 const grad=ctx.createRadialGradient(vanishX,vanishY,0,vanishX,vanishY,300);
-grad.addColorStop(0,accent+'08');grad.addColorStop(1,'transparent');
+grad.addColorStop(0,accent);grad.addColorStop(1,'transparent');
 ctx.fillStyle=grad;
 ctx.fillRect(vanishX-300,vanishY-300,600,600);
 time++;

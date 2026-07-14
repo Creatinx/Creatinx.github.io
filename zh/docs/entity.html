@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-theme">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
@@ -27,9 +27,9 @@
 <span class="font-bold text-lg tracking-tight nav-text">Gryce</span>
 </a>
 <div class="hidden md:flex items-center gap-1">
-<a href="../" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">Home</a>
-<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">Docs</a>
-<a href="../about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">About</a>
+<a href="../" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">首页</a>
+<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">文档</a>
+<a href="../about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">关于</a>
 <a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all inline-flex items-center gap-1.5">
 <i data-lucide="github" class="w-4 h-4"></i>GitHub</a>
 </div>
@@ -52,9 +52,9 @@
 </div>
 <div id="mobile-menu" class="hidden md:hidden border-t nav-border">
 <div class="px-4 py-3 space-y-1">
-<a href="../" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Home</a>
-<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">Docs</a>
-<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">About</a>
+<a href="../" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">首页</a>
+<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">文档</a>
+<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">关于</a>
 </div>
 </div>
 </nav>
@@ -63,50 +63,50 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 <aside class="hidden lg:block lg:col-span-1">
 <div class="sticky top-24 space-y-1">
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">快速开始</div>
-<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">快速开始</a>
-<a href="./build-system.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">构建系统</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">平台</div>
-<a href="./window.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Window</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">渲染</div>
-<a href="./irenderbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">IRenderBackend</a>
-<a href="./glbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLBackend</a>
-<a href="./glshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLShader</a>
-<a href="./glmesh.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLMesh</a>
-<a href="./glrenderer2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLRenderer2D</a>
-<a href="./rendercommandbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">RenderCommandBuffer</a>
-<a href="./renderthread.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">RenderThread</a>
-<a href="./vulkanbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanBackend</a>
-<a href="./vulkandevice.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanDevice</a>
-<a href="./vulkanswapchain.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanSwapchain</a>
-<a href="./vulkanbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanBuffer</a>
-<a href="./vulkanshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanShader</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">ECS</div>
-<a href="./world.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">World</a>
-<a href="./entity.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Entity</a>
-<a href="./componentstore.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ComponentStore</a>
-<a href="./isystem.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ISystem</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">场景</div>
-<a href="./scene.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Scene</a>
-<a href="./transform.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Transform</a>
-<a href="./prefab.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Prefab</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">物理</div>
-<a href="./physicsfactory.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">PhysicsFactory</a>
-<a href="./joltphysicsworld3d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">JoltPhysicsWorld3D</a>
-<a href="./box2dworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Box2DWorld2D</a>
-<a href="./builtinphysicsworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">BuiltInPhysicsWorld2D</a>
-<a href="./physicalmaterial.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">PhysicalMaterial</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">音频</div>
-<a href="./audioengine.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioEngine</a>
-<a href="./audiosource.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioSource</a>
-<a href="./audiolistener.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioListener</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">资源</div>
-<a href="./assetmanager.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AssetManager</a>
-<a href="./asyncloader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AsyncLoader</a>
-<a href="./resourcepath.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ResourcePath</a>
-<div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">数学</div>
-<a href="./vector.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Vector</a>
-<a href="./matrix.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Matrix</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">快速开始</div>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">快速开始</a>
+<a href="./build-system.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">构建系统</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">平台</div>
+<a href="./window.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Window</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">渲染</div>
+<a href="./irenderbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">IRenderBackend</a>
+<a href="./glbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLBackend</a>
+<a href="./glshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLShader</a>
+<a href="./glmesh.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLMesh</a>
+<a href="./glrenderer2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLRenderer2D</a>
+<a href="./rendercommandbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">RenderCommandBuffer</a>
+<a href="./renderthread.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">RenderThread</a>
+<a href="./vulkanbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanBackend</a>
+<a href="./vulkandevice.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanDevice</a>
+<a href="./vulkanswapchain.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanSwapchain</a>
+<a href="./vulkanbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanBuffer</a>
+<a href="./vulkanshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanShader</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">ECS</div>
+<a href="./world.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">World</a>
+<a href="./entity.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all sidebar-link-active">Entity</a>
+<a href="./componentstore.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ComponentStore</a>
+<a href="./isystem.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ISystem</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">场景</div>
+<a href="./scene.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Scene</a>
+<a href="./transform.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Transform</a>
+<a href="./prefab.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Prefab</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">物理</div>
+<a href="./physicsfactory.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">PhysicsFactory</a>
+<a href="./joltphysicsworld3d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">JoltPhysicsWorld3D</a>
+<a href="./box2dworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Box2DWorld2D</a>
+<a href="./builtinphysicsworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">BuiltInPhysicsWorld2D</a>
+<a href="./physicalmaterial.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">PhysicalMaterial</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">音频</div>
+<a href="./audioengine.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioEngine</a>
+<a href="./audiosource.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioSource</a>
+<a href="./audiolistener.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioListener</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">资源</div>
+<a href="./assetmanager.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AssetManager</a>
+<a href="./asyncloader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AsyncLoader</a>
+<a href="./resourcepath.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ResourcePath</a>
+<div class="sidebar-section-title text-sm font-semibold uppercase tracking-wider px-3 py-2 mt-4 mb-1">数学</div>
+<a href="./vector.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Vector</a>
+<a href="./matrix.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Matrix</a>
 </div>
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
@@ -115,49 +115,49 @@
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
-<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">快速开始</a>
-<a href="./build-system.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">构建系统</a>
+<a href="./getting-started.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">快速开始</a>
+<a href="./build-system.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">构建系统</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">平台</div>
-<a href="./window.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Window</a>
+<a href="./window.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Window</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">渲染</div>
-<a href="./irenderbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">IRenderBackend</a>
-<a href="./glbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLBackend</a>
-<a href="./glshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLShader</a>
-<a href="./glmesh.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLMesh</a>
-<a href="./glrenderer2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">GLRenderer2D</a>
-<a href="./rendercommandbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">RenderCommandBuffer</a>
-<a href="./renderthread.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">RenderThread</a>
-<a href="./vulkanbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanBackend</a>
-<a href="./vulkandevice.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanDevice</a>
-<a href="./vulkanswapchain.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanSwapchain</a>
-<a href="./vulkanbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanBuffer</a>
-<a href="./vulkanshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">VulkanShader</a>
+<a href="./irenderbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">IRenderBackend</a>
+<a href="./glbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLBackend</a>
+<a href="./glshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLShader</a>
+<a href="./glmesh.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLMesh</a>
+<a href="./glrenderer2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">GLRenderer2D</a>
+<a href="./rendercommandbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">RenderCommandBuffer</a>
+<a href="./renderthread.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">RenderThread</a>
+<a href="./vulkanbackend.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanBackend</a>
+<a href="./vulkandevice.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanDevice</a>
+<a href="./vulkanswapchain.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanSwapchain</a>
+<a href="./vulkanbuffer.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanBuffer</a>
+<a href="./vulkanshader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">VulkanShader</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">ECS</div>
-<a href="./world.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">World</a>
-<a href="./entity.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all sidebar-link-active">Entity</a>
-<a href="./componentstore.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ComponentStore</a>
-<a href="./isystem.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ISystem</a>
+<a href="./world.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">World</a>
+<a href="./entity.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all sidebar-link-active">Entity</a>
+<a href="./componentstore.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ComponentStore</a>
+<a href="./isystem.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ISystem</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">场景</div>
-<a href="./scene.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Scene</a>
-<a href="./transform.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Transform</a>
-<a href="./prefab.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Prefab</a>
+<a href="./scene.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Scene</a>
+<a href="./transform.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Transform</a>
+<a href="./prefab.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Prefab</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">物理</div>
-<a href="./physicsfactory.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">PhysicsFactory</a>
-<a href="./joltphysicsworld3d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">JoltPhysicsWorld3D</a>
-<a href="./box2dworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Box2DWorld2D</a>
-<a href="./builtinphysicsworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">BuiltInPhysicsWorld2D</a>
-<a href="./physicalmaterial.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">PhysicalMaterial</a>
+<a href="./physicsfactory.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">PhysicsFactory</a>
+<a href="./joltphysicsworld3d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">JoltPhysicsWorld3D</a>
+<a href="./box2dworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Box2DWorld2D</a>
+<a href="./builtinphysicsworld2d.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">BuiltInPhysicsWorld2D</a>
+<a href="./physicalmaterial.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">PhysicalMaterial</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">音频</div>
-<a href="./audioengine.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioEngine</a>
-<a href="./audiosource.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioSource</a>
-<a href="./audiolistener.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AudioListener</a>
+<a href="./audioengine.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioEngine</a>
+<a href="./audiosource.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioSource</a>
+<a href="./audiolistener.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AudioListener</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">资源</div>
-<a href="./assetmanager.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AssetManager</a>
-<a href="./asyncloader.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">AsyncLoader</a>
-<a href="./resourcepath.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">ResourcePath</a>
+<a href="./assetmanager.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AssetManager</a>
+<a href="./asyncloader.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">AsyncLoader</a>
+<a href="./resourcepath.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">ResourcePath</a>
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">数学</div>
-<a href="./vector.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Vector</a>
-<a href="./matrix.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm transition-all">Matrix</a>
+<a href="./vector.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Vector</a>
+<a href="./matrix.html" class="sidebar-link block px-3 py-2 rounded-lg text-xs transition-all">Matrix</a>
 </div>
 </div>
 <article class="lg:col-span-3 docs-content">
@@ -231,7 +231,7 @@ gun.add_component&lt;Transform&gt;(Vector3f(0.5f, 0, 0));</code></pre>
 </div>
 
 <div>
-<h3 class="font-semibold text-sm mb-4 footer-heading">About</h3>
+<h3 class="font-semibold text-sm mb-4 footer-heading">关于</h3>
 <p class="footer-text text-sm leading-relaxed mb-4">C++23 &middot; CMake &middot; OpenGL 4.6 / Vulkan 1.2</p>
 <div class="flex gap-3">
 <a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="footer-icon-btn p-2 rounded-lg transition-all">

@@ -2,7 +2,10 @@
 const STORAGE_KEY='gryce-theme';
 const DEFAULT_THEME='dark';
 const THEMES=['dark','light','ocean','forest','sunset'];
-function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem(STORAGE_KEY,t);}
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem(STORAGE_KEY,t);
+const prismLink=document.getElementById('prism-theme');
+if(prismLink){prismLink.href=t==='light'?'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css':'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';}
+}
 function getTheme(){return localStorage.getItem(STORAGE_KEY)||DEFAULT_THEME;}
 function init(){const t=getTheme();setTheme(t);
 document.querySelectorAll('[data-theme]').forEach(el=>{
