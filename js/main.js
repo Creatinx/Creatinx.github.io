@@ -13,8 +13,8 @@ if(canvas){
 const ctx=canvas.getContext('2d');
 let w,h,cx,cy,mx=0,my=0,time=0;
 function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight;cx=w/2;cy=h/2;}
-function getGridPrimary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.2)':'rgba(255,255,255,0.12)';}
-function getGridSecondary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.06)';}
+function getGridPrimary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.35)':'rgba(255,255,255,0.18)';}
+function getGridSecondary(){const t=document.documentElement.getAttribute('data-theme');return t==='light'?'rgba(0,0,0,0.2)':'rgba(255,255,255,0.1)';}
 window.addEventListener('resize',resize);
 resize();
 document.addEventListener('mousemove',e=>{mx=(e.clientX-cx)/w;my=(e.clientY-cy)/h;});
