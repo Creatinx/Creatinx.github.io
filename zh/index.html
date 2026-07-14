@@ -15,8 +15,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet" href="../css/themes.css">
 <link rel="stylesheet" href="../css/styles.css?v=2">
 </head>
@@ -67,15 +65,15 @@
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
 <canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
 <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-<div class="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-8 aos-init">
+<div class="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-8">
 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> C++23 游戏框架（早期）
 </div>
-<h1 class="hero-title text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 aos-init">
+<h1 class="hero-title text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6">
 <span class="hero-gradient-text">Gryce</span> <span class="hero-title-secondary">Engine</span>
 </h1>
-<p class="hero-subtitle text-xl sm:text-2xl lg:text-3xl font-light mb-4 max-w-3xl mx-auto aos-init">早期 C++23 游戏框架。尚无编辑器。</p>
-<p class="hero-desc text-base sm:text-lg mb-10 max-w-2xl mx-auto opacity-70 aos-init">早期 C++23 游戏框架。尚无编辑器。</p>
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4 aos-init">
+<p class="hero-subtitle text-xl sm:text-2xl lg:text-3xl font-light mb-4 max-w-3xl mx-auto">早期 C++23 游戏框架。尚无编辑器。</p>
+<p class="hero-desc text-base sm:text-lg mb-10 max-w-2xl mx-auto opacity-70">早期 C++23 游戏框架。尚无编辑器。</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
 <a href="../zh/docs/getting-started.html" class="hero-cta-primary px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center gap-2">
 <i data-lucide="rocket" class="w-5 h-5"></i> 开始使用
 </a>
@@ -83,7 +81,7 @@
 <i data-lucide="github" class="w-5 h-5"></i> 查看 GitHub
 </a>
 </div>
-<div class="mt-20 flex items-center justify-center gap-8 opacity-50 text-sm font-medium aos-init">
+<div class="mt-20 flex items-center justify-center gap-8 opacity-50 text-sm font-medium">
 <span class="flex items-center gap-2"><i data-lucide="box" class="w-4 h-4"></i> ECS</span>
 <span class="flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> RHI</span>
 <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> C++23</span>
@@ -97,11 +95,11 @@
 <section class="py-24 relative">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16">
-<h2 class="features-section-title text-3xl sm:text-4xl font-bold mb-4 aos-init">核心特性</h2>
-<p class="features-section-subtitle text-lg opacity-70 max-w-2xl mx-auto aos-init">早期框架。手写 ECS、RHI 与数学库。</p>
+<h2 class="features-section-title text-3xl sm:text-4xl font-bold mb-4">核心特性</h2>
+<p class="features-section-subtitle text-lg opacity-70 max-w-2xl mx-auto">早期框架。手写 ECS、RHI 与数学库。</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="cpu" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">多后端渲染</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">OpenGL 4.6 与 Vulkan 1.2 双后端，统一 RHI 抽象层。渲染线程 + 命令缓冲区架构，实现 CPU/GPU 并行工作负载。</p>
@@ -111,7 +109,7 @@
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-green-400"></i> NVIDIA WGL_NV_delay_before_swap 帧率控制</li>
 </ul>
 </div>
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="boxes" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">实体组件系统</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">基于稀疏集的 ECS，自动组件池化。Godot/Unity 混合风格实体 API，支持父子层级关系。</p>
@@ -121,7 +119,7 @@
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-green-400"></i> 生命周期阶段：init、fixed_update、update、render、cleanup</li>
 </ul>
 </div>
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="activity" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">物理集成</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">可插拔物理后端：Jolt Physics 3D、Box2D 2D，以及轻量级内置 2D 物理世界。</p>
@@ -131,7 +129,7 @@
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-green-400"></i> 内置 2D：零外部依赖，显式 opt-in</li>
 </ul>
 </div>
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="volume-2" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">空间音频</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">基于 miniaudio 的音频引擎，支持 3D 空间音频。AudioSource 与 AudioListener 组件可附加到实体。</p>
@@ -141,7 +139,7 @@
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-green-400"></i> 无外部音频服务器依赖</li>
 </ul>
 </div>
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="file-code" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">资源管线</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">后台线程异步资源加载。支持 OBJ、FBX、glTF（通过 Assimp）、PNG/JPG 纹理，以及自定义 .gesc 场景格式。</p>
@@ -151,7 +149,7 @@
 <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-green-400"></i> GPU 安全上传，支持暂停渲染线程</li>
 </ul>
 </div>
-<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl aos-init">
+<div class="feature-card p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5"><i data-lucide="calculator" class="w-6 h-6"></i></div>
 <h3 class="text-lg font-bold mb-3 feature-card-title">自定义数学库</h3>
 <p class="text-sm leading-relaxed opacity-70 feature-card-text mb-4">列主序 Matrix4f，支持 ortho、perspective、look_at、rotate、scale、translate。Vector2f/3f/4f 完整运算符重载。</p>
@@ -169,11 +167,11 @@
 <section class="py-24 relative border-y section-border">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16">
-<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init">架构</h2>
-<p class="text-lg opacity-70 max-w-2xl mx-auto aos-init">渲染线程 + 命令缓冲区，RHI 抽象层</p>
+<h2 class="text-3xl sm:text-4xl font-bold mb-4">架构</h2>
+<p class="text-lg opacity-70 max-w-2xl mx-auto">渲染线程 + 命令缓冲区，RHI 抽象层</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-<div class="aos-init">
+<div >
 <div class="arch-diagram p-6 rounded-2xl border space-y-4">
 <div class="arch-box p-4 rounded-xl border text-center font-semibold text-sm"><i data-lucide="monitor" class="w-4 h-4 inline mr-1"></i> Main Thread<div class="text-xs font-normal opacity-60 mt-1">Logic / Game Loop / ECS</div></div>
 <div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 opacity-50"></i></div>
@@ -187,7 +185,7 @@
 </div>
 </div>
 </div>
-<div class="space-y-6 aos-init">
+<div class="space-y-6">
 <div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="zap" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">Multi-threaded Rendering</h3><p class="text-sm opacity-70 leading-relaxed">Main thread generates commands while render thread executes them. Mutex + condition_variable synchronization with double buffering.</p></div></div>
 <div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="shuffle" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">RHI Abstraction</h3><p class="text-sm opacity-70 leading-relaxed">IRenderBackend interface provides a unified API. Swap between OpenGL and Vulkan at runtime without changing game code.</p></div></div>
 <div class="flex gap-4"><div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="shield" class="w-5 h-5"></i></div><div><h3 class="font-semibold text-lg mb-1">Type-safe Commands</h3><p class="text-sm opacity-70 leading-relaxed">RenderCommandTyped structs with RenderCommandType enum. Consecutive state-setting commands are merged as a batch optimization.</p></div></div>
@@ -200,9 +198,9 @@
 <section class="py-24 relative">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-12">
-<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init">示例代码</h2>
+<h2 class="text-3xl sm:text-4xl font-bold mb-4">示例代码</h2>
 </div>
-<div class="code-window rounded-2xl border overflow-hidden shadow-2xl aos-init">
+<div class="code-window rounded-2xl border overflow-hidden shadow-2xl">
 <div class="code-window-header px-4 py-3 border-b flex items-center gap-2">
 <span class="w-3 h-3 rounded-full bg-red-500"></span>
 <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
@@ -240,14 +238,14 @@ int main() {
 <section class="py-24 relative border-y section-border">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-12">
-<h2 class="text-3xl sm:text-4xl font-bold mb-4 aos-init">快速开始</h2>
-<p class="text-lg opacity-70 max-w-2xl mx-auto aos-init">克隆、构建、运行</p>
+<h2 class="text-3xl sm:text-4xl font-bold mb-4">快速开始</h2>
+<p class="text-lg opacity-70 max-w-2xl mx-auto">克隆、构建、运行</p>
 </div>
 <div class="max-w-3xl mx-auto space-y-4">
-<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</div><div class="flex-1"><h3 class="font-semibold mb-1">克隆仓库</h3><p class="text-sm opacity-70 mb-2">从 GitHub 获取源代码。仓库包含核心引擎、编辑器、测试和示例。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">git clone https://github.com/Creatinx/Gryce-Engine.git &amp;&amp; cd Gryce-Engine</code></div></div></div>
-<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</div><div class="flex-1"><h3 class="font-semibold mb-1">安装依赖（MSYS2 UCRT64）</h3><p class="text-sm opacity-70 mb-2">Gryce Engine 使用 GCC (C++23) 在 Windows 上通过 MSYS2 UCRT64 构建。安装编译器、构建工具和原生依赖。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-glew mingw-w64-ucrt-x86_64-glfw</code></div><p class="text-xs opacity-50 mt-2">可选：mingw-w64-ucrt-x86_64-assimp, mingw-w64-ucrt-x86_64-gtest</p></div></div>
-<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</div><div class="flex-1"><h3 class="font-semibold mb-1">一键构建</h3><p class="text-sm opacity-70 mb-2">python build.py 自动检测 GCC，运行 CMake + Ninja，并预取可选依赖。--jobs 启用并行编译。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">python build.py --jobs 8</code></div><p class="text-xs opacity-50 mt-2">Release 模式：python build.py Release --jobs 8</p></div></div>
-<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1 aos-init"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">4</div><div class="flex-1"><h3 class="font-semibold mb-1">运行编辑器</h3><p class="text-sm opacity-70 mb-2">默认构建输出 3D 立方体演示 + 2D 叠加层。交互模式下窗口持续运行，CI 模式下约 15 秒后自动退出。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">./build/Debug/bin/Debug/gryce.exe</code></div><p class="text-xs opacity-50 mt-2">MinGW DLL（libgcc、libstdc++、glew32、glfw3）自动复制到输出目录。</p></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</div><div class="flex-1"><h3 class="font-semibold mb-1">克隆仓库</h3><p class="text-sm opacity-70 mb-2">从 GitHub 获取源代码。仓库包含核心引擎、编辑器、测试和示例。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">git clone https://github.com/Creatinx/Gryce-Engine.git &amp;&amp; cd Gryce-Engine</code></div></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</div><div class="flex-1"><h3 class="font-semibold mb-1">安装依赖（MSYS2 UCRT64）</h3><p class="text-sm opacity-70 mb-2">Gryce Engine 使用 GCC (C++23) 在 Windows 上通过 MSYS2 UCRT64 构建。安装编译器、构建工具和原生依赖。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-glew mingw-w64-ucrt-x86_64-glfw</code></div><p class="text-xs opacity-50 mt-2">可选：mingw-w64-ucrt-x86_64-assimp, mingw-w64-ucrt-x86_64-gtest</p></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</div><div class="flex-1"><h3 class="font-semibold mb-1">一键构建</h3><p class="text-sm opacity-70 mb-2">python build.py 自动检测 GCC，运行 CMake + Ninja，并预取可选依赖。--jobs 启用并行编译。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">python build.py --jobs 8</code></div><p class="text-xs opacity-50 mt-2">Release 模式：python build.py Release --jobs 8</p></div></div>
+<div class="quickstart-step flex items-start gap-4 p-5 rounded-xl border transition-all duration-300 hover:-translate-x-1"><div class="quickstep-number w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">4</div><div class="flex-1"><h3 class="font-semibold mb-1">运行编辑器</h3><p class="text-sm opacity-70 mb-2">默认构建输出 3D 立方体演示 + 2D 叠加层。交互模式下窗口持续运行，CI 模式下约 15 秒后自动退出。</p><div class="code-snippet rounded-lg p-3 mt-2 overflow-x-auto"><code class="text-sm font-mono">./build/Debug/bin/Debug/gryce.exe</code></div><p class="text-xs opacity-50 mt-2">MinGW DLL（libgcc、libstdc++、glew32、glfw3）自动复制到输出目录。</p></div></div>
 </div>
 </div>
 </section>
@@ -269,14 +267,40 @@ int main() {
 <h3 class="font-semibold text-sm mb-4 footer-heading">文档</h3>
 <ul class="space-y-2">
 <li><a href="../zh/docs/getting-started.html" class="footer-link text-sm transition-colors">快速开始</a></li>
-<li><a href="../zh/docs/architecture.html" class="footer-link text-sm transition-colors">架构概览</a></li>
-<li><a href="../zh/docs/render.html" class="footer-link text-sm transition-colors">渲染系统</a></li>
-<li><a href="../zh/docs/ecs.html" class="footer-link text-sm transition-colors">ECS</a></li>
-<li><a href="../zh/docs/physics.html" class="footer-link text-sm transition-colors">物理系统</a></li>
-<li><a href="../zh/docs/audio.html" class="footer-link text-sm transition-colors">音频系统</a></li>
-<li><a href="../zh/docs/assets.html" class="footer-link text-sm transition-colors">资源管理</a></li>
-<li><a href="../zh/docs/math.html" class="footer-link text-sm transition-colors">数学库</a></li>
-<li><a href="../zh/docs/build.html" class="footer-link text-sm transition-colors">构建系统</a></li>
+<li><a href="../zh/docs/build-system.html" class="footer-link text-sm transition-colors">构建系统</a></li>
+<li><a href="../zh/docs/window.html" class="footer-link text-sm transition-colors">Window</a></li>
+<li><a href="../zh/docs/irenderbackend.html" class="footer-link text-sm transition-colors">IRenderBackend</a></li>
+<li><a href="../zh/docs/glbackend.html" class="footer-link text-sm transition-colors">GLBackend</a></li>
+<li><a href="../zh/docs/glshader.html" class="footer-link text-sm transition-colors">GLShader</a></li>
+<li><a href="../zh/docs/glmesh.html" class="footer-link text-sm transition-colors">GLMesh</a></li>
+<li><a href="../zh/docs/glrenderer2d.html" class="footer-link text-sm transition-colors">GLRenderer2D</a></li>
+<li><a href="../zh/docs/rendercommandbuffer.html" class="footer-link text-sm transition-colors">RenderCommandBuffer</a></li>
+<li><a href="../zh/docs/renderthread.html" class="footer-link text-sm transition-colors">RenderThread</a></li>
+<li><a href="../zh/docs/vulkanbackend.html" class="footer-link text-sm transition-colors">VulkanBackend</a></li>
+<li><a href="../zh/docs/vulkandevice.html" class="footer-link text-sm transition-colors">VulkanDevice</a></li>
+<li><a href="../zh/docs/vulkanswapchain.html" class="footer-link text-sm transition-colors">VulkanSwapchain</a></li>
+<li><a href="../zh/docs/vulkanbuffer.html" class="footer-link text-sm transition-colors">VulkanBuffer</a></li>
+<li><a href="../zh/docs/vulkanshader.html" class="footer-link text-sm transition-colors">VulkanShader</a></li>
+<li><a href="../zh/docs/world.html" class="footer-link text-sm transition-colors">World</a></li>
+<li><a href="../zh/docs/entity.html" class="footer-link text-sm transition-colors">Entity</a></li>
+<li><a href="../zh/docs/componentstore.html" class="footer-link text-sm transition-colors">ComponentStore</a></li>
+<li><a href="../zh/docs/isystem.html" class="footer-link text-sm transition-colors">ISystem</a></li>
+<li><a href="../zh/docs/scene.html" class="footer-link text-sm transition-colors">Scene</a></li>
+<li><a href="../zh/docs/transform.html" class="footer-link text-sm transition-colors">Transform</a></li>
+<li><a href="../zh/docs/prefab.html" class="footer-link text-sm transition-colors">Prefab</a></li>
+<li><a href="../zh/docs/physicsfactory.html" class="footer-link text-sm transition-colors">PhysicsFactory</a></li>
+<li><a href="../zh/docs/joltphysicsworld3d.html" class="footer-link text-sm transition-colors">JoltPhysicsWorld3D</a></li>
+<li><a href="../zh/docs/box2dworld2d.html" class="footer-link text-sm transition-colors">Box2DWorld2D</a></li>
+<li><a href="../zh/docs/builtinphysicsworld2d.html" class="footer-link text-sm transition-colors">BuiltInPhysicsWorld2D</a></li>
+<li><a href="../zh/docs/physicalmaterial.html" class="footer-link text-sm transition-colors">PhysicalMaterial</a></li>
+<li><a href="../zh/docs/audioengine.html" class="footer-link text-sm transition-colors">AudioEngine</a></li>
+<li><a href="../zh/docs/audiosource.html" class="footer-link text-sm transition-colors">AudioSource</a></li>
+<li><a href="../zh/docs/audiolistener.html" class="footer-link text-sm transition-colors">AudioListener</a></li>
+<li><a href="../zh/docs/assetmanager.html" class="footer-link text-sm transition-colors">AssetManager</a></li>
+<li><a href="../zh/docs/asyncloader.html" class="footer-link text-sm transition-colors">AsyncLoader</a></li>
+<li><a href="../zh/docs/resourcepath.html" class="footer-link text-sm transition-colors">ResourcePath</a></li>
+<li><a href="../zh/docs/vector.html" class="footer-link text-sm transition-colors">Vector</a></li>
+<li><a href="../zh/docs/matrix.html" class="footer-link text-sm transition-colors">Matrix</a></li>
 </ul>
 </div>
 <div>
@@ -298,7 +322,6 @@ int main() {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 lucide.createIcons();
-AOS.init({ duration: 700, once: true, offset: 50 });
 if (typeof Prism !== 'undefined') Prism.highlightAll();
 });
 </script>
