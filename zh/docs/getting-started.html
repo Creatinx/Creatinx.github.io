@@ -214,7 +214,7 @@ int main() {
 <span></span>
 <a href="./build-system.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: 构建系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>gryce-engine 采用手写核心层 + 成熟第三方库的策略。ECS、RHI、数学库和场景层是手写实现，保证了对底层行为的完全控制。窗口/输入（GLFW）、OpenGL 加载（GLEW）、音频（miniaudio）、物理（Jolt/Box2D）、模型加载（Assimp）使用第三方库，避免重复造轮子。这种设计在开发效率和可控性之间取得了平衡。</p><h2>第三方依赖</h2><p>必需依赖：GLFW（窗口和输入）、GLEW（OpenGL 扩展加载）、CMake、Ninja、GCC 13+。可选依赖：Vulkan SDK（Vulkan 后端）、VMA（Vulkan 内存管理）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、miniaudio（音频）、stb_image（纹理加载）、nlohmann/json（场景序列化）、glm（可选数学库）、spdlog（日志）。</p><h2>注意事项</h2><ul><li>首次构建需要安装 MSYS2 和基本开发工具，耗时约 10-15 分钟。</li><li>如果只需要 OpenGL 后端，可以跳过 Vulkan SDK 安装。</li><li>build.py 会自动将 MSYS2 的 DLL 复制到输出目录，确保可执行文件能直接运行。</li><li>Debug 构建包含断言和地址检查，适合开发；Release 构建适合发布。</li></ul></article>
 </div>
 </div>
 </main>

@@ -206,7 +206,7 @@ world.cleanup();</code></pre>
 <a href="./vulkanshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanShader</span></a>
 <a href="./entity.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Entity</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>World 是 gryce-engine 中最高层的游戏对象容器。它拥有一个 Scene（场景图）和一组 ISystem（系统）实例。World 的职责是驱动整个游戏循环：按固定时间步长调用 fixed_update，按帧时间调用 update，并在每帧结束时调用 render。系统按 priority() 返回值降序排序，优先级高的系统先执行。这种设计保证了渲染系统在逻辑系统之后执行，物理系统优先于游戏逻辑。</p><h2>生命周期</h2><p>World 的生命周期严格分为五个阶段：init → fixed_update → update → render → cleanup。init 在程序启动时调用一次，cleanup 在退出时调用一次。fixed_update 保证以固定时间步长（通常 1/60 秒）调用，适合物理模拟。update 以实际帧时间调用，适合游戏逻辑。render 在每帧结束时调用，接收 IRenderBackend* 用于实际绘制。</p><h2>注意事项</h2><ul><li>World 不是线程安全的，所有操作必须在主线程执行。</li><li>System 的 priority() 默认返回 0，值越大执行越早。</li><li>create_entity 返回的 Entity 句柄在对应 Entity 被销毁后失效。</li><li>scene() 返回的 Scene 引用在 World 生命周期内始终有效。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 场景对象句柄</li><li><a href="./scene.html">Scene</a> — 场景图容器</li><li><a href="./isystem.html">ISystem</a> — 系统基接口</li></ul></article>
 </div>
 </div>
 </main>

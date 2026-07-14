@@ -209,7 +209,7 @@ enum class RenderBackend { OpenGL, Vulkan };</code></pre>
 <a href="./window.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Window</span></a>
 <a href="./glbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>IRenderBackend 是 gryce-engine 渲染架构的核心抽象。它定义了所有图形 API（OpenGL 4.6、Vulkan 1.2）必须实现的统一接口。游戏代码从不直接调用后端方法，而是通过 RenderCommandBuffer 提交命令。这种设计允许主线程生成渲染命令，而渲染线程在后台执行，实现 CPU/GPU 并行。IRenderBackend 的生命周期由 RenderContext 管理，确保正确的初始化顺序和资源释放。</p><h2>资源管理</h2><p>所有图形资源（Mesh、Shader、Texture、Framebuffer）通过 Handle 类型引用。Handle 是一个轻量级的整数 ID，背后由后端管理实际的 GPU 资源。create_* 方法返回 Handle，destroy_* 方法释放对应资源。后端负责资源的生命周期管理和内存回收。如果试图使用已销毁的 Handle，后端行为未定义（通常会导致渲染错误）。</p><h2>注意事项</h2><ul><li>IRenderBackend 必须在渲染线程上执行命令。</li><li>不要在主线程直接调用 draw 方法，使用 RenderCommandBuffer。</li><li>create_* 和 destroy_* 调用必须成对出现，防止内存泄漏。</li><li>Vulkan 后端需要额外的同步（semaphore/fence），由后端内部处理。</li></ul><h2>相关类</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — 命令缓冲区</li><li><a href="./renderthread.html">RenderThread</a> — 渲染线程</li><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li></ul></article>
 </div>
 </div>
 </main>

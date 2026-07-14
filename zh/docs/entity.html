@@ -212,7 +212,7 @@ gun.add_component&lt;Transform&gt;(Vector3f(0.5f, 0, 0));</code></pre>
 <a href="./world.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: World</span></a>
 <a href="./componentstore.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: ComponentStore</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>Entity 是一个轻量级句柄（uint32_t ID + generation），而不是指向实际对象的指针。这种设计允许 Entity 在组件被销毁后仍然保持有效检查（通过 generation 比较）。Entity 支持父子层级，子实体的 Transform 会自动继承父实体的变换。每个 Entity 可以附加多个组件，组件类型通过模板参数指定，类型安全且在编译期解析。</p><h2>组件操作</h2><p>add_component 使用完美转发将参数传递给组件构造函数。get_component 返回组件的引用，如果组件不存在则抛出异常。has_component 在 O(1) 时间内检查组件是否存在。remove_component 立即销毁组件并释放其存储空间。所有组件操作都通过 ComponentStore 的稀疏集实现，保证常数时间复杂度。</p><h2>注意事项</h2><ul><li>Entity 默认构造为空句柄（id = 0, generation = 0）。</li><li>set_parent 会触发子树的世界矩阵重新计算。</li><li>destroy() 递归销毁所有子实体，谨慎使用。</li><li>不要在组件的构造函数中调用其他组件的方法。</li></ul><h2>相关类</h2><ul><li><a href="./world.html">World</a> — 容器</li><li><a href="./componentstore.html">ComponentStore</a> — 组件存储</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
 </div>
 </div>
 </main>

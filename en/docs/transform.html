@@ -195,7 +195,7 @@ camera.view = transform.world_matrix().inverse();</code></pre>
 <a href="./scene.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Scene</span></a>
 <a href="./prefab.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Prefab</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>Transform 是 gryce-engine 中最基础的组件，存储实体的本地位置、旋转（欧拉角）和缩放。它通过 Scene 的父子层级自动计算世界空间变换矩阵。local_matrix() 将 position、rotation 和 scale 组合为列主序 Matrix4f。world_matrix() 递归累加父实体的变换，直到根实体。这种设计保证子实体的变换自动跟随父实体。</p><h2>欧拉角与四元数</h2><p>Transform 使用欧拉角（Vector3f，单位为度）表示旋转。欧拉角直观且易于编辑，但存在万向锁问题。对于需要平滑插值的场景，建议使用外部四元数库（如 glm）计算旋转后写入 Transform。Transform 的 look_at 方法使用一个简化版，适合相机等需要朝向目标的场景。</p><h2>注意事项</h2><ul><li>rotation 是欧拉角，按 Y → X → Z 顺序应用（YXZ 顺序）。</li><li>world_matrix() 在每次调用时重新计算，不要在每帧中多次调用同一个 entity。</li><li>scale 的默认值是 (1,1,1)，设置为 (0,0,0) 会导致矩阵不可逆。</li><li>forward/right/up 方向基于当前 rotation 计算，不考虑父实体的旋转。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./scene.html">Scene</a> — 场景容器</li><li><a href="./matrix.html">Matrix</a> — 矩阵数学</li></ul></article>
 </div>
 </div>
 </main>

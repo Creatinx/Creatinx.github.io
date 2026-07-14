@@ -201,7 +201,7 @@ public:
 <a href="./renderthread.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: RenderThread</span></a>
 <a href="./vulkandevice.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanDevice</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>VulkanBackend 是 IRenderBackend 的 Vulkan 1.2 实现。它管理 Vulkan instance、surface、device、swapchain 和 command buffer 的完整生命周期。与 GLBackend 不同，VulkanBackend 使用显式的同步原语（semaphore、fence）来管理 CPU-GPU 并行。所有资源创建和销毁操作都被封装在对应的管理类（VulkanDevice、VulkanSwapchain、VulkanBuffer 等）中，避免在 VulkanBackend 主类中积累过多的平台特定代码。</p><h2>多线程注意事项</h2><p>Vulkan 允许在多个线程上构建 command buffer，但 gryce-engine 当前只在渲染线程上使用单个 command buffer。这种简化保证了正确性，但限制了 Vulkan 的多线程构建优势。未来的版本可能支持 secondary command buffer 和并行构建。</p><h2>注意事项</h2><ul><li>VulkanBackend 要求 Vulkan 1.2 兼容的驱动和硬件。</li><li>surface 创建需要平台特定的扩展（Windows 上为 VK_KHR_win32_surface）。</li><li>swapchain 在窗口大小改变时必须调用 recreate()。</li><li>Vulkan 的 validation layers 在 Debug 构建中启用，Release 构建中禁用。</li></ul><h2>相关类</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li><li><a href="./vulkanswapchain.html">VulkanSwapchain</a> — 交换链</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
 </div>
 </div>
 </main>

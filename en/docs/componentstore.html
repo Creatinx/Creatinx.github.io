@@ -206,7 +206,7 @@ std::vector&lt;EntityID&gt; entities; // parallel to dense</code></pre>
 <a href="./entity.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Entity</span></a>
 <a href="./isystem.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: ISystem</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>ComponentStore 使用类型擦除的稀疏集（sparse set）来存储组件。每种组件类型 T 对应一个 ComponentPool<T>，内部包含三个数组：dense（实际组件数据）、sparse（entity_id → dense 索引）、entities（dense 索引对应的 entity ID）。稀疏集保证 O(1) 的插入、查找和删除。类型擦除通过 std::unordered_map&lt;std::type_index, std::unique_ptr&lt;IComponentPool&gt;&gt; 实现，允许 ComponentStore 在不知道组件类型的情况下管理所有组件池。</p><h2>内存布局</h2><p>组件数据存储在 dense 数组中，保证内存连续性。当 entity 被销毁时，其组件从 dense 数组中移除，最后一个组件被移动到空缺位置以保持连续性。entity ID 到 dense 索引的映射通过 sparse 数组实现。这种布局对 cache 友好，适合批量遍历（如 ECS 的 query）。</p><h2>注意事项</h2><ul><li>register_component 必须在 add 之前调用，否则 add 会失败。</li><li>remove 只销毁组件数据，不销毁 entity。</li><li>clear 销毁所有组件池，但不释放注册的类型信息。</li><li>query 遍历 dense 数组，保证 O(n) 时间复杂度，其中 n 是拥有该组件的实体数量。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./world.html">World</a> — 容器</li></ul></article>
 </div>
 </div>
 </main>

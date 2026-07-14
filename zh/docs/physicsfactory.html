@@ -193,7 +193,7 @@ if (!PhysicsFactory::is_backend_available(PhysicsBackend::Jolt3D)) {
 <a href="./prefab.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Prefab</span></a>
 <a href="./joltphysicsworld3d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: JoltPhysicsWorld3D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>PhysicsFactory 是 gryce-engine 中物理后端的工厂类，负责根据 CMake 配置和运行时可用性创建物理世界实例。它支持三种后端：Jolt Physics 3D、Box2D 2D 和 BuiltIn 2D。在运行时，PhysicsFactory 通过 is_backend_available() 检查后端是否编译进引擎（通过 CMake 选项控制）。这种设计允许同一套游戏代码在不同构建配置下运行，无需修改物理相关逻辑。</p><h2>后端选择策略</h2><p>当调用 create_world_2d 或 create_world_3d 时，PhysicsFactory 首先检查请求的后端是否可用。如果不可用，返回 nullptr 或降级到 None 后端。None 后端是一个空实现，所有方法均为空操作，允许游戏在没有物理库的情况下编译和运行。available_backends() 返回当前构建中可用的后端列表，用于 UI 中的后端选择。</p><h2>注意事项</h2><ul><li>PhysicsFactory 不是线程安全的，所有调用必须在主线程执行。</li><li>is_backend_available 只检查编译时可用性，不检查运行时库是否加载成功。</li><li>create_world_3d 目前只支持 Jolt3D 和 None 两种后端。</li><li>物理世界的生命周期由调用者管理，PhysicsFactory 只负责创建。</li></ul><h2>相关类</h2><ul><li><a href="./joltphysicsworld3d.html">JoltPhysicsWorld3D</a> — 3D 物理世界</li><li><a href="./box2dworld2d.html">Box2DWorld2D</a> — 2D 物理世界</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — 内置 2D 物理</li></ul></article>
 </div>
 </div>
 </main>

@@ -184,7 +184,7 @@ camera.add_component&lt;AudioListener&gt;();</code></pre>
 <a href="./audiosource.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioSource</span></a>
 <a href="./assetmanager.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AssetManager</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>AudioListener 是 gryce-engine 中的 3D 音频监听器组件，通常附加到相机 Entity 上。AudioEngine 在更新时读取所有 AudioListener 的位置和朝向（通过 Transform 组件），计算全局 listener 状态。对于多个 AudioListener，AudioEngine 使用第一个启用的 listener（enabled = true）。如果没有 AudioListener，3D 音频衰减不生效，所有声音以最大音量播放。</p><h2>朝向计算</h2><p>AudioListener 的朝向从 Transform 的 rotation 计算。forward 方向是 rotation 的 Z 轴负方向（OpenGL 约定），up 方向是 Y 轴正方向。AudioEngine 将这些方向传递给 miniaudio 的 spatializer，用于计算 HRTF 和声像定位。如果 Entity 没有 Transform 组件，AudioListener 使用默认位置 (0,0,0) 和朝向 (0,0,-1)。</p><h2>注意事项</h2><ul><li>场景中通常只有一个 AudioListener，多个 AudioListener 会导致不可预测的 3D 音频效果。</li><li>AudioListener 没有自己的数据，所有状态从 Transform 组件读取。</li><li>enabled 为 false 时，该 AudioListener 被忽略，AudioEngine 使用下一个启用的 listener。</li><li>如果没有 AudioListener，所有声音以 2D 模式播放，不计算空间衰减。</li></ul><h2>相关类</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — 音频引擎</li><li><a href="./audiosource.html">AudioSource</a> — 音频源</li></ul></article>
 </div>
 </div>
 </main>

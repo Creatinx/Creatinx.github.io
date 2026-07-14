@@ -204,7 +204,7 @@ mesh.draw_indexed(3);</code></pre>
 <a href="./glshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: GLShader</span></a>
 <a href="./glrenderer2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLRenderer2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>GLMesh 管理 OpenGL VAO、VBO 和 EBO 的生命周期。它在 upload_vertices() 中创建并填充 VBO，在 upload_indices() 中创建并填充 EBO。VertexLayout 描述了顶点属性的格式和偏移，upload_vertices 使用这个信息在 VAO 上配置顶点属性指针。这种设计允许同一 GLMesh 对象在不同 shader 中复用，只要 vertex layout 兼容。</p><h2>顶点布局</h2><p>VertexLayout 由 stride（顶点大小，字节）和 attributes（属性数组）组成。每个属性包含 location、components、type、normalized 和 offset。upload_vertices 根据这些信息调用 glVertexAttribPointer 配置 VAO。如果后续 shader 的 attribute location 与 VertexLayout 中定义的不匹配，渲染结果将不正确。</p><h2>注意事项</h2><ul><li>VAO 在 upload_vertices 时创建，如果 layout 改变需要重新调用 upload_vertices。</li><li>draw_indexed 的 count 参数是索引数量，不是顶点数量。</li><li>IndexType 必须是 Uint16 或 Uint32，Uint8 不受支持。</li><li>GLMesh 析构时自动删除 VAO、VBO 和 EBO。</li></ul><h2>相关类</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./glshader.html">GLShader</a> — 着色器程序</li></ul></article>
 </div>
 </div>
 </main>

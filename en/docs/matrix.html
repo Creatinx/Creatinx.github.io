@@ -209,7 +209,7 @@ Matrix4f mvp = proj * view * model;</code></pre>
 <a href="./vector.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Vector</span></a>
 <span></span>
 </div>
-</article>
+<h2>设计原理</h2><p>Matrix4f 是 gryce-engine 中的列主序 4x4 矩阵，存储为 float m[16]。列主序意味着 m[col*4 + row] 访问元素 (row, col)。这种布局与 OpenGL 的 glUniformMatrix4fv 和 Vulkan 的 push constant 兼容，可以直接传递而不需要转置。Matrix4f 提供所有常见的变换工厂方法：translate、scale、rotate、ortho、perspective、look_at。所有角度参数使用度数而非弧度。</p><h2>矩阵运算</h2><p>Matrix4f 的乘法使用标准矩阵乘法，时间复杂度 O(n^3) 其中 n=4。inverse() 使用伴随矩阵法，对于标准变换矩阵（TRS）足够高效。对于一般矩阵，inverse() 的性能和精度可能不如专门的线性代数库（如 Eigen）。determinant() 返回矩阵的行列式，用于判断矩阵是否可逆。transposed() 返回转置矩阵，用于法线矩阵计算。</p><h2>注意事项</h2><ul><li>Matrix4f 使用列主序，与 DirectX 的行主序不同，与 Shader 中的 mat4 一致。</li><li>perspective 的 fov 参数是垂直视角（度数），aspect 是宽高比。</li><li>look_at 的 up 向量不需要归一化，内部会自动处理。</li><li>inverse() 在矩阵不可逆时（行列式接近 0）返回零矩阵，不抛出异常。</li></ul><h2>相关类</h2><ul><li><a href="./vector.html">Vector</a> — 向量数学</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
 </div>
 </div>
 </main>

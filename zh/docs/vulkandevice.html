@@ -191,7 +191,7 @@ public:
 <a href="./vulkanbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanBackend</span></a>
 <a href="./vulkanswapchain.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanSwapchain</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>VulkanDevice 负责选择物理设备、创建逻辑设备和初始化 VMA（Vulkan Memory Allocator）。在 create() 中，它枚举所有可用的物理设备，选择第一个满足要求的设备（必须有图形和呈现队列）。然后创建逻辑设备，并初始化 VMA 分配器。VMA 提供了高效的 GPU 内存管理，自动处理 memory type 选择和 defragmentation。</p><h2>队列族</h2><p>Vulkan 的 queue family 是一个关键概念。graphics_queue_family 用于图形命令，present_queue_family 用于呈现到 surface。在大多数设备上这两个 queue family 是相同的，但在某些设备上可能不同。VulkanDevice 分别记录这两个 queue family 索引，并确保 command buffer 提交到正确的队列。</p><h2>注意事项</h2><ul><li>create() 必须在 VulkanBackend 初始化之后调用，因为需要 instance 和 surface。</li><li>VMA 分配器在 destroy() 中销毁，必须在所有 GPU 资源释放之后。</li><li>command_pool 在创建时针对 graphics queue family 初始化。</li><li>allocate_command_buffer 创建的 command buffer 必须配对 free_command_buffer 或 submit 后由 Vulkan 回收。</li></ul><h2>相关类</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
 </div>
 </div>
 </main>

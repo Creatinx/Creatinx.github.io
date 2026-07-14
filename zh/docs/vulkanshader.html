@@ -194,7 +194,7 @@ shader.set_push_constant(cmd, "u_mvp", mvp.data());</code></pre>
 <a href="./vulkanbuffer.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanBuffer</span></a>
 <a href="./world.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: World</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>VulkanShader 管理 Vulkan 的 shader module、pipeline layout、descriptor set layout 和 push constant 范围。它支持加载预编译的 SPIR-V 文件（.spv）和从 GLSL 源码动态编译（通过 glslangValidator）。pipeline layout 在 load_spirv 时创建，包含所有 uniform 和 push constant 的绑定信息。VulkanShader 使用 push constant 传递 MVP 矩阵等小型数据，避免了 descriptor set 更新的开销。</p><h2>Push Constant</h2><p>Push constant 是 Vulkan 的一种高效数据传递机制，允许在 command buffer 录制时直接嵌入最多 128 字节的数据。VulkanShader 的 set_push_constant 方法将数据复制到 command buffer 中，无需内存分配或同步。这种设计适合每帧变化的 uniform（如 model-view-projection 矩阵），但对于大量数据（如材质参数）仍需要使用 descriptor set。</p><h2>注意事项</h2><ul><li>SPIR-V 文件必须在编译时通过 glslangValidator 生成，运行时不支持 GLSL 编译。</li><li>push constant 大小在 Vulkan 规范中限制为 128 字节，超出此限制会导致验证错误。</li><li>pipeline_layout() 在 load_spirv 之后有效，销毁 shader 后失效。</li><li>graphics_pipeline() 根据当前 render pass 和 vertex layout 创建 pipeline，缓存已创建的 pipeline 避免重复。</li></ul><h2>相关类</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li></ul></article>
 </div>
 </div>
 </main>

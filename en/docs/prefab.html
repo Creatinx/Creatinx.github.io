@@ -197,7 +197,7 @@ for (int i = 0; i < 10; ++i) {
 <a href="./transform.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Transform</span></a>
 <a href="./physicsfactory.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: PhysicsFactory</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>Prefab 是 gryce-engine 中的实体模板系统，允许开发者定义可复用的 Entity 配置。Prefab 使用链式 API（with_component）添加组件，然后通过 instantiate 在场景中创建实体副本。Prefab 的数据以 .gesc 格式序列化到磁盘，支持 JSON 或二进制格式。.gesc 文件包含组件类型名、构造函数参数和初始值，可以在编辑器中加载和修改。</p><h2>实例化流程</h2><p>instantiate 的调用流程：1) 创建新 Entity；2) 按注册顺序添加组件；3) 将组件初始值从 Prefab 复制到新 Entity；4) 如果指定了位置，设置 Transform 的 position。instantiate 返回新创建的 Entity 句柄，调用者可以进一步修改其属性。对于大量实例化（如 100 个敌人），建议使用批量实例化 API 以减少分配开销。</p><h2>注意事项</h2><ul><li>Prefab 的组件类型必须在 ComponentStore 中注册，否则 instantiate 会失败。</li><li>with_component 使用完美转发，参数类型必须与组件构造函数匹配。</li><li>.gesc 文件格式是内部格式，不保证向后兼容，建议保留源文件。</li><li>save 将 Prefab 序列化为 JSON，human-readable 但体积较大。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./scene.html">Scene</a> — 场景容器</li></ul></article>
 </div>
 </div>
 </main>

@@ -197,7 +197,7 @@ public:
 <a href="./vulkanswapchain.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanSwapchain</span></a>
 <a href="./vulkanshader.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanShader</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>VulkanBuffer 和 VulkanTexture 是 gryce-engine 的 Vulkan GPU 资源管理类，使用 VMA（Vulkan Memory Allocator）进行内存分配。VMA 自动处理 memory type 选择、alignment 和 defragmentation，简化了 Vulkan 复杂的内存管理。VulkanBuffer 支持 staging upload：如果目标内存不可主机访问，upload_staged() 创建临时 staging buffer，使用 memcpy 填充数据，然后提交 copy command 到 GPU。</p><h2>内存类型</h2><p>Vulkan 的内存类型分为 HOST_VISIBLE（CPU 可访问）、DEVICE_LOCAL（GPU 本地）和 HOST_CACHED 等。VulkanBuffer 的 create 方法通过 VMA 的 memory usage hint（如 VMA_MEMORY_USAGE_GPU_ONLY）选择最优内存类型。对于频繁更新的数据（如 uniform buffer），建议使用 VMA_MEMORY_USAGE_CPU_TO_GPU，允许直接 CPU 写入。</p><h2>注意事项</h2><ul><li>upload() 要求内存为 HOST_VISIBLE，否则必须使用 upload_staged()。</li><li>staging buffer 在 upload_staged 完成后自动销毁，不需要手动管理。</li><li>VulkanTexture 创建时自动生成 mipmap（如果支持），使用 VK_FORMAT_R8G8B8A8_UNORM。</li><li>所有 VulkanBuffer 必须在 VulkanDevice 销毁之前释放，否则会导致 VMA 崩溃。</li></ul><h2>相关类</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li></ul></article>
 </div>
 </div>
 </main>

@@ -209,7 +209,7 @@ struct BodyDesc2D {
 <a href="./joltphysicsworld3d.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: JoltPhysicsWorld3D</span></a>
 <a href="./builtinphysicsworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: BuiltInPhysicsWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>Box2DWorld2D 是 gryce-engine 的 2D 物理后端，基于 Box2D 3.0。它实现了 IPhysicsWorld2D 接口，提供刚体动力学、碰撞检测、关节系统和碰撞回调。Box2DWorld2D 在 init() 中创建 b2World 和 b2ContactListener，在 step() 中以固定时间步长调用 b2World::Step。Box2D 的 solver 使用迭代法求解约束，position_iters 和 velocity_iters 控制迭代次数，默认值分别为 3 和 8。</p><h2>刚体与 Fixture</h2><p>Box2D 中，Body 是物理对象，Fixture 是形状和材质的附加物。一个 Body 可以有多个 Fixture，每个 Fixture 有自己的形状（Circle、Box、Polygon）、密度、摩擦力和弹性。Box2DWorld2D 的 create_body 方法同时创建 Body 和默认 Fixture，destroy_body 销毁 Body 及其所有 Fixture。</p><h2>注意事项</h2><ul><li>Box2D 的 step() 必须在固定时间步长下调用，通常 1/60 秒。</li><li>collision callback 在主线程执行，不要在其中修改物理世界。</li><li>sensor fixture（is_sensor = true）检测碰撞但不产生物理响应。</li><li>Box2D 使用 MKS 单位（米、千克、秒），不要将像素直接作为长度单位。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — 内置物理</li></ul></article>
 </div>
 </div>
 </main>

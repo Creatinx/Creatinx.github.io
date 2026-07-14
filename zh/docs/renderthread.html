@@ -203,7 +203,7 @@ backend.shutdown();</code></pre>
 <a href="./rendercommandbuffer.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: RenderCommandBuffer</span></a>
 <a href="./vulkanbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>RenderThread 是一个 std::thread 的包装器，专门用于在后台执行渲染命令。它在 start() 中创建线程并进入 thread_loop()，在 stop() 中设置退出标志并等待线程结束。thread_loop() 的核心逻辑是：acquire 命令 → 执行命令 → present → 等待下一帧。wait_for_frame() 允许主线程在提交 Present 命令后阻塞，直到渲染线程完成当前帧，从而实现帧同步。</p><h2>帧率控制</h2><p>set_target_fps() 允许限制渲染线程的最大帧率。当设置为非零值时，渲染线程在每帧结束时计算剩余的睡眠时间，并通过 std::this_thread::sleep_for() 进行补偿。这种简单的帧率控制适合大多数场景，但对于需要精确帧 pacing 的应用，建议使用平台特定的 API（如 NVIDIA 的 WGL_NV_delay_before_swap）。</p><h2>注意事项</h2><ul><li>RenderThread 在 stop() 之前必须确保所有命令已执行完毕。</li><li>不要从渲染线程调用 submit()，这会导致死锁。</li><li>frame_count() 和 last_frame_time_ms() 是统计信息，不保证实时精度。</li><li>target_fps 为 0 时渲染线程以最大速度运行，可能占用大量 CPU。</li></ul><h2>相关类</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — 命令缓冲区</li><li><a href="./irenderbackend.html">IRenderBackend</a> — 渲染后端</li></ul></article>
 </div>
 </div>
 </main>

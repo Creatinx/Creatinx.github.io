@@ -186,7 +186,7 @@ desc.mass = desc.material.density * volume;</code></pre>
 <a href="./builtinphysicsworld2d.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: BuiltInPhysicsWorld2D</span></a>
 <a href="./audioengine.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AudioEngine</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>PhysicalMaterial 是 gryce-engine 中的物理材质定义，描述物体表面的摩擦、弹性和密度。它不是组件，而是物理 Body 创建时的参数。PhysicalMaterial 的默认值基于常见材质（冰、橡胶、木头、金属），但开发者可以自由定义。在 Jolt 和 Box2D 中，PhysicalMaterial 的字段映射到对应后端的材质属性。BuiltInPhysicsWorld2D 使用简化版的材质模型，只支持 friction 和 restitution。</p><h2>材质参数</h2><p>friction 控制滑动阻力，范围 0.0（无摩擦）到 1.0+（高摩擦）。restitution 控制弹性，0.0 表示完全非弹性碰撞，1.0 表示完全弹性碰撞。density 与体积相乘得到质量，用于 Dynamic 刚体的质量计算。Static 和 Kinematic 刚体的 mass 由调用者直接指定，忽略 density。</p><h2>注意事项</h2><ul><li>friction 可以大于 1.0，但某些物理后端（如 Box2D）在 friction > 1.0 时行为未定义。</li><li>restitution > 1.0 会导致能量增加，可能导致模拟不稳定。</li><li>density 的单位是 kg/m^3，与真实世界一致（水 = 1000）。</li><li>PhysicalMaterial 可以共享，多个 Body 可以使用同一个 PhysicalMaterial 实例。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./joltphysicsworld3d.html">JoltPhysicsWorld3D</a> — 3D 物理</li></ul></article>
 </div>
 </div>
 </main>

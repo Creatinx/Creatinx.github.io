@@ -216,7 +216,7 @@ struct VertexLayout {
 <a href="./irenderbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: IRenderBackend</span></a>
 <a href="./glshader.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLShader</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>GLBackend 是 IRenderBackend 的 OpenGL 4.6 实现。它在 init() 中执行 glewInit() 并查询 GPU 能力，在 begin_frame() 和 end_frame() 中管理帧缓冲状态。GLBackend 直接使用 OpenGL API，没有额外的抽象层，因此性能开销最小。所有 GPU 资源（VAO、VBO、EBO、shader program、texture）在 create 时直接调用对应的 glGen* 函数。</p><h2>性能特性</h2><p>GLBackend 在 NVIDIA 硬件上支持 WGL_NV_delay_before_swap 扩展，用于精确帧率控制。它使用传统的 immediate mode 渲染（通过 draw_mesh 和 draw_indexed），适合快速原型开发和小型项目。对于高性能需求，建议使用 VulkanBackend。</p><h2>注意事项</h2><ul><li>GLBackend 不支持多线程命令提交，所有 OpenGL 调用必须在渲染线程执行。</li><li>Shader 编译错误通过 spdlog 输出到控制台。</li><li>VAO 状态在 create_mesh 时绑定，draw 时不需要重新绑定。</li><li>深度测试和混合状态在 set_depth_test / set_blend 中立即生效。</li></ul><h2>相关类</h2><ul><li><a href="./irenderbackend.html">IRenderBackend</a> — 基接口</li><li><a href="./glshader.html">GLShader</a> — OpenGL 着色器</li><li><a href="./glmesh.html">GLMesh</a> — OpenGL 网格</li></ul></article>
 </div>
 </div>
 </main>

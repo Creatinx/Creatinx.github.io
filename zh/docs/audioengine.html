@@ -199,7 +199,7 @@ audio.play_one_shot(jump);</code></pre>
 <a href="./physicalmaterial.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: PhysicalMaterial</span></a>
 <a href="./audiosource.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AudioSource</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>AudioEngine 是 gryce-engine 的音频后端，基于 miniaudio 库。它管理音频设备的生命周期、主音量、全局 listener 位置和 3D 空间音频计算。AudioEngine 在 init() 中初始化 miniaudio 的 context 和 device，在 shutdown() 中释放所有资源。它支持 WAV、MP3、OGG 和 FLAC 格式，通过 miniaudio 的解码器自动识别格式。3D 音频使用 miniaudio 的 spatializer，计算声音源和 listener 之间的距离和方向衰减。</p><h2>3D 音频</h2><p>AudioEngine 通过 set_listener_position 和 set_listener_direction 设置全局 listener 状态。每个 AudioSource 组件在 update 时将自己的世界位置传递给 AudioEngine，AudioEngine 计算 attenuation 并应用到对应的声音源。miniaudio 的 spatializer 使用 HRTF（头部相关传递函数）模拟立体声定位，提供准确的 3D 音频效果。</p><h2>注意事项</h2><ul><li>AudioEngine 的 init() 必须在任何音频操作之前调用。</li><li>主音量范围是 0.0 - 1.0，超过此范围会被截断。</li><li>play_one_shot 创建临时声音源，播放结束后自动销毁。</li><li>active_voice_count() 返回当前播放的声音数量，可用于性能监控。</li></ul><h2>相关类</h2><ul><li><a href="./audiosource.html">AudioSource</a> — 音频源组件</li><li><a href="./audiolistener.html">AudioListener</a> — 监听器组件</li></ul></article>
 </div>
 </div>
 </main>

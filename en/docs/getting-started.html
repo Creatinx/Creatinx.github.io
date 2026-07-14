@@ -161,7 +161,18 @@
 </div>
 </div>
 <article class="lg:col-span-3 docs-content">
-<h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Getting Started</h1>
+<h1 class="docs-h1 text-3xl sm:text-4xl font-bold mb-8">Getting Started</h1><h2>Prerequisites</h2><p>Before building Gryce Engine, ensure your development environment meets the following requirements. The framework is developed and tested on Windows with MSYS2 UCRT64. GCC 13 or later with full C++23 support is required because the codebase uses features like concepts, ranges, and designated initializers extensively. CMake 3.28+ is needed for the modern preset and module support. Ninja is the recommended generator for fast parallel builds.</p><ul><li><strong>Windows 10/11</strong> with MSYS2 UCRT64 environment</li><li><strong>GCC 13+</strong> with C++23 support</li><li><strong>CMake 3.28+</strong></li><li><strong>Ninja</strong> build system</li><li><strong>Python 3.10+</strong> for the build script</li></ul><h2>Installation</h2><p>Clone the repository and install dependencies via MSYS2, then run the build script. The build script auto-detects GCC location, configures CMake with the correct toolchain, and runs Ninja with parallel jobs. After the build completes, the editor executable and engine library are available in the build directory.</p><pre><code class="language-bash">git clone https://github.com/Creatinx/Gryce-Engine.git
+cd Gryce-Engine
+pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-glew mingw-w64-ucrt-x86_64-glfw
+python build.py --jobs 8
+./build/Debug/bin/Debug/gryce.exe</code></pre><h2>Project Structure</h2><p>The repository is organized into several top-level directories. The <code>core/</code> directory contains the engine library (GryceRC) with all handwritten systems: ECS, RHI, math, scene, audio, physics integration, and asset pipeline. The <code>editor/</code> directory is currently a placeholder executable. The <code>tests/</code> directory contains unit tests for the math library and ECS. The <code>examples/</code> directory contains sample projects demonstrating rendering and physics.</p><pre><code class="language-bash">Gryce-Engine/
+├── core/          # Engine library (GryceRC)
+├── editor/        # Editor executable (placeholder)
+├── tests/         # Unit tests
+├── examples/      # Sample projects
+├── cmake/         # CMake modules
+├── docs/          # Documentation
+└── build.py       # One-click build script</code></pre><h2>Build Modes</h2><p>The build script supports multiple modes: Debug (default), Release, and Clean. Debug builds include full assertions, address sanitizer, and debug symbols. Release builds enable -O3, LTO, and strip debug symbols. The --tests flag enables the GoogleTest-based unit test suite.</p>
 <h2>Overview</h2>
 <p>gryce-engine is a very early-stage C++23 game framework. There is no editor. It is not built from scratch — it depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. The handwritten parts are ECS, RHI, math, and scene layers.</p>
 
@@ -214,7 +225,7 @@ int main() {
 <span></span>
 <a href="./build-system.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Build System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>gryce-engine 采用手写核心层 + 成熟第三方库的策略。ECS、RHI、数学库和场景层是手写实现，保证了对底层行为的完全控制。窗口/输入（GLFW）、OpenGL 加载（GLEW）、音频（miniaudio）、物理（Jolt/Box2D）、模型加载（Assimp）使用第三方库，避免重复造轮子。这种设计在开发效率和可控性之间取得了平衡。</p><h2>第三方依赖</h2><p>必需依赖：GLFW（窗口和输入）、GLEW（OpenGL 扩展加载）、CMake、Ninja、GCC 13+。可选依赖：Vulkan SDK（Vulkan 后端）、VMA（Vulkan 内存管理）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、miniaudio（音频）、stb_image（纹理加载）、nlohmann/json（场景序列化）、glm（可选数学库）、spdlog（日志）。</p><h2>注意事项</h2><ul><li>首次构建需要安装 MSYS2 和基本开发工具，耗时约 10-15 分钟。</li><li>如果只需要 OpenGL 后端，可以跳过 Vulkan SDK 安装。</li><li>build.py 会自动将 MSYS2 的 DLL 复制到输出目录，确保可执行文件能直接运行。</li><li>Debug 构建包含断言和地址检查，适合开发；Release 构建适合发布。</li></ul></article>
 </div>
 </div>
 </main>

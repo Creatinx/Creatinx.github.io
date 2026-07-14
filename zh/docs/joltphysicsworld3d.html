@@ -202,7 +202,7 @@ struct BodyDesc {
 <a href="./physicsfactory.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: PhysicsFactory</span></a>
 <a href="./box2dworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Box2DWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>JoltPhysicsWorld3D 是 gryce-engine 的 3D 物理后端，基于 Jolt Physics 5.2。它实现了 IPhysicsWorld3D 接口，提供刚体动力学、碰撞检测、射线检测和约束系统。JoltPhysicsWorld3D 在 init() 中创建 Jolt 的 PhysicsSystem、BodyInterface 和 ContactListener。在 step() 中，它调用 PhysicsSystem::Update 以固定时间步长推进物理模拟。Jolt 的 job system 使用 std::thread 实现多线程物理模拟，默认使用所有可用 CPU 核心。</p><h2>刚体类型</h2><p>Jolt 支持三种刚体类型：Static（不动，质量无穷大）、Dynamic（受力和碰撞影响）、Kinematic（由代码控制位置，不受力影响但影响其他刚体）。在 BodyDesc 中通过 type 字段指定。PhysicalMaterial 的 friction 和 restitution 在 Jolt 中映射到 Body 的 friction 和 restitution_scale。</p><h2>注意事项</h2><ul><li>Jolt 的 step() 必须在固定时间步长下调用，否则模拟不稳定。</li><li>raycast 返回的 RaycastResult 包含 hit body、hit point 和 hit normal。</li><li>add_force 在世界坐标系中施加力，add_impulse 施加冲量（瞬时力）。</li><li>shape 在 Jolt 中通过 ShapeHandle 引用，由 JoltPhysicsWorld3D 内部管理。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./physicalmaterial.html">PhysicalMaterial</a> — 物理材质</li></ul></article>
 </div>
 </div>
 </main>

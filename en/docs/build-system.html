@@ -197,7 +197,7 @@ ninja -C build -j8</code></pre>
 <a href="./getting-started.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Getting Started</span></a>
 <a href="./window.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Window</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>gryce-engine 的构建系统基于 CMake 3.28+，使用预设（preset）和工具链文件（toolchain file）来自动检测 MSYS2 UCRT64 环境。build.py 是一个 Python 包装脚本，解析命令行参数，选择正确的 preset（debug 或 release），然后调用 cmake --build。它还支持自动安装缺失的依赖（通过 pacman 包管理器）和预取可选的第三方库（如 Jolt、Box2D）。</p><h2>CMake 选项</h2><p>Gryce_BUILD_EDITOR 控制是否构建编辑器可执行文件。Gryce_BUILD_TESTS 控制是否编译 GoogleTest 单元测试。Gryce_BACKEND_OPENGL 和 Gryce_BACKEND_VULKAN 分别控制 OpenGL 和 Vulkan 后端的编译。Gryce_USE_JOLT、Gryce_USE_BOX2D 和 Gryce_USE_ASSIMP 控制可选物理和模型加载库。所有选项默认为 ON（除了 TESTS），如果对应库未安装则自动降级为 OFF。</p><h2>注意事项</h2><ul><li>build.py 假设 MSYS2 安装在默认路径 C:\msys64，如果安装在其他位置需要手动设置 PATH。</li><li>CMake 使用 Ninja 生成器，比 Make 快 2-3 倍，但首次运行需要安装 ninja。</li><li>Release 构建启用 -O3 和 LTO，但编译时间比 Debug 长 3-5 倍。</li><li>--clean 标志会删除整个 build 目录，谨慎使用。</li></ul></article>
 </div>
 </div>
 </main>

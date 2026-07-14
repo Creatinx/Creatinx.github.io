@@ -198,7 +198,7 @@ Matrix4f world = t.world_matrix();</code></pre>
 <a href="./isystem.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: ISystem</span></a>
 <a href="./transform.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Transform</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-</article>
+<h2>设计原理</h2><p>Scene 是 gryce-engine 中的场景图容器，负责 entity 的生命周期管理和父子层级维护。它使用 ComponentStore 作为组件存储后端，通过 entity ID 索引所有组件。Scene 提供 create_entity 和 destroy_entity 操作，以及 find_entity 按名称查找。destroy_entity 递归销毁所有子实体，确保场景图的一致性。</p><h2>查询系统</h2><p>Scene 的 query 方法遍历所有拥有指定组件的实体，返回一个 QueryResult 对象，支持 range-based for 循环。query 内部使用 ComponentStore 的 entities_with 方法，保证 O(n) 时间复杂度，其中 n 是拥有该组件的实体数量。对于多组件查询，Scene 选择组件数量最少的类型作为遍历基础，然后过滤其他组件。</p><h2>注意事项</h2><ul><li>create_entity 返回的 Entity 在 scene 中始终有效，直到 destroy_entity 被调用。</li><li>find_entity 按名称查找，如果有多个同名实体，返回第一个找到的。</li><li>clear 销毁所有实体和组件，但保留注册的类型信息。</li><li>query 在遍历过程中不能修改组件存储（添加/删除组件），否则会导致迭代器失效。</li></ul><h2>相关类</h2><ul><li><a href="./world.html">World</a> — 容器</li><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
 </div>
 </div>
 </main>
