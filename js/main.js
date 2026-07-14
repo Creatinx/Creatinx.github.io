@@ -13,8 +13,8 @@ if(canvas){
 const ctx=canvas.getContext('2d');
 let w,h,cx,cy,mx=0,my=0,time=0;
 function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight;cx=w/2;cy=h/2;}
-function getAccent(){const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-primary').trim()||'#6366f1';}
-function getSecondary(){const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-secondary').trim()||'#8b5cf6';}
+function getAccent(){const t=document.documentElement.getAttribute('data-theme');if(t==='light')return'#606060';const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-primary').trim()||'#6366f1';}
+function getSecondary(){const t=document.documentElement.getAttribute('data-theme');if(t==='light')return'#888888';const s=getComputedStyle(document.documentElement);return s.getPropertyValue('--accent-secondary').trim()||'#8b5cf6';}
 window.addEventListener('resize',resize);
 resize();
 document.addEventListener('mousemove',e=>{mx=(e.clientX-cx)/w;my=(e.clientY-cy)/h;});
