@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/audiolistener.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/audiolistener.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: AudioListener</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： AudioListener</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -181,8 +181,8 @@ camera.add_component&lt;AudioListener&gt;();</code></pre>
 <h2>系统行为</h2>
 <p>AudioSystem 遍历所有 AudioListener 组件（通常一个）并更新 AudioEngine 中的全局监听器位置。AudioSource 的 3D 衰减相对于此监听器计算。</p>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./audiosource.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioSource</span></a>
-<a href="./assetmanager.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AssetManager</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./audiosource.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： AudioSource</span></a>
+<a href="./assetmanager.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： AssetManager</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>AudioListener 是 gryce-engine 中的 3D 音频监听器组件，通常附加到相机 Entity 上。AudioEngine 在更新时读取所有 AudioListener 的位置和朝向（通过 Transform 组件），计算全局 listener 状态。对于多个 AudioListener，AudioEngine 使用第一个启用的 listener（enabled = true）。如果没有 AudioListener，3D 音频衰减不生效，所有声音以最大音量播放。</p><h2>朝向计算</h2><p>AudioListener 的朝向从 Transform 的 rotation 计算。forward 方向是 rotation 的 Z 轴负方向（OpenGL 约定），up 方向是 Y 轴正方向。AudioEngine 将这些方向传递给 miniaudio 的 spatializer，用于计算 HRTF 和声像定位。如果 Entity 没有 Transform 组件，AudioListener 使用默认位置 (0,0,0) 和朝向 (0,0,-1)。</p><h2>注意事项</h2><ul><li>场景中通常只有一个 AudioListener，多个 AudioListener 会导致不可预测的 3D 音频效果。</li><li>AudioListener 没有自己的数据，所有状态从 Transform 组件读取。</li><li>enabled 为 false 时，该 AudioListener 被忽略，AudioEngine 使用下一个启用的 listener。</li><li>如果没有 AudioListener，所有声音以 2D 模式播放，不计算空间衰减。</li></ul><h2>相关类</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — 音频引擎</li><li><a href="./audiosource.html">AudioSource</a> — 音频源</li></ul></article>
 </div>
@@ -199,7 +199,7 @@ camera.add_component&lt;AudioListener&gt;();</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

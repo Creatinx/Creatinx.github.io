@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/vector.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/vector.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: Vector</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： Vector</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -209,8 +209,8 @@ struct Vector4f {
     Vector3f to_vector3() const; // 除以 w
 };</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./resourcepath.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: ResourcePath</span></a>
-<a href="./matrix.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Matrix</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./resourcepath.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： ResourcePath</span></a>
+<a href="./matrix.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： Matrix</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>Vector2f、Vector3f 和 Vector4f 是 gryce-engine 的自定义向量类型，提供完整的运算符重载和常用几何操作。它们不使用 SIMD 指令，保持代码简单和可移植。Vector3f 的 cross product 使用右手定则。所有向量类型支持隐式转换到 float*，可以直接传递给 OpenGL 的 glUniform*fv 和 Vulkan 的 push constant。</p><h2>数学约定</h2><p>所有角度操作（如 rotate_x, rotate_y, rotate_z）使用度数而非弧度。这与其他图形库（如 glm 使用弧度）不同，是为了与常用 3D 编辑工具（如 Blender）保持一致。长度和距离计算使用标准的欧几里得范数。normalize 在长度为 0 时返回零向量，不抛出异常。</p><h2>注意事项</h2><ul><li>Vector 类型不支持 SIMD，在大量计算时可能不如 glm 快。</li><li>cross 在右手坐标系中使用右手定则。</li><li>lerp 使用线性插值，slerp 使用球面插值，要求输入向量已归一化。</li><li>Vector4f 的 to_vector3 执行齐次除法（除以 w），w 为 0 时返回零向量。</li></ul><h2>相关类</h2><ul><li><a href="./matrix.html">Matrix</a> — 矩阵数学</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
 </div>
@@ -227,7 +227,7 @@ struct Vector4f {
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

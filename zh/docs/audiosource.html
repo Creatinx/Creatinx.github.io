@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/audiosource.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/audiosource.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: AudioSource</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： AudioSource</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -193,8 +193,8 @@ source.loop = true;
 source.volume = 0.5f;
 source.play();</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./audioengine.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioEngine</span></a>
-<a href="./audiolistener.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AudioListener</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./audioengine.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： AudioEngine</span></a>
+<a href="./audiolistener.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： AudioListener</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>AudioSource 是 gryce-engine 中的音频源组件，附加到 Entity 上用于播放声音。它支持 3D 空间定位：AudioEngine 在更新时读取 AudioSource 所在 Entity 的 Transform 位置，计算距离衰减和方向声像。AudioSource 支持循环播放、音量控制、播放/暂停/停止，以及播放进度查询。每个 AudioSource 对应 miniaudio 中的一个声音源（voice），多个 AudioSource 可以同时播放。</p><h2>空间音频</h2><p>AudioSource 的 min_distance 和 max_distance 控制 3D 衰减范围。在 min_distance 内音量最大，超过 max_distance 后音量衰减为 0。miniaudio 的 attenuation model 使用 inverse distance，适合大多数游戏场景。对于非空间音频（如背景音乐），将 min_distance 设为极大值即可禁用衰减。</p><h2>注意事项</h2><ul><li>AudioSource 的 clip 必须在 AudioEngine 中加载，否则 play() 会失败。</li><li>loop 在音频到达末尾时自动重新开始，不需要手动调用 play()。</li><li>set_time 以秒为单位，设置值超出 duration 时会被截断。</li><li>多个 AudioSource 可以同时播放同一个 clip，不共享底层 voice。</li></ul><h2>相关类</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — 音频引擎</li><li><a href="./audiolistener.html">AudioListener</a> — 监听器</li></ul></article>
 </div>
@@ -211,7 +211,7 @@ source.play();</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

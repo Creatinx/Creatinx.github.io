@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/window.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/window.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: Window</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： Window</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -211,8 +211,8 @@ window.set_event_callback([](const Event& e) {
     }
 });</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./build-system.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: 构建系统</span></a>
-<a href="./irenderbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: IRenderBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./build-system.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： 构建系统</span></a>
+<a href="./irenderbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： IRenderBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>Window 基于 GLFW 3.3+ 构建，提供跨平台的窗口和输入抽象。它不直接暴露 GLFW 对象，而是通过 Event 结构体将所有事件（键盘、鼠标、窗口调整大小）统一传递给单一回调。这种设计允许游戏代码以统一方式处理输入，而不关心底层平台差异。Window 同时管理 OpenGL 上下文或 Vulkan 表面，与渲染后端解耦。</p><h2>事件系统</h2><p>所有输入事件通过 set_event_callback 注册的一个回调函数传递。Event 是一个 tagged union，包含事件类型和具体数据。回调在游戏逻辑的主线程上同步执行，因此可以在回调中直接修改游戏状态。常用事件类型包括：KeyPress、KeyRelease、MouseMove、MouseButtonPress、WindowResize、WindowClose。</p><h2>注意事项</h2><ul><li>Window 必须在主线程创建，这是 GLFW 的限制。</li><li>poll_events() 必须在每帧开始时调用，否则事件会堆积。</li><li>delta_time() 在首次调用时返回 0，之后返回实际帧时间。</li><li>set_vsync(true) 会限制帧率为显示器刷新率，但可能增加输入延迟。</li></ul><h2>相关类</h2><ul><li><a href="./irenderbackend.html">IRenderBackend</a> — 渲染后端接口</li><li><a href="./rendercontext.html">RenderContext</a> — 渲染上下文</li></ul></article>
 </div>
@@ -229,7 +229,7 @@ window.set_event_callback([](const Event& e) {
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

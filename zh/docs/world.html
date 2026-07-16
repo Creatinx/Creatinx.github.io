@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/world.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/world.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: World</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： World</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -203,8 +203,8 @@ while (window.is_open()) {
 }
 world.cleanup();</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./vulkanshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanShader</span></a>
-<a href="./entity.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Entity</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./vulkanshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： VulkanShader</span></a>
+<a href="./entity.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： Entity</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>World 是 gryce-engine 中最顶层的游戏对象容器。它拥有一个 Scene（场景图）和一组 ISystem（系统）实例。World 的职责是驱动整个游戏循环：按固定时间步长调用 fixed_update，按帧时间调用 update，并在每帧结束时调用 render。系统按 priority() 返回值降序排序，优先级高的系统先执行。这种设计保证渲染系统在逻辑系统之后执行，物理系统优先于游戏逻辑。</p><h2>生命周期</h2><p>World 的生命周期严格分为五个阶段：init → fixed_update → update → render → cleanup。init 在程序启动时调用一次，cleanup 在退出时调用一次。fixed_update 保证以固定时间步长（通常 1/60 秒）调用，适合物理模拟。update 以实际帧时间调用，适合游戏逻辑。render 在每帧结束时调用，接收 IRenderBackend* 用于实际绘制。</p><h2>注意事项</h2><ul><li>World 不是线程安全的，所有操作必须在主线程执行。</li><li>System 的 priority() 默认返回 0，值越大执行越早。</li><li>create_entity 返回的 Entity 句柄在对应 Entity 被销毁后失效。</li><li>scene() 返回的 Scene 引用在 World 生命周期内始终有效。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 场景对象句柄</li><li><a href="./scene.html">Scene</a> — 场景图容器</li><li><a href="./isystem.html">ISystem</a> — 系统基接口</li></ul></article>
 </div>
@@ -221,7 +221,7 @@ world.cleanup();</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

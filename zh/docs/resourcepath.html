@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/resourcepath.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/resourcepath.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: ResourcePath</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： ResourcePath</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -192,8 +192,8 @@ std::string abs = mesh.resolved(); // /home/user/project/models/cube.obj
 ResourcePath textures("res:/textures");
 auto diffuse = textures / "diffuse.png";</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./asyncloader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AsyncLoader</span></a>
-<a href="./vector.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Vector</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./asyncloader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： AsyncLoader</span></a>
+<a href="./vector.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： Vector</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>ResourcePath 是 gryce-engine 的虚拟路径系统，将 res:/ 前缀映射到项目根目录。这种设计允许游戏代码使用统一的路径格式，而不关心实际文件系统的布局。ResourcePath 支持路径拼接（operator/）和常用查询（exists, extension, filename）。在构建时，res:/ 根目录通过 set_root() 设置，通常为 CMake 的 CMAKE_SOURCE_DIR。</p><h2>路径解析</h2><p>ResourcePath 的解析流程：1) 去除 res:/ 前缀；2) 与 root() 拼接为绝对路径；3) 规范化路径分隔符（统一为 /）。resolved() 返回的绝对路径可以直接传递给 std::ifstream 或 AssetManager 的加载器。exists() 使用 std::filesystem::exists 检查文件存在性，file_size() 使用 std::filesystem::file_size 获取大小。</p><h2>注意事项</h2><ul><li>set_root 必须在任何路径解析之前调用，通常在 main() 开始时。</li><li>ResourcePath 不支持 ../ 路径遍历，出于安全考虑会被拒绝。</li><li>虚拟路径必须以 res:/ 开头，否则会被当作普通文件路径处理。</li><li>operator/ 自动处理路径分隔符，不需要手动添加 /。</li></ul><h2>相关类</h2><ul><li><a href="./assetmanager.html">AssetManager</a> — 资源管理</li><li><a href="./asyncloader.html">AsyncLoader</a> — 异步加载</li></ul></article>
 </div>
@@ -210,7 +210,7 @@ auto diffuse = textures / "diffuse.png";</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

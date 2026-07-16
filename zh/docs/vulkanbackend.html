@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/vulkanbackend.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/vulkanbackend.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: VulkanBackend</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： VulkanBackend</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -198,8 +198,8 @@ public:
     VulkanSwapchain* swapchain() const;
 };</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./renderthread.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: RenderThread</span></a>
-<a href="./vulkandevice.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanDevice</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./renderthread.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： RenderThread</span></a>
+<a href="./vulkandevice.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： VulkanDevice</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>VulkanBackend 是 IRenderBackend 的 Vulkan 1.2 实现。它管理 Vulkan instance、surface、device、swapchain 和 command buffer 的完整生命周期。与 GLBackend 不同，VulkanBackend 使用显式的同步原语（semaphore、fence）来管理 CPU-GPU 并行。所有资源创建和销毁操作都被封装在对应的管理类（VulkanDevice、VulkanSwapchain、VulkanBuffer 等）中，避免在 VulkanBackend 主类中积累过多的平台特定代码。</p><h2>多线程注意事项</h2><p>Vulkan 允许在多个线程上构建 command buffer，但 gryce-engine 当前只在渲染线程上使用单个 command buffer。这种简化保证了正确性，但限制了 Vulkan 的多线程构建优势。未来的版本可能支持 secondary command buffer 和并行构建。</p><h2>注意事项</h2><ul><li>VulkanBackend 要求 Vulkan 1.2 兼容的驱动和硬件。</li><li>surface 创建需要平台特定的扩展（Windows 上为 VK_KHR_win32_surface）。</li><li>swapchain 在窗口大小改变时必须调用 recreate()。</li><li>Vulkan 的 validation layers 在 Debug 构建中启用，Release 构建中禁用。</li></ul><h2>相关类</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li><li><a href="./vulkanswapchain.html">VulkanSwapchain</a> — 交换链</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
 </div>
@@ -216,7 +216,7 @@ public:
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

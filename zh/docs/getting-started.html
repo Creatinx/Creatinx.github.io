@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/getting-started.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: 快速开始</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： 快速开始</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -212,7 +212,7 @@ int main() {
 }</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
 <span></span>
-<a href="./build-system.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: 构建系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./build-system.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： 构建系统</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>gryce-engine 采用手写核心层 + 成熟第三方库的策略。ECS、RHI、数学库和场景层是手写实现，保证了对底层行为的完全控制。窗口/输入（GLFW）、OpenGL 加载（GLEW）、音频（miniaudio）、物理（Jolt/Box2D）、模型加载（Assimp）使用第三方库，避免重复造轮子。这种设计在开发效率和可控性之间取得了平衡。</p><h2>第三方依赖</h2><p>必需依赖：GLFW（窗口和输入）、GLEW（OpenGL 扩展加载）、CMake、Ninja、GCC 13+。可选依赖：Vulkan SDK（Vulkan 后端）、VMA（Vulkan 内存管理）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、miniaudio（音频）、stb_image（纹理加载）、nlohmann/json（场景序列化）、glm（可选数学库）、spdlog（日志）。</p><h2>注意事项</h2><ul><li>首次构建需要安装 MSYS2 和基本开发工具，耗时约 10-15 分钟。</li><li>如果只需要 OpenGL 后端，可以跳过 Vulkan SDK 安装。</li><li>build.py 会自动将 MSYS2 的 DLL 复制到输出目录，确保可执行文件能直接运行。</li><li>Debug 构建包含断言和地址检查，适合开发；Release 构建适合发布。</li></ul></article>
 </div>
@@ -229,7 +229,7 @@ int main() {
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/matrix.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/matrix.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: Matrix</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： Matrix</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -206,7 +206,7 @@ Matrix4f view = Matrix4f::look_at({0,2,5}, {0,0,0}, {0,1,0});
 Matrix4f proj = Matrix4f::perspective(60.0f, 16.0f/9.0f, 0.1f, 100.0f);
 Matrix4f mvp = proj * view * model;</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./vector.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Vector</span></a>
+<a href="./vector.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： Vector</span></a>
 <span></span>
 </div>
 <h2>设计原理</h2><p>Matrix4f 是 gryce-engine 中的列主序 4x4 矩阵，存储为 float m[16]。列主序意味着 m[col*4 + row] 访问元素 (row, col)。这种布局与 OpenGL 的 glUniformMatrix4fv 和 Vulkan 的 push constant 兼容，可以直接传递而不需要转置。Matrix4f 提供所有常见的变换工厂方法：translate、scale、rotate、ortho、perspective、look_at。所有角度参数使用度数而非弧度。</p><h2>矩阵运算</h2><p>Matrix4f 的乘法使用标准矩阵乘法，时间复杂度 O(n^3) 其中 n=4。inverse() 使用伴随矩阵法，对于标准变换矩阵（TRS）足够高效。对于一般矩阵，inverse() 的性能和精度可能不如专门的线性代数库（如 Eigen）。determinant() 返回矩阵的行列式，用于判断矩阵是否可逆。transposed() 返回转置矩阵，用于法线矩阵计算。</p><h2>注意事项</h2><ul><li>Matrix4f 使用列主序，与 DirectX 的行主序不同，与 Shader 中的 mat4 一致。</li><li>perspective 的 fov 参数是垂直视角（度数），aspect 是宽高比。</li><li>look_at 的 up 向量不需要归一化，内部会自动处理。</li><li>inverse() 在矩阵不可逆时（行列式接近 0）返回零矩阵，不抛出异常。</li></ul><h2>相关类</h2><ul><li><a href="./vector.html">Vector</a> — 向量数学</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
@@ -224,7 +224,7 @@ Matrix4f mvp = proj * view * model;</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

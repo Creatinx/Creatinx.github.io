@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/glrenderer2d.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/glrenderer2d.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: GLRenderer2D</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： GLRenderer2D</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -197,8 +197,8 @@ renderer.draw_rect({100, 100}, {200, 50}, {1.0f, 0.2f, 0.2f, 1.0f});
 renderer.draw_text("Hello", {120, 115}, 16.0f, {1,1,1,1});
 renderer.end_scene();</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./glmesh.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: GLMesh</span></a>
-<a href="./rendercommandbuffer.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: RenderCommandBuffer</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./glmesh.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： GLMesh</span></a>
+<a href="./rendercommandbuffer.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： RenderCommandBuffer</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>GLRenderer2D 是 gryce-engine 的 2D 批处理渲染器，专门用于 UI、调试绘制和 2D 游戏。它使用 CPU 端顶点缓冲，每帧将 draw_rect、draw_circle 等调用合并为一批顶点数据，然后一次性上传到 GPU 并绘制。这种批处理策略将大量小绘制调用合并为一次 draw call，显著减少 GPU 开销。GLRenderer2D 默认使用正交投影，坐标系为屏幕空间（左下角为原点）。</p><h2>批处理策略</h2><p>GLRenderer2D 维护一个动态增长的顶点数组。每次调用 draw_rect 时，将 4 个顶点追加到数组；调用 draw_circle 时，将 segments 个三角形扇形顶点追加。当顶点数组满或调用 flush() 时，整个数组上传到 VBO 并绘制。这种设计在 2D 元素数量较多时（如 1000+ 个 rect）性能优异，但单个元素改变时会导致整批重绘。</p><h2>注意事项</h2><ul><li>GLRenderer2D 不支持深度测试，所有元素按提交顺序绘制。</li><li>begin_scene 和 end_scene 必须配对调用，否则顶点数据不会上传。</li><li>draw_text 使用内部 bitmap font，支持 ASCII 字符，不支持中文。</li><li>flush() 在 end_scene 时自动调用，不需要手动调用。</li></ul><h2>相关类</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./matrix.html">Matrix</a> — 正交投影矩阵</li></ul></article>
 </div>
@@ -215,7 +215,7 @@ renderer.end_scene();</code></pre>
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

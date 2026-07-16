@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/vulkandevice.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/vulkandevice.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: VulkanDevice</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： VulkanDevice</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -188,8 +188,8 @@ public:
     bool supports_extension(const char* name) const;
 };</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./vulkanbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanBackend</span></a>
-<a href="./vulkanswapchain.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanSwapchain</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./vulkanbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： VulkanBackend</span></a>
+<a href="./vulkanswapchain.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： VulkanSwapchain</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>VulkanDevice 负责选择物理设备、创建逻辑设备和初始化 VMA（Vulkan Memory Allocator）。在 create() 中，它枚举所有可用的物理设备，选择第一个满足要求的设备（必须有图形和呈现队列）。然后创建逻辑设备，并初始化 VMA 分配器。VMA 提供了高效的 GPU 内存管理，自动处理 memory type 选择和 defragmentation。</p><h2>队列族</h2><p>Vulkan 的 queue family 是一个关键概念。graphics_queue_family 用于图形命令，present_queue_family 用于呈现到 surface。在大多数设备上这两个 queue family 是相同的，但在某些设备上可能不同。VulkanDevice 分别记录这两个 queue family 索引，并确保 command buffer 提交到正确的队列。</p><h2>注意事项</h2><ul><li>create() 必须在 VulkanBackend 初始化之后调用，因为需要 instance 和 surface。</li><li>VMA 分配器在 destroy() 中销毁，必须在所有 GPU 资源释放之后。</li><li>command_pool 在创建时针对 graphics queue family 初始化。</li><li>allocate_command_buffer 创建的 command buffer 必须配对 free_command_buffer 或 submit 后由 Vulkan 回收。</li></ul><h2>相关类</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
 </div>
@@ -206,7 +206,7 @@ public:
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>

@@ -45,7 +45,7 @@
 <button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
 </div>
 </div>
-<a href="../../en/docs/joltphysicsworld3d.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="Switch language">zh</a>
+<a href="../../en/docs/joltphysicsworld3d.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
@@ -111,7 +111,7 @@
 </aside>
 <div class="lg:hidden col-span-1 mb-4">
 <button id="docs-sidebar-toggle" class="w-full px-4 py-3 rounded-xl border docs-sidebar-toggle flex items-center justify-between">
-<span class="font-medium text-sm">Contents: JoltPhysicsWorld3D</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+<span class="font-medium text-sm">目录： JoltPhysicsWorld3D</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
 </button>
 <div id="docs-sidebar-mobile" class="hidden mt-2 space-y-1 border rounded-xl p-2 docs-sidebar-mobile">
 <div class="sidebar-section-title text-xs font-semibold uppercase tracking-wider px-3 py-2 mt-2 mb-1">快速开始</div>
@@ -199,8 +199,8 @@ struct BodyDesc {
     PhysicalMaterial material;
 };</code></pre>
 <div class="docs-nav border-t mt-12 pt-8 flex flex-col sm:flex-row justify-between gap-4">
-<a href="./physicsfactory.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: PhysicsFactory</span></a>
-<a href="./box2dworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Box2DWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<a href="./physicsfactory.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>上一篇： PhysicsFactory</span></a>
+<a href="./box2dworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>下一篇： Box2DWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
 <h2>设计原理</h2><p>JoltPhysicsWorld3D 是 gryce-engine 的 3D 物理后端，基于 Jolt Physics 5.2。它实现了 IPhysicsWorld3D 接口，提供刚体动力学、碰撞检测、射线检测和约束系统。JoltPhysicsWorld3D 在 init() 中创建 Jolt 的 PhysicsSystem、BodyInterface 和 ContactListener。在 step() 中，它调用 PhysicsSystem::Update 以固定时间步长推进物理模拟。Jolt 的 job system 使用 std::thread 实现多线程物理模拟，默认使用所有可用 CPU 核心。</p><h2>刚体类型</h2><p>Jolt 支持三种刚体类型：Static（不动，质量无穷大）、Dynamic（受力和碰撞影响）、Kinematic（由代码控制位置，不受力影响但影响其他刚体）。在 BodyDesc 中通过 type 字段指定。PhysicalMaterial 的 friction 和 restitution 在 Jolt 中映射到 Body 的 friction 和 restitution_scale。</p><h2>注意事项</h2><ul><li>Jolt 的 step() 必须在固定时间步长下调用，否则模拟不稳定。</li><li>raycast 返回的 RaycastResult 包含 hit body、hit point 和 hit normal。</li><li>add_force 在世界坐标系中施加力，add_impulse 施加冲量（瞬时力）。</li><li>shape 在 Jolt 中通过 ShapeHandle 引用，由 JoltPhysicsWorld3D 内部管理。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./physicalmaterial.html">PhysicalMaterial</a> — 物理材质</li></ul></article>
 </div>
@@ -217,7 +217,7 @@ struct BodyDesc {
 </div>
 <span class="font-bold text-base nav-text">gryce-engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">A very early-stage C++23 game framework. No editor. Not built from scratch — depends on GLFW, GLEW, Vulkan SDK, miniaudio, Jolt, Box2D, Assimp, and others. Handwritten parts: ECS, RHI, math, scene.</p>
+<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。</p>
 </div>
 
 <div>
