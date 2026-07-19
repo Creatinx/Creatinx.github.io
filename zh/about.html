@@ -3,20 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>关于 Gryce Engine | Gryce Engine</title>
+<title>关于 Gryce-Engine | Gryce-Engine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../css/prism-dark.css" id="prism-theme">
 <script src="../js/prism.js"></script>
 <script src="../js/prism-cpp.js"></script>
-<script src="../js/prism-bash.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet" href="../css/themes.css">
 <link rel="stylesheet" href="../css/styles.css">
 </head>
@@ -63,25 +58,56 @@
 </div>
 </nav>
 <main>
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
-<div class="text-center mb-16">
-<div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center mx-auto mb-6 shadow-2xl">
-<span class="text-white font-bold text-3xl">G</span>
+<!-- Page Header -->
+<div class="pt-28 pb-12 px-6 text-center">
+<h1 class="text-3xl md:text-4xl font-bold mb-3">关于 Gryce-Engine</h1>
+<p class="text-base text-[var(--text-secondary)]">Creatinx 开发的早期 C++23 游戏框架。</p>
 </div>
-<h1 class="text-4xl sm:text-5xl font-bold mb-4">关于 Gryce</h1>
-<p class="text-lg opacity-70 max-w-2xl mx-auto">Creatinx 开发的早期 C++23 游戏框架。尚无编辑器。</p>
-</div>
-<div class="space-y-8 about-content">
-<div class="about-card p-8 rounded-2xl border">
-<p class="text-base leading-relaxed mb-4"><strong>Gryce 是 Creatinx 开发的早期 C++23 游戏框架。</strong>它不是一个完整的引擎 —— 没有编辑器、没有资源管线 GUI、没有可视化脚本。目前已实现的是一套手写核心层（ECS、RHI、数学库、场景图），建立在成熟的第三方库之上。</p>
+
+<!-- About Content -->
+<div class="max-w-3xl mx-auto px-6 pb-16">
+<div class="about-card p-6 rounded-lg border">
+<p class="text-base leading-relaxed mb-4"><strong>Gryce-Engine 是 Creatinx 开发的早期 C++23 游戏框架。</strong>它不是一个完整的引擎 —— 没有编辑器、没有资源管线 GUI、没有可视化脚本。目前已实现的是一套手写核心层（ECS、RHI、数学库、场景图），建立在成熟的第三方库之上。</p>
 <p class="text-base leading-relaxed mb-4"><strong>第三方依赖：</strong>GLFW（窗口/输入）、GLEW（OpenGL 加载器）、Vulkan SDK + VMA（Vulkan 后端）、miniaudio（音频）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、stb_image（纹理）、nlohmann/json（场景）、glm（可选数学库）、spdlog（日志）。这些不是可选的 —— 缺少任何一个框架都无法编译。</p>
 <p class="text-base leading-relaxed mb-4"><strong>手写层：</strong>实体组件系统（稀疏集存储）、渲染硬件接口（OpenGL + Vulkan 后端）、自定义数学库（Vector2f/3f/4f, Matrix4f）、场景图（Entity, Transform, Prefab）、异步资源加载器、渲染线程 + 命令缓冲区架构。</p>
-<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。Python build.py 一键构建脚本。<strong>\u00a9 2026/6 Creatinx. MIT 协议。</strong></p>
+<p class="text-base leading-relaxed">开发环境：Windows + MSYS2 UCRT64 GCC (C++23) + CMake + Ninja。Python build.py 一键构建脚本。<strong>&copy; 2026/6 Creatinx. MIT 协议。</strong></p>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">C++23</div><div class="text-sm opacity-60">标准</div></div>
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">2</div><div class="text-sm opacity-60">渲染后端</div></div>
-<div class="about-stat-card p-6 rounded-2xl border text-center"><div class="text-3xl font-bold mb-1 about-stat-number">10+</div><div class="text-sm opacity-60">第三方依赖</div></div>
+
+<!-- Stats -->
+<div class="grid grid-cols-3 gap-4 mb-16">
+<div class="about-stat-card p-5 rounded-lg border text-center">
+<div class="text-2xl font-bold mb-1 about-stat-number">C++23</div>
+<div class="text-sm text-[var(--text-secondary)]">标准</div>
+</div>
+<div class="about-stat-card p-5 rounded-lg border text-center">
+<div class="text-2xl font-bold mb-1 about-stat-number">2</div>
+<div class="text-sm text-[var(--text-secondary)]">渲染后端</div>
+</div>
+<div class="about-stat-card p-5 rounded-lg border text-center">
+<div class="text-2xl font-bold mb-1 about-stat-number">10+</div>
+<div class="text-sm text-[var(--text-secondary)]">第三方依赖</div>
+</div>
+</div>
+
+<!-- Get Involved -->
+<div class="mb-16">
+<h2 class="text-xl font-semibold mb-6">参与开发</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+<div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg p-5">
+<i data-lucide="git-pull-request" class="w-5 h-5 text-[var(--accent-primary)] mx-auto mb-2"></i>
+<div class="text-sm font-semibold mb-1">贡献代码</div>
+<p class="text-xs text-[var(--text-secondary)]">提交 PR 修复 Bug 或实现新特性。</p>
+</div>
+<div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg p-5">
+<i data-lucide="file-text" class="w-5 h-5 text-[var(--accent-primary)] mx-auto mb-2"></i>
+<div class="text-sm font-semibold mb-1">完善文档</div>
+<p class="text-xs text-[var(--text-secondary)]">改进 API 参考、编写教程或修正错误。</p>
+</div>
+<div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg p-5">
+<i data-lucide="message-circle" class="w-5 h-5 text-[var(--accent-primary)] mx-auto mb-2"></i>
+<div class="text-sm font-semibold mb-1">反馈问题</div>
+<p class="text-xs text-[var(--text-secondary)]">使用中遇到问题？提交 Issue。</p>
+</div>
 </div>
 </div>
 </div>
@@ -95,9 +121,9 @@
 <div class="w-7 h-7 rounded-md bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
 <span class="text-white font-bold text-xs">G</span>
 </div>
-<span class="font-bold text-base nav-text">Gryce Engine</span>
+<span class="font-bold text-base nav-text">Gryce-Engine</span>
 </div>
-<p class="footer-text text-sm leading-relaxed">Gryce Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。\u00a9 2026/6 Creatinx. MIT 协议。</p>
+<p class="footer-text text-sm leading-relaxed">Gryce-Engine 是一个非常早期的 C++23 游戏框架，目前没有编辑器。手写 ECS、RHI、数学库、场景。作者 Creatinx。&copy; 2026/6 Creatinx. MIT 协议。</p>
 </div>
 
 <div>
@@ -110,7 +136,7 @@
 </div>
 </div>
 <div class="border-t footer-border mt-8 pt-8 text-center">
-<p class="footer-text text-xs">© 2026/6 Creatinx. MIT 协议。</p>
+<p class="footer-text text-xs">&copy; 2026/6 Creatinx. MIT 协议。</p>
 </div>
 </div>
 </footer>
@@ -119,7 +145,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 lucide.createIcons();
-AOS.init({ duration: 700, once: true, offset: 50 });
 if (typeof Prism !== 'undefined') Prism.highlightAll();
 });
 </script>
