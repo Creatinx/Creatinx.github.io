@@ -3,63 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RenderThread | gryce-engine</title>
+<title>RenderThread | Gryce-Engine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../../css/prism-dark.css" id="prism-theme">
 <script src="../../js/prism.js"></script>
-<script src="../../js/prism-cpp.js"></script>
-<script src="../../js/prism-bash.js"></script>
+<script src="../../js/prism-cpp.js"></script>
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body class="min-h-screen transition-colors duration-300">
-<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b nav-border">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between h-16">
-<a href="../" class="flex items-center gap-2.5 group">
-<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
-<span class="text-white font-bold text-sm">G</span>
-</div>
-<span class="font-bold text-lg tracking-tight nav-text">Gryce</span>
-</a>
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
+<div class="max-w-6xl mx-auto px-6">
+<div class="flex items-center justify-between h-14">
+<a href="../../zh/" class="font-semibold text-sm nav-text">Gryce-Engine</a>
 <div class="hidden md:flex items-center gap-1">
-<a href="../" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">首页</a>
-<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all nav-link-active">文档</a>
-<a href="../about.html" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all ">关于</a>
-<a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded-md text-sm font-medium transition-all inline-flex items-center gap-1.5">
+<a href="../../zh/" class="nav-link px-3 py-1.5 rounded text-sm font-medium transition-colors ">首页</a>
+<a href="./getting-started.html" class="nav-link px-3 py-1.5 rounded text-sm font-medium transition-colors nav-link-active">文档</a>
+<a href="../about.html" class="nav-link px-3 py-1.5 rounded text-sm font-medium transition-colors ">关于</a>
+<a href="https://github.com/Creatinx/Gryce-Engine" target="_blank" class="nav-link px-3 py-1.5 rounded text-sm font-medium transition-colors inline-flex items-center gap-1.5">
 <i data-lucide="github" class="w-4 h-4"></i>GitHub</a>
 </div>
 <div class="flex items-center gap-2">
 <div class="relative">
-<button id="theme-btn" class="p-2 rounded-lg nav-btn transition-all" aria-label="主题">
-<i data-lucide="palette" class="w-4 h-4"></i></button>
-<div id="theme-menu" class="hidden absolute right-0 mt-2 w-40 rounded-xl shadow-2xl border theme-menu-border theme-menu-bg overflow-hidden">
-<button data-theme="dark" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-800 border border-gray-600"></span> 深色</button>
-<button data-theme="light" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-black/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-100 border border-gray-300"></span> 浅色</button>
-<button data-theme="ocean" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-blue-900 border border-blue-500"></span> 海洋</button>
-<button data-theme="forest" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-green-900 border border-green-500"></span> 森林</button>
-<button data-theme="sunset" class="theme-option w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-purple-900 border border-orange-500"></span> 日落</button>
+<button id="theme-btn" class="p-2 rounded nav-btn transition-colors" aria-label="主题">
+<i data-lucide="sun-moon" class="w-4 h-4"></i>
+</button>
+<div id="theme-menu" class="hidden absolute right-0 mt-2 w-36 rounded-lg border theme-menu-border theme-menu-bg overflow-hidden">
+<button data-theme="dark" class="theme-option w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-white/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-800 border border-gray-600"></span> 深色</button>
+<button data-theme="light" class="theme-option w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-black/5 transition-colors"><span class="w-3 h-3 rounded-full bg-gray-100 border border-gray-300"></span> 浅色</button>
 </div>
 </div>
-<a href="../../en/docs/renderthread.html" class="p-2 rounded-lg nav-btn transition-all text-xs font-semibold uppercase tracking-wider" title="切换语言">zh</a>
-<button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg nav-btn transition-all"><i data-lucide="menu" class="w-5 h-5"></i></button>
+<a href="../../en/docs/renderthread.html" class="p-2 rounded nav-btn transition-colors text-xs font-semibold uppercase tracking-wider" title="切换语言">en</a>
+<button id="mobile-menu-btn" class="md:hidden p-2 rounded nav-btn transition-colors"><i data-lucide="menu" class="w-5 h-5"></i></button>
 </div>
 </div>
 </div>
 <div id="mobile-menu" class="hidden md:hidden border-t nav-border">
 <div class="px-4 py-3 space-y-1">
-<a href="../" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">首页</a>
-<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">文档</a>
-<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-sm font-medium">关于</a>
+<a href="../../zh/" class="mobile-nav-link block px-3 py-2 rounded text-sm font-medium">首页</a>
+<a href="./getting-started.html" class="mobile-nav-link block px-3 py-2 rounded text-sm font-medium">文档</a>
+<a href="../about.html" class="mobile-nav-link block px-3 py-2 rounded text-sm font-medium">关于</a>
 </div>
 </div>
 </nav>
+
 <main>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 <aside class="hidden lg:block lg:col-span-1">
 <div class="sticky top-24 space-y-1">
@@ -209,7 +202,7 @@ backend.shutdown();</code></pre>
 </main>
 
 <footer class="border-t footer-border mt-20">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 <div>
 <div class="flex items-center gap-2.5 mb-4">
