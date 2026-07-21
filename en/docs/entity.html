@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -209,7 +207,7 @@ gun.add_component&lt;Transform&gt;(Vector3f(0.5f, 0, 0));</code></pre>
 <a href="./world.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: World</span></a>
 <a href="./componentstore.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: ComponentStore</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Entity 是一个轻量级的句柄（uint32_t ID + generation），而不是指向实际对象的指针。这种设计允许 Entity 在组件被销毁后仍然保持有效检查（通过 generation 比较）。Entity 支持父子层级，子实体的 Transform 会自动继承父实体的变换。每个 Entity 可以附加多个组件，组件类型通过模板参数指定，类型安全且在编译期解析。</p><h2>组件操作</h2><p>add_component 使用完美转发将参数传递给组件构造函数。get_component 返回组件的引用，如果组件不存在则抛出异常。has_component 在 O(1) 时间内检查组件是否存在。remove_component 立即销毁组件并释放其存储空间。所有组件操作都通过 ComponentStore 的稀疏集实现，保证常数时间复杂度。</p><h2>注意事项</h2><ul><li>Entity 默认构造为空句柄（id = 0, generation = 0）。</li><li>set_parent 会触发子树的世界矩阵重新计算。</li><li>destroy() 递归销毁所有子实体，谨慎使用。</li><li>不要在组件的构造函数中调用其他组件的方法。</li></ul><h2>相关类</h2><ul><li><a href="./world.html">World</a> — 容器</li><li><a href="./componentstore.html">ComponentStore</a> — 组件存储</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
+<h2>Design Principles</h2><p>Entity is a lightweight handle (uint32_t ID + generation), not a pointer to an actual object. This design allows Entity to perform validity checks after components are destroyed (via generation comparison). Entity supports parent-child hierarchy, where child entity transforms automatically inherit the parent entity's transform. Each Entity can have multiple components attached, with component types specified through template parameters, ensuring type safety and compile-time resolution.</p><h2>Component Operations</h2><p>add_component uses perfect forwarding to pass arguments to the component constructor. get_component returns a reference to the component, throwing an exception if the component does not exist. has_component checks for component existence in O(1) time. remove_component immediately destroys the component and releases its storage. All component operations are implemented through ComponentStore's sparse set, guaranteeing constant time complexity.</p><h2>Notes</h2><ul><li>Entity is default-constructed as a null handle (id = 0, generation = 0).</li><li>set_parent triggers world matrix recalculation for the entire subtree.</li><li>destroy() recursively destroys all child entities; use with caution.</li><li>Do not call other component methods inside a component's constructor.</li></ul><h2>Related Classes</h2><ul><li><a href="./world.html">World</a> — Container</li><li><a href="./componentstore.html">ComponentStore</a> — Component storage</li><li><a href="./transform.html">Transform</a> — Transform component</li></ul></article>
 </div>
 </div>
 </main>

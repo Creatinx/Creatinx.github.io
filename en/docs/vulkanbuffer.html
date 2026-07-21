@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -194,7 +192,7 @@ public:
 <a href="./vulkanswapchain.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanSwapchain</span></a>
 <a href="./vulkanshader.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanShader</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>VulkanBuffer 和 VulkanTexture 是 gryce-engine 的 Vulkan GPU 资源管理类，使用 VMA（Vulkan Memory Allocator）进行内存分配。VMA 自动处理 memory type 选择、alignment 和 defragmentation，简化了 Vulkan 复杂的内存管理。VulkanBuffer 支持 staging upload：如果目标内存不可主机访问，upload_staged() 创建临时 staging buffer，使用 memcpy 填充数据，然后提交 copy command 到 GPU。</p><h2>内存类型</h2><p>Vulkan 的内存类型分为 HOST_VISIBLE（CPU 可访问）、DEVICE_LOCAL（GPU 本地）和 HOST_CACHED 等。VulkanBuffer 的 create 方法通过 VMA 的 memory usage hint（如 VMA_MEMORY_USAGE_GPU_ONLY）选择最优内存类型。对于频繁更新的数据（如 uniform buffer），建议使用 VMA_MEMORY_USAGE_CPU_TO_GPU，允许直接 CPU 写入。</p><h2>注意事项</h2><ul><li>upload() 要求内存为 HOST_VISIBLE，否则必须使用 upload_staged()。</li><li>staging buffer 在 upload_staged 完成后自动销毁，不需要手动管理。</li><li>VulkanTexture 创建时自动生成 mipmap（如果支持），使用 VK_FORMAT_R8G8B8A8_UNORM。</li><li>所有 VulkanBuffer 必须在 VulkanDevice 销毁之前释放，否则会导致 VMA 崩溃。</li></ul><h2>相关类</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li></ul></article>
+<h2>Design Principles</h2><p>VulkanBuffer and VulkanTexture are gryce-engine's Vulkan GPU resource management classes, using VMA (Vulkan Memory Allocator) for memory allocation. VMA automatically handles memory type selection, alignment, and defragmentation, simplifying Vulkan's complex memory management. VulkanBuffer supports staging upload: if the target memory is not host-accessible, upload_staged() creates a temporary staging buffer, fills it with data using memcpy, and then submits a copy command to the GPU.</p><h2>Memory Types</h2><p>Vulkan's memory types include HOST_VISIBLE (CPU-accessible), DEVICE_LOCAL (GPU-local), and HOST_CACHED, etc. VulkanBuffer's create method selects the optimal memory type via VMA's memory usage hint (e.g., VMA_MEMORY_USAGE_GPU_ONLY). For frequently updated data (such as uniform buffers), VMA_MEMORY_USAGE_CPU_TO_GPU is recommended, allowing direct CPU writes.</p><h2>Notes</h2><ul><li>upload() requires the memory to be HOST_VISIBLE; otherwise, upload_staged() must be used.</li><li>The staging buffer is automatically destroyed after upload_staged() completes; no manual management is needed.</li><li>VulkanTexture automatically generates mipmaps on creation (if supported), using VK_FORMAT_R8G8B8A8_UNORM.</li><li>All VulkanBuffers must be released before the VulkanDevice is destroyed, otherwise VMA will crash.</li></ul><h2>Related Classes</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — Logical device</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan backend</li></ul></article>
 </div>
 </div>
 </main>

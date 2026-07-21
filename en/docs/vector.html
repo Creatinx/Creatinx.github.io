@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -209,7 +207,7 @@ struct Vector4f {
 <a href="./resourcepath.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: ResourcePath</span></a>
 <a href="./matrix.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Matrix</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Vector2f、Vector3f 和 Vector4f 是 gryce-engine 的自定义向量类型，提供完整的运算符重载和常用几何操作。它们不使用 SIMD 指令，保持代码简单和可移植。Vector3f 的 cross product 使用右手定则。所有向量类型支持隐式转换到 float*，可以直接传递给 OpenGL 的 glUniform*fv 和 Vulkan 的 push constant。</p><h2>数学约定</h2><p>所有角度操作（如 rotate_x, rotate_y, rotate_z）使用度数而非弧度。这与其他图形库（如 glm 使用弧度）不同，是为了与常用 3D 编辑工具（如 Blender）保持一致。长度和距离计算使用标准的欧几里得范数。normalize 在长度为 0 时返回零向量，不抛出异常。</p><h2>注意事项</h2><ul><li>Vector 类型不支持 SIMD，在大量计算时可能不如 glm 快。</li><li>cross 在右手坐标系中使用右手定则。</li><li>lerp 使用线性插值，slerp 使用球面插值，要求输入向量已归一化。</li><li>Vector4f 的 to_vector3 执行齐次除法（除以 w），w 为 0 时返回零向量。</li></ul><h2>相关类</h2><ul><li><a href="./matrix.html">Matrix</a> — 矩阵数学</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
+<h2>Design Rationale</h2><p>Vector2f, Vector3f, and Vector4f are gryce-engine's custom vector types, providing full operator overloading and common geometric operations. They do not use SIMD instructions, keeping the code simple and portable. Vector3f's cross product follows the right-hand rule. All vector types support implicit conversion to float*, so they can be passed directly to OpenGL's glUniform*fv and Vulkan's push constants.</p><h2>Mathematical Conventions</h2><p>All angle operations (such as rotate_x, rotate_y, rotate_z) use degrees instead of radians. This differs from other graphics libraries (such as glm, which uses radians) and is done to stay consistent with common 3D editing tools (like Blender). Length and distance calculations use the standard Euclidean norm. normalize returns a zero vector when the length is 0, without throwing an exception.</p><h2>Caveats</h2><ul><li>Vector types do not use SIMD, so they may be slower than glm for heavy computation.</li><li>cross uses the right-hand rule in a right-handed coordinate system.</li><li>lerp uses linear interpolation; slerp uses spherical interpolation and requires the input vectors to be normalized.</li><li>Vector4f's to_vector3 performs homogeneous division (divides by w) and returns a zero vector when w is 0.</li></ul><h2>Related Classes</h2><ul><li><a href="./matrix.html">Matrix</a> — Matrix math</li><li><a href="./transform.html">Transform</a> — Transform component</li></ul></article>
 </div>
 </div>
 </main>

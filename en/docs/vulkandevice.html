@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -188,7 +186,7 @@ public:
 <a href="./vulkanbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanBackend</span></a>
 <a href="./vulkanswapchain.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanSwapchain</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>VulkanDevice 负责选择物理设备、创建逻辑设备和初始化 VMA（Vulkan Memory Allocator）。在 create() 中，它枚举所有可用的物理设备，选择第一个满足要求的设备（必须有图形和呈现队列）。然后创建逻辑设备，并初始化 VMA 分配器。VMA 提供了高效的 GPU 内存管理，自动处理 memory type 选择和 defragmentation。</p><h2>队列族</h2><p>Vulkan 的 queue family 是一个关键概念。graphics_queue_family 用于图形命令，present_queue_family 用于呈现到 surface。在大多数设备上这两个 queue family 是相同的，但在某些设备上可能不同。VulkanDevice 分别记录这两个 queue family 索引，并确保 command buffer 提交到正确的队列。</p><h2>注意事项</h2><ul><li>create() 必须在 VulkanBackend 初始化之后调用，因为需要 instance 和 surface。</li><li>VMA 分配器在 destroy() 中销毁，必须在所有 GPU 资源释放之后。</li><li>command_pool 在创建时针对 graphics queue family 初始化。</li><li>allocate_command_buffer 创建的 command buffer 必须配对 free_command_buffer 或 submit 后由 Vulkan 回收。</li></ul><h2>相关类</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
+<h2>Design Principles</h2><p>VulkanDevice is responsible for selecting a physical device, creating a logical device, and initializing VMA (Vulkan Memory Allocator). In create(), it enumerates all available physical devices and selects the first one that meets the requirements (must have graphics and present queues). It then creates the logical device and initializes the VMA allocator. VMA provides efficient GPU memory management, automatically handling memory type selection and defragmentation.</p><h2>Queue Families</h2><p>Queue families are a key concept in Vulkan. graphics_queue_family is used for graphics commands, while present_queue_family is used for presenting to the surface. On most devices these two queue families are the same, but on some devices they may differ. VulkanDevice records both queue family indices separately and ensures command buffers are submitted to the correct queue.</p><h2>Notes</h2><ul><li>create() must be called after VulkanBackend initialization, since it requires the instance and surface.</li><li>The VMA allocator is destroyed in destroy(), which must happen after all GPU resources are released.</li><li>command_pool is initialized for the graphics queue family at creation time.</li><li>Command buffers created by allocate_command_buffer must be paired with free_command_buffer or reclaimed by Vulkan after submission.</li></ul><h2>Related Classes</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan backend</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU buffer</li></ul></article>
 </div>
 </div>
 </main>

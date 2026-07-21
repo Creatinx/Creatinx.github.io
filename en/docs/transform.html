@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -192,7 +190,7 @@ camera.view = transform.world_matrix().inverse();</code></pre>
 <a href="./scene.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Scene</span></a>
 <a href="./prefab.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Prefab</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Transform 是 gryce-engine 中最基础的组件，存储实体的本地位置、旋转（欧拉角）和缩放。它通过 Scene 的父子层级自动计算世界空间变换矩阵。local_matrix() 将 position、rotation 和 scale 组合为列主序 Matrix4f。world_matrix() 递归累加父实体的变换，直到根实体。这种设计保证子实体的变换自动跟随父实体。</p><h2>欧拉角与四元数</h2><p>Transform 使用欧拉角（Vector3f，单位为度）表示旋转。欧拉角直观且易于编辑，但存在万向锁问题。对于需要平滑插值的场景，建议使用外部四元数库（如 glm）计算旋转后写入 Transform。Transform 的 look_at 方法使用一个简化版，适合相机等需要朝向目标的场景。</p><h2>注意事项</h2><ul><li>rotation 是欧拉角，按 Y → X → Z 顺序应用（YXZ 顺序）。</li><li>world_matrix() 在每次调用时重新计算，不要在每帧中多次调用同一个 entity。</li><li>scale 的默认值是 (1,1,1)，设置为 (0,0,0) 会导致矩阵不可逆。</li><li>forward/right/up 方向基于当前 rotation 计算，不考虑父实体的旋转。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./scene.html">Scene</a> — 场景容器</li><li><a href="./matrix.html">Matrix</a> — 矩阵数学</li></ul></article>
+<h2>Design Principles</h2><p>Transform is the most fundamental component in gryce-engine, storing an entity's local position, rotation (Euler angles), and scale. It automatically computes the world-space transformation matrix through the Scene's parent-child hierarchy. local_matrix() combines position, rotation, and scale into a column-major Matrix4f. world_matrix() recursively accumulates the parent entity's transform up to the root entity. This design ensures that child entity transforms automatically follow their parent.</p><h2>Euler Angles and Quaternions</h2><p>Transform uses Euler angles (Vector3f, in degrees) to represent rotation. Euler angles are intuitive and easy to edit, but suffer from gimbal lock. For scenarios requiring smooth interpolation, it is recommended to use an external quaternion library (such as glm) to compute rotations and then write them to Transform. Transform's look_at method uses a simplified version, suitable for cameras and other scenarios that need to face a target.</p><h2>Notes</h2><ul><li>rotation uses Euler angles, applied in Y → X → Z order (YXZ order).</li><li>world_matrix() recalculates on every call; avoid calling it multiple times per frame for the same entity.</li><li>scale defaults to (1,1,1); setting it to (0,0,0) will make the matrix non-invertible.</li><li>forward/right/up directions are calculated based on the current rotation and do not account for the parent entity's rotation.</li></ul><h2>Related Classes</h2><ul><li><a href="./entity.html">Entity</a> — Entity handle</li><li><a href="./scene.html">Scene</a> — Scene container</li><li><a href="./matrix.html">Matrix</a> — Matrix math</li></ul></article>
 </div>
 </div>
 </main>

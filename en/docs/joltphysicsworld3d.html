@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -199,7 +197,7 @@ struct BodyDesc {
 <a href="./physicsfactory.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: PhysicsFactory</span></a>
 <a href="./box2dworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Box2DWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>JoltPhysicsWorld3D 是 gryce-engine 的 3D 物理后端，基于 Jolt Physics 5.2。它实现了 IPhysicsWorld3D 接口，提供刚体动力学、碰撞检测、射线检测和约束系统。JoltPhysicsWorld3D 在 init() 中创建 Jolt 的 PhysicsSystem、BodyInterface 和 ContactListener。在 step() 中，它调用 PhysicsSystem::Update 以固定时间步长推进物理模拟。Jolt 的 job system 使用 std::thread 实现多线程物理模拟，默认使用所有可用 CPU 核心。</p><h2>刚体类型</h2><p>Jolt 支持三种刚体类型：Static（不动，质量无穷大）、Dynamic（受力和碰撞影响）、Kinematic（由代码控制位置，不受力影响但影响其他刚体）。在 BodyDesc 中通过 type 字段指定。PhysicalMaterial 的 friction 和 restitution 在 Jolt 中映射到 Body 的 friction 和 restitution_scale。</p><h2>注意事项</h2><ul><li>Jolt 的 step() 必须在固定时间步长下调用，否则模拟不稳定。</li><li>raycast 返回的 RaycastResult 包含 hit body、hit point 和 hit normal。</li><li>add_force 在世界坐标系中施加力，add_impulse 施加冲量（瞬时力）。</li><li>shape 在 Jolt 中通过 ShapeHandle 引用，由 JoltPhysicsWorld3D 内部管理。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./physicalmaterial.html">PhysicalMaterial</a> — 物理材质</li></ul></article>
+<h2>Design Rationale</h2><p>JoltPhysicsWorld3D is gryce-engine's 3D physics backend, based on Jolt Physics 5.2. It implements the IPhysicsWorld3D interface, providing rigid body dynamics, collision detection, raycasting, and a constraint system. JoltPhysicsWorld3D creates Jolt's PhysicsSystem, BodyInterface, and ContactListener in init(). In step(), it calls PhysicsSystem::Update to advance the physics simulation at a fixed time step. Jolt's job system uses std::thread for multi-threaded physics simulation, utilizing all available CPU cores by default.</p><h2>Body Types</h2><p>Jolt supports three rigid body types: Static (immovable, infinite mass), Dynamic (affected by forces and collisions), and Kinematic (position controlled by code, not affected by forces but affects other bodies). These are specified via the type field in BodyDesc. PhysicalMaterial's friction and restitution map to the body's friction and restitution_scale in Jolt.</p><h2>Caveats</h2><ul><li>Jolt's step() must be called at a fixed time step; otherwise, the simulation becomes unstable.</li><li>raycast returns a RaycastResult containing the hit body, hit point, and hit normal.</li><li>add_force applies a force in world-space coordinates; add_impulse applies an impulse (instantaneous force).</li><li>Shapes in Jolt are referenced via ShapeHandle and are managed internally by JoltPhysicsWorld3D.</li></ul><h2>Related Classes</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — Factory</li><li><a href="./physicalmaterial.html">PhysicalMaterial</a> — Physical material</li></ul></article>
 </div>
 </div>
 </main>

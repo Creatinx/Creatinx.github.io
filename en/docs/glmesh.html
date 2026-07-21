@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -201,7 +199,7 @@ mesh.draw_indexed(3);</code></pre>
 <a href="./glshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: GLShader</span></a>
 <a href="./glrenderer2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLRenderer2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>GLMesh 管理 OpenGL VAO、VBO 和 EBO 的生命周期。它在 upload_vertices() 中创建并填充 VBO，在 upload_indices() 中创建并填充 EBO。VertexLayout 描述了顶点属性的格式和偏移，upload_vertices 使用这个信息在 VAO 上配置顶点属性指针。这种设计允许同一 GLMesh 对象在不同 shader 中复用，只要 vertex layout 兼容。</p><h2>顶点布局</h2><p>VertexLayout 由 stride（顶点大小，字节）和 attributes（属性数组）组成。每个属性包含 location、components、type、normalized 和 offset。upload_vertices 根据这些信息调用 glVertexAttribPointer 配置 VAO。如果后续 shader 的 attribute location 与 VertexLayout 中定义的不匹配，渲染结果将不正确。</p><h2>注意事项</h2><ul><li>VAO 在 upload_vertices 时创建，如果 layout 改变需要重新调用 upload_vertices。</li><li>draw_indexed 的 count 参数是索引数量，不是顶点数量。</li><li>IndexType 必须是 Uint16 或 Uint32，Uint8 不受支持。</li><li>GLMesh 析构时自动删除 VAO、VBO 和 EBO。</li></ul><h2>相关类</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./glshader.html">GLShader</a> — 着色器程序</li></ul></article>
+<h2>Design Principles</h2><p>GLMesh manages the lifecycle of OpenGL VAO, VBO, and EBO. It creates and fills the VBO in upload_vertices(), and creates and fills the EBO in upload_indices(). VertexLayout describes the format and offset of vertex attributes, and upload_vertices uses this information to configure vertex attribute pointers on the VAO. This design allows the same GLMesh object to be reused in different shaders as long as the vertex layout is compatible.</p><h2>Vertex Layout</h2><p>VertexLayout consists of stride (vertex size in bytes) and attributes (array of attributes). Each attribute contains location, components, type, normalized, and offset. upload_vertices calls glVertexAttribPointer to configure the VAO based on this information. If the attribute location of a subsequent shader does not match the one defined in VertexLayout, the rendering result will be incorrect.</p><h2>Notes</h2><ul><li>The VAO is created during upload_vertices; if the layout changes, you need to call upload_vertices again.</li><li>The count parameter of draw_indexed is the number of indices, not the number of vertices.</li><li>IndexType must be Uint16 or Uint32; Uint8 is not supported.</li><li>Destroying GLMesh automatically deletes the VAO, VBO, and EBO.</li></ul><h2>Related Classes</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL backend</li><li><a href="./glshader.html">GLShader</a> — Shader program</li></ul></article>
 </div>
 </div>
 </main>

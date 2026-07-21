@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -206,7 +204,7 @@ enum class RenderBackend { OpenGL, Vulkan };</code></pre>
 <a href="./window.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Window</span></a>
 <a href="./glbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>IRenderBackend 是 gryce-engine 渲染架构的核心抽象。它定义了所有图形 API（OpenGL 4.6、Vulkan 1.2）必须实现的统一接口。游戏代码从不直接调用后端方法，而是通过 RenderCommandBuffer 提交命令。这种设计允许主线程生成渲染命令，而渲染线程在后台执行，实现 CPU/GPU 并行。IRenderBackend 的生命周期由 RenderContext 管理，确保正确的初始化顺序和资源释放。</p><h2>资源管理</h2><p>所有图形资源（Mesh、Shader、Texture、Framebuffer）通过 Handle 类型引用。Handle 是一个轻量级的整数 ID，背后由后端管理实际的 GPU 资源。create_* 方法返回 Handle，destroy_* 方法释放对应资源。后端负责资源的生命周期管理和内存回收。如果试图使用已销毁的 Handle，后端行为未定义（通常会导致渲染错误）。</p><h2>注意事项</h2><ul><li>IRenderBackend 必须在渲染线程上执行命令。</li><li>不要在主线程直接调用 draw 方法，使用 RenderCommandBuffer。</li><li>create_* 和 destroy_* 调用必须成对出现，防止内存泄漏。</li><li>Vulkan 后端需要额外的同步（semaphore/fence），由后端内部处理。</li></ul><h2>相关类</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — 命令缓冲区</li><li><a href="./renderthread.html">RenderThread</a> — 渲染线程</li><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li></ul></article>
+<h2>Design Principles</h2><p>IRenderBackend is the core abstraction of the gryce-engine rendering architecture. It defines the unified interface that all graphics APIs (OpenGL 4.6, Vulkan 1.2) must implement. Game code never calls backend methods directly; instead, it submits commands through the RenderCommandBuffer. This design allows the main thread to generate render commands while the render thread executes them in the background, achieving CPU/GPU parallelism. The lifecycle of IRenderBackend is managed by RenderContext, ensuring correct initialization order and resource cleanup.</p><h2>Resource Management</h2><p>All graphics resources (Mesh, Shader, Texture, Framebuffer) are referenced via Handle types. A Handle is a lightweight integer ID, with the backend managing the actual GPU resources behind the scenes. create_* methods return a Handle, and destroy_* methods release the corresponding resource. The backend is responsible for resource lifecycle management and memory reclamation. If an already-destroyed Handle is used, backend behavior is undefined (typically resulting in rendering errors).</p><h2>Notes</h2><ul><li>IRenderBackend must execute commands on the render thread.</li><li>Do not call draw methods directly on the main thread; use RenderCommandBuffer.</li><li>create_* and destroy_* calls must be paired to prevent memory leaks.</li><li>The Vulkan backend requires additional synchronization (semaphore/fence), handled internally by the backend.</li></ul><h2>Related Classes</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — Command buffer</li><li><a href="./renderthread.html">RenderThread</a> — Render thread</li><li><a href="./glbackend.html">GLBackend</a> — OpenGL backend</li><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan backend</li></ul></article>
 </div>
 </div>
 </main>

@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -181,7 +179,7 @@ camera.add_component&lt;AudioListener&gt;();</code></pre>
 <a href="./audiosource.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioSource</span></a>
 <a href="./assetmanager.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AssetManager</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>AudioListener 是 gryce-engine 中的 3D 音频监听器组件，通常附加到相机 Entity 上。AudioEngine 在更新时读取所有 AudioListener 的位置和朝向（通过 Transform 组件），计算全局 listener 状态。对于多个 AudioListener，AudioEngine 使用第一个启用的 listener（enabled = true）。如果没有 AudioListener，3D 音频衰减不生效，所有声音以最大音量播放。</p><h2>朝向计算</h2><p>AudioListener 的朝向从 Transform 的 rotation 计算。forward 方向是 rotation 的 Z 轴负方向（OpenGL 约定），up 方向是 Y 轴正方向。AudioEngine 将这些方向传递给 miniaudio 的 spatializer，用于计算 HRTF 和声像定位。如果 Entity 没有 Transform 组件，AudioListener 使用默认位置 (0,0,0) 和朝向 (0,0,-1)。</p><h2>注意事项</h2><ul><li>场景中通常只有一个 AudioListener，多个 AudioListener 会导致不可预测的 3D 音频效果。</li><li>AudioListener 没有自己的数据，所有状态从 Transform 组件读取。</li><li>enabled 为 false 时，该 AudioListener 被忽略，AudioEngine 使用下一个启用的 listener。</li><li>如果没有 AudioListener，所有声音以 2D 模式播放，不计算空间衰减。</li></ul><h2>相关类</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — 音频引擎</li><li><a href="./audiosource.html">AudioSource</a> — 音频源</li></ul></article>
+<h2>Design Rationale</h2><p>AudioListener is the 3D audio listener component in gryce-engine, typically attached to the camera Entity. AudioEngine reads the position and orientation of all AudioListeners (via the Transform component) during update and computes the global listener state. When multiple AudioListeners exist, AudioEngine uses the first enabled listener (enabled = true). If there is no AudioListener, 3D audio attenuation is not applied and all sounds play at maximum volume.</p><h2>Orientation Calculation</h2><p>AudioListener's orientation is computed from the Transform's rotation. The forward direction is the negative Z-axis of the rotation (OpenGL convention), and the up direction is the positive Y-axis. AudioEngine passes these directions to miniaudio's spatializer for HRTF and panning calculations. If the Entity does not have a Transform component, AudioListener uses a default position of (0,0,0) and orientation of (0,0,-1).</p><h2>Caveats</h2><ul><li>There is typically only one AudioListener in a scene; multiple AudioListeners lead to unpredictable 3D audio effects.</li><li>AudioListener has no data of its own; all state is read from the Transform component.</li><li>When enabled is false, that AudioListener is ignored, and AudioEngine uses the next enabled listener.</li><li>If there is no AudioListener, all sounds play in 2D mode without spatial attenuation.</li></ul><h2>Related Classes</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — Audio engine</li><li><a href="./audiosource.html">AudioSource</a> — Audio source</li></ul></article>
 </div>
 </div>
 </main>

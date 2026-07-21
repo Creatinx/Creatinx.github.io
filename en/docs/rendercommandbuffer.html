@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -206,7 +204,7 @@ for (auto& c : cmds) backend->execute(c);</code></pre>
 <a href="./glrenderer2d.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: GLRenderer2D</span></a>
 <a href="./renderthread.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: RenderThread</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>RenderCommandBuffer 实现了一个双缓冲命令队列，使用 std::mutex 和 std::condition_variable 进行线程同步。主线程通过 submit() 将 RenderCommand 追加到写入缓冲区，渲染线程通过 acquire() 获取读取缓冲区中的命令并执行。当 acquire() 发现读取缓冲区为空时，它会等待 condition_variable 直到主线程调用 swap_buffers() 交换两个缓冲区。这种设计消除了主线程和渲染线程之间的竞争条件。</p><h2>批处理合并</h2><p>RenderCommandBuffer 可选地启用批处理合并（set_merge_batch(true)）。当连续提交多个状态设置命令（如 SetViewport、SetDepthTest）时，合并机制会将它们合并为单个命令，减少渲染线程的命令处理开销。批处理合并默认启用，在命令类型频繁切换的场景下可显著提升性能。</p><h2>注意事项</h2><ul><li>submit() 是线程安全的，可以在任意线程调用。</li><li>acquire() 在读取缓冲区为空时会阻塞，直到 swap_buffers() 被调用。</li><li>RenderCommand 的 union 成员大小有限，大数据（如矩阵）应通过指针传递。</li><li>swap_buffers() 必须在主线程调用，通常在每帧结束时。</li></ul><h2>相关类</h2><ul><li><a href="./renderthread.html">RenderThread</a> — 渲染线程</li><li><a href="./irenderbackend.html">IRenderBackend</a> — 渲染后端</li></ul></article>
+<h2>Design Principles</h2><p>RenderCommandBuffer implements a double-buffered command queue using std::mutex and std::condition_variable for thread synchronization. The main thread appends RenderCommands to the write buffer via submit(), while the render thread retrieves and executes commands from the read buffer via acquire(). When acquire() finds the read buffer empty, it waits on the condition_variable until the main thread calls swap_buffers() to swap the two buffers. This design eliminates race conditions between the main thread and the render thread.</p><h2>Batch Merging</h2><p>RenderCommandBuffer optionally enables batch merging (set_merge_batch(true)). When multiple consecutive state-setting commands (e.g. SetViewport, SetDepthTest) are submitted, the merging mechanism combines them into a single command, reducing command processing overhead on the render thread. Batch merging is enabled by default and can significantly improve performance in scenarios with frequent command type switching.</p><h2>Notes</h2><ul><li>submit() is thread-safe and can be called from any thread.</li><li>acquire() blocks when the read buffer is empty until swap_buffers() is called.</li><li>RenderCommand's union member has limited size; large data (e.g. matrices) should be passed via pointers.</li><li>swap_buffers() must be called from the main thread, typically at the end of each frame.</li></ul><h2>Related Classes</h2><ul><li><a href="./renderthread.html">RenderThread</a> — Render thread</li><li><a href="./irenderbackend.html">IRenderBackend</a> — Render backend</li></ul></article>
 </div>
 </div>
 </main>

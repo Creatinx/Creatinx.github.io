@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -193,7 +191,7 @@ source.play();</code></pre>
 <a href="./audioengine.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioEngine</span></a>
 <a href="./audiolistener.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AudioListener</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>AudioSource 是 gryce-engine 中的音频源组件，附加到 Entity 上用于播放声音。它支持 3D 空间定位：AudioEngine 在更新时读取 AudioSource 所在 Entity 的 Transform 位置，计算距离衰减和方向声像。AudioSource 支持循环播放、音量控制、播放/暂停/停止，以及播放进度查询。每个 AudioSource 对应 miniaudio 中的一个声音源（voice），多个 AudioSource 可以同时播放。</p><h2>空间音频</h2><p>AudioSource 的 min_distance 和 max_distance 控制 3D 衰减范围。在 min_distance 内音量最大，超过 max_distance 后音量衰减为 0。miniaudio 的 attenuation model 使用 inverse distance，适合大多数游戏场景。对于非空间音频（如背景音乐），将 min_distance 设为极大值即可禁用衰减。</p><h2>注意事项</h2><ul><li>AudioSource 的 clip 必须在 AudioEngine 中加载，否则 play() 会失败。</li><li>loop 在音频到达末尾时自动重新开始，不需要手动调用 play()。</li><li>set_time 以秒为单位，设置值超出 duration 时会被截断。</li><li>多个 AudioSource 可以同时播放同一个 clip，不共享底层 voice。</li></ul><h2>相关类</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — 音频引擎</li><li><a href="./audiolistener.html">AudioListener</a> — 监听器</li></ul></article>
+<h2>Design Rationale</h2><p>AudioSource is the audio source component in gryce-engine, attached to an Entity for sound playback. It supports 3D spatial positioning: AudioEngine reads the Transform position of the AudioSource's Entity during update and computes distance attenuation and directional panning. AudioSource supports looped playback, volume control, play/pause/stop, and playback progress queries. Each AudioSource corresponds to a sound source (voice) in miniaudio; multiple AudioSources can play simultaneously.</p><h2>Spatial Audio</h2><p>AudioSource's min_distance and max_distance control the 3D attenuation range. Within min_distance, the volume is at maximum; beyond max_distance, the volume attenuates to 0. miniaudio's attenuation model uses inverse distance, which suits most game scenarios. For non-spatial audio (such as background music), set min_distance to a very large value to disable attenuation.</p><h2>Caveats</h2><ul><li>AudioSource's clip must be loaded in AudioEngine; otherwise, play() will fail.</li><li>When loop is enabled, the audio automatically restarts when it reaches the end without needing a manual play() call.</li><li>set_time is in seconds; values exceeding the duration are clamped.</li><li>Multiple AudioSources can play the same clip simultaneously without sharing the underlying voice.</li></ul><h2>Related Classes</h2><ul><li><a href="./audioengine.html">AudioEngine</a> — Audio engine</li><li><a href="./audiolistener.html">AudioListener</a> — Listener</li></ul></article>
 </div>
 </div>
 </main>

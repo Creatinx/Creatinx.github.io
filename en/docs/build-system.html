@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -194,7 +192,7 @@ ninja -C build -j8</code></pre>
 <a href="./getting-started.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Getting Started</span></a>
 <a href="./window.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Window</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>gryce-engine 的构建系统基于 CMake 3.28+，使用预设（preset）和工具链文件（toolchain file）来自动检测 MSYS2 UCRT64 环境。build.py 是一个 Python 包装脚本，解析命令行参数，选择正确的 preset（debug 或 release），然后调用 cmake --build。它还支持自动安装缺失的依赖（通过 pacman 包管理器）和预取可选的第三方库（如 Jolt、Box2D）。</p><h2>CMake 选项</h2><p>Gryce_BUILD_EDITOR 控制是否构建编辑器可执行文件。Gryce_BUILD_TESTS 控制是否编译 GoogleTest 单元测试。Gryce_BACKEND_OPENGL 和 Gryce_BACKEND_VULKAN 分别控制 OpenGL 和 Vulkan 后端的编译。Gryce_USE_JOLT、Gryce_USE_BOX2D 和 Gryce_USE_ASSIMP 控制可选物理和模型加载库。所有选项默认为 ON（除了 TESTS），如果对应库未安装则自动降级为 OFF。</p><h2>注意事项</h2><ul><li>build.py 假设 MSYS2 安装在默认路径 C:\msys64，如果安装在其他位置需要手动设置 PATH。</li><li>CMake 使用 Ninja 生成器，比 Make 快 2-3 倍，但首次运行需要安装 ninja。</li><li>Release 构建启用 -O3 和 LTO，但编译时间比 Debug 长 3-5 倍。</li><li>--clean 标志会删除整个 build 目录，谨慎使用。</li></ul></article>
+<h2>Design Rationale</h2><p>The build system of gryce-engine is based on CMake 3.28+ and uses presets and toolchain files to automatically detect the MSYS2 UCRT64 environment. build.py is a Python wrapper script that parses command-line arguments, selects the correct preset (debug or release), and then invokes cmake --build. It also supports automatically installing missing dependencies (via the pacman package manager) and prefetching optional third-party libraries (such as Jolt, Box2D).</p><h2>CMake Options</h2><p>Gryce_BUILD_EDITOR controls whether to build the editor executable. Gryce_BUILD_TESTS controls whether to compile GoogleTest unit tests. Gryce_BACKEND_OPENGL and Gryce_BACKEND_VULKAN control the compilation of the OpenGL and Vulkan backends, respectively. Gryce_USE_JOLT, Gryce_USE_BOX2D, and Gryce_USE_ASSIMP control optional physics and model loading libraries. All options default to ON (except for TESTS), and automatically downgrade to OFF if the corresponding library is not installed.</p><h2>Caveats</h2><ul><li>build.py assumes MSYS2 is installed at the default path C:\msys64; if installed elsewhere, you need to manually set the PATH.</li><li>CMake uses the Ninja generator, which is 2-3 times faster than Make, but requires installing ninja on the first run.</li><li>Release builds enable -O3 and LTO, but compilation time is 3-5 times longer than Debug.</li><li>The --clean flag deletes the entire build directory; use with caution.</li></ul></article>
 </div>
 </div>
 </main>

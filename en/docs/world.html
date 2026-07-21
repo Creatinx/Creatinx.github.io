@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -203,7 +201,7 @@ world.cleanup();</code></pre>
 <a href="./vulkanshader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanShader</span></a>
 <a href="./entity.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Entity</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>World 是 gryce-engine 中最高层的游戏对象容器。它拥有一个 Scene（场景图）和一组 ISystem（系统）实例。World 的职责是驱动整个游戏循环：按固定时间步长调用 fixed_update，按帧时间调用 update，并在每帧结束时调用 render。系统按 priority() 返回值降序排序，优先级高的系统先执行。这种设计保证了渲染系统在逻辑系统之后执行，物理系统优先于游戏逻辑。</p><h2>生命周期</h2><p>World 的生命周期严格分为五个阶段：init → fixed_update → update → render → cleanup。init 在程序启动时调用一次，cleanup 在退出时调用一次。fixed_update 保证以固定时间步长（通常 1/60 秒）调用，适合物理模拟。update 以实际帧时间调用，适合游戏逻辑。render 在每帧结束时调用，接收 IRenderBackend* 用于实际绘制。</p><h2>注意事项</h2><ul><li>World 不是线程安全的，所有操作必须在主线程执行。</li><li>System 的 priority() 默认返回 0，值越大执行越早。</li><li>create_entity 返回的 Entity 句柄在对应 Entity 被销毁后失效。</li><li>scene() 返回的 Scene 引用在 World 生命周期内始终有效。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 场景对象句柄</li><li><a href="./scene.html">Scene</a> — 场景图容器</li><li><a href="./isystem.html">ISystem</a> — 系统基接口</li></ul></article>
+<h2>Design Principles</h2><p>World is the top-level game object container in gryce-engine. It owns a Scene (scene graph) and a set of ISystem instances. World's responsibility is to drive the entire game loop: calling fixed_update at a fixed time step, update at the actual frame time, and render at the end of each frame. Systems are sorted by priority() return value in descending order, so higher-priority systems execute first. This design ensures that render systems execute after logic systems, and physics systems run before game logic.</p><h2>Lifecycle</h2><p>World's lifecycle is strictly divided into five phases: init, fixed_update, update, render, and cleanup. init is called once at program startup, and cleanup is called once at exit. fixed_update is guaranteed to be called at a fixed time step (typically 1/60 second), suitable for physics simulation. update is called with the actual frame time, suitable for game logic. render is called at the end of each frame, receiving an IRenderBackend* for actual drawing.</p><h2>Notes</h2><ul><li>World is not thread-safe; all operations must be performed on the main thread.</li><li>A System's priority() defaults to 0; higher values execute earlier.</li><li>Entity handles returned by create_entity become invalid after the corresponding Entity is destroyed.</li><li>The Scene reference returned by scene() remains valid throughout World's lifetime.</li></ul><h2>Related Classes</h2><ul><li><a href="./entity.html">Entity</a> — Scene object handle</li><li><a href="./scene.html">Scene</a> — Scene graph container</li><li><a href="./isystem.html">ISystem</a> — System base interface</li></ul></article>
 </div>
 </div>
 </main>

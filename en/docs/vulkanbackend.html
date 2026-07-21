@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -198,7 +196,7 @@ public:
 <a href="./renderthread.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: RenderThread</span></a>
 <a href="./vulkandevice.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanDevice</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>VulkanBackend 是 IRenderBackend 的 Vulkan 1.2 实现。它管理 Vulkan instance、surface、device、swapchain 和 command buffer 的完整生命周期。与 GLBackend 不同，VulkanBackend 使用显式的同步原语（semaphore、fence）来管理 CPU-GPU 并行。所有资源创建和销毁操作都被封装在对应的管理类（VulkanDevice、VulkanSwapchain、VulkanBuffer 等）中，避免在 VulkanBackend 主类中积累过多的平台特定代码。</p><h2>多线程注意事项</h2><p>Vulkan 允许在多个线程上构建 command buffer，但 gryce-engine 当前只在渲染线程上使用单个 command buffer。这种简化保证了正确性，但限制了 Vulkan 的多线程构建优势。未来的版本可能支持 secondary command buffer 和并行构建。</p><h2>注意事项</h2><ul><li>VulkanBackend 要求 Vulkan 1.2 兼容的驱动和硬件。</li><li>surface 创建需要平台特定的扩展（Windows 上为 VK_KHR_win32_surface）。</li><li>swapchain 在窗口大小改变时必须调用 recreate()。</li><li>Vulkan 的 validation layers 在 Debug 构建中启用，Release 构建中禁用。</li></ul><h2>相关类</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li><li><a href="./vulkanswapchain.html">VulkanSwapchain</a> — 交换链</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU 缓冲区</li></ul></article>
+<h2>Design Principles</h2><p>VulkanBackend is the Vulkan 1.2 implementation of IRenderBackend. It manages the complete lifecycle of the Vulkan instance, surface, device, swapchain, and command buffers. Unlike GLBackend, VulkanBackend uses explicit synchronization primitives (semaphores, fences) to manage CPU-GPU parallelism. All resource creation and destruction operations are encapsulated in corresponding management classes (VulkanDevice, VulkanSwapchain, VulkanBuffer, etc.) to avoid accumulating too much platform-specific code in the main VulkanBackend class.</p><h2>Multi-Threading Notes</h2><p>Vulkan allows building command buffers on multiple threads, but gryce-engine currently uses only a single command buffer on the render thread. This simplification ensures correctness but limits Vulkan's multi-threaded build advantages. Future versions may support secondary command buffers and parallel building.</p><h2>Notes</h2><ul><li>VulkanBackend requires a Vulkan 1.2 compatible driver and hardware.</li><li>Surface creation requires platform-specific extensions (VK_KHR_win32_surface on Windows).</li><li>The swapchain must call recreate() when the window size changes.</li><li>Vulkan validation layers are enabled in Debug builds and disabled in Release builds.</li></ul><h2>Related Classes</h2><ul><li><a href="./vulkandevice.html">VulkanDevice</a> — Logical device</li><li><a href="./vulkanswapchain.html">VulkanSwapchain</a> — Swapchain</li><li><a href="./vulkanbuffer.html">VulkanBuffer</a> — GPU buffer</li></ul></article>
 </div>
 </div>
 </main>

@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -201,7 +199,7 @@ if (AssetManager::is_loaded&lt;Mesh&gt;("res:/models/cube.obj")) {
 <a href="./audiolistener.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AudioListener</span></a>
 <a href="./asyncloader.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: AsyncLoader</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>AssetManager 是 gryce-engine 的资源管理器，负责加载、缓存和卸载所有类型的资源。它使用静态模板方法实现类型安全的资源加载，通过 std::unordered_map&lt;std::string, std::shared_ptr&lt;T&gt;&gt; 缓存已加载资源。load() 在资源未加载时调用后端加载器，已加载时返回缓存的引用。这种设计保证同一资源不会被加载多次，减少内存占用和加载时间。AssetManager 支持热重载（hot reload），在资源文件修改后自动重新加载。</p><h2>加载流程</h2><p>load() 的调用流程：检查缓存 → 调用后端加载器 → 创建 GPU 资源 → 存入缓存 → 返回 Handle。对于 Mesh 和 Texture 等资源，后端加载器在后台线程读取文件，然后暂停渲染线程上传 GPU 数据。这种设计避免了主线程阻塞，但引入了 GPU 上传同步的复杂性。</p><h2>注意事项</h2><ul><li>AssetManager 使用 shared_ptr 管理资源生命周期，只有所有 Handle 释放后资源才会卸载。</li><li>hot reload 通过定时检查文件修改时间实现，默认每 5 秒检查一次。</li><li>unload_all 会释放所有缓存，但不会影响正在使用的资源（shared_ptr 引用计数）。</li><li>memory_usage() 只统计 CPU 端内存，不包含 GPU 资源。</li></ul><h2>相关类</h2><ul><li><a href="./asyncloader.html">AsyncLoader</a> — 异步加载器</li><li><a href="./resourcepath.html">ResourcePath</a> — 路径解析</li></ul></article>
+<h2>Design Rationale</h2><p>AssetManager is gryce-engine's asset manager, responsible for loading, caching, and unloading all types of assets. It uses static template methods for type-safe asset loading and caches loaded assets via std::unordered_map&lt;std::string, std::shared_ptr&lt;T&gt;&gt;. When an asset has not been loaded, load() invokes the backend loader; when already loaded, it returns the cached reference. This design ensures the same asset is never loaded more than once, reducing memory usage and load times. AssetManager supports hot reloading, automatically reloading assets when their files are modified.</p><h2>Loading Pipeline</h2><p>The load() call flow: check cache -> invoke backend loader -> create GPU resources -> store in cache -> return Handle. For assets like Mesh and Texture, the backend loader reads files on a background thread, then pauses the render thread to upload GPU data. This design avoids blocking the main thread but introduces complexity in GPU upload synchronization.</p><h2>Caveats</h2><ul><li>AssetManager uses shared_ptr to manage resource lifetimes; assets are only unloaded after all Handles have been released.</li><li>Hot reload works by periodically checking file modification times, defaulting to once every 5 seconds.</li><li>unload_all releases all cached entries but does not affect resources currently in use (due to shared_ptr reference counting).</li><li>memory_usage() only accounts for CPU-side memory and does not include GPU resources.</li></ul><h2>Related Classes</h2><ul><li><a href="./asyncloader.html">AsyncLoader</a> — Asynchronous loader</li><li><a href="./resourcepath.html">ResourcePath</a> — Path resolution</li></ul></article>
 </div>
 </div>
 </main>

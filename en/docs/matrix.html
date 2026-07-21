@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -206,7 +204,7 @@ Matrix4f mvp = proj * view * model;</code></pre>
 <a href="./vector.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Vector</span></a>
 <span></span>
 </div>
-<h2>设计原理</h2><p>Matrix4f 是 gryce-engine 中的列主序 4x4 矩阵，存储为 float m[16]。列主序意味着 m[col*4 + row] 访问元素 (row, col)。这种布局与 OpenGL 的 glUniformMatrix4fv 和 Vulkan 的 push constant 兼容，可以直接传递而不需要转置。Matrix4f 提供所有常见的变换工厂方法：translate、scale、rotate、ortho、perspective、look_at。所有角度参数使用度数而非弧度。</p><h2>矩阵运算</h2><p>Matrix4f 的乘法使用标准矩阵乘法，时间复杂度 O(n^3) 其中 n=4。inverse() 使用伴随矩阵法，对于标准变换矩阵（TRS）足够高效。对于一般矩阵，inverse() 的性能和精度可能不如专门的线性代数库（如 Eigen）。determinant() 返回矩阵的行列式，用于判断矩阵是否可逆。transposed() 返回转置矩阵，用于法线矩阵计算。</p><h2>注意事项</h2><ul><li>Matrix4f 使用列主序，与 DirectX 的行主序不同，与 Shader 中的 mat4 一致。</li><li>perspective 的 fov 参数是垂直视角（度数），aspect 是宽高比。</li><li>look_at 的 up 向量不需要归一化，内部会自动处理。</li><li>inverse() 在矩阵不可逆时（行列式接近 0）返回零矩阵，不抛出异常。</li></ul><h2>相关类</h2><ul><li><a href="./vector.html">Vector</a> — 向量数学</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
+<h2>Design Rationale</h2><p>Matrix4f is a column-major 4x4 matrix in gryce-engine, stored as float m[16]. Column-major means m[col*4 + row] accesses element (row, col). This layout is compatible with OpenGL's glUniformMatrix4fv and Vulkan's push constants, so it can be passed directly without transposition. Matrix4f provides all common transformation factory methods: translate, scale, rotate, ortho, perspective, and look_at. All angle parameters use degrees instead of radians.</p><h2>Matrix Operations</h2><p>Matrix4f multiplication uses standard matrix multiplication with O(n^3) time complexity where n=4. inverse() uses the adjugate matrix method, which is efficient enough for standard transformation matrices (TRS). For general matrices, inverse() may not match the performance and precision of dedicated linear algebra libraries (such as Eigen). determinant() returns the matrix determinant, used to determine if the matrix is invertible. transposed() returns the transposed matrix, used for normal matrix calculations.</p><h2>Caveats</h2><ul><li>Matrix4f uses column-major order, unlike DirectX's row-major, but consistent with mat4 in shaders.</li><li>The fov parameter of perspective is the vertical field of view (in degrees), and aspect is the aspect ratio.</li><li>The up vector of look_at does not need to be normalized; it is handled internally.</li><li>inverse() returns a zero matrix when the matrix is not invertible (determinant near 0) instead of throwing an exception.</li></ul><h2>Related Classes</h2><ul><li><a href="./vector.html">Vector</a> — Vector math</li><li><a href="./transform.html">Transform</a> — Transform component</li></ul></article>
 </div>
 </div>
 </main>

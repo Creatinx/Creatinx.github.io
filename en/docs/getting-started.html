@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -222,7 +220,7 @@ int main() {
 <span></span>
 <a href="./build-system.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Build System</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>gryce-engine 采用手写核心层 + 成熟第三方库的策略。ECS、RHI、数学库和场景层是手写实现，保证了对底层行为的完全控制。窗口/输入（GLFW）、OpenGL 加载（GLEW）、音频（miniaudio）、物理（Jolt/Box2D）、模型加载（Assimp）使用第三方库，避免重复造轮子。这种设计在开发效率和可控性之间取得了平衡。</p><h2>第三方依赖</h2><p>必需依赖：GLFW（窗口和输入）、GLEW（OpenGL 扩展加载）、CMake、Ninja、GCC 13+。可选依赖：Vulkan SDK（Vulkan 后端）、VMA（Vulkan 内存管理）、Jolt Physics（3D 物理）、Box2D（2D 物理）、Assimp（模型加载）、miniaudio（音频）、stb_image（纹理加载）、nlohmann/json（场景序列化）、glm（可选数学库）、spdlog（日志）。</p><h2>注意事项</h2><ul><li>首次构建需要安装 MSYS2 和基本开发工具，耗时约 10-15 分钟。</li><li>如果只需要 OpenGL 后端，可以跳过 Vulkan SDK 安装。</li><li>build.py 会自动将 MSYS2 的 DLL 复制到输出目录，确保可执行文件能直接运行。</li><li>Debug 构建包含断言和地址检查，适合开发；Release 构建适合发布。</li></ul></article>
+<h2>Design Principles</h2><p>gryce-engine follows a strategy of handwritten core layers combined with mature third-party libraries. The ECS, RHI, math library, and scene layer are handwritten implementations that ensure full control over low-level behavior. Window/input (GLFW), OpenGL loading (GLEW), audio (miniaudio), physics (Jolt/Box2D), and model loading (Assimp) use third-party libraries to avoid reinventing the wheel. This design strikes a balance between development efficiency and controllability.</p><h2>Third-Party Dependencies</h2><p>Required: GLFW (window and input), GLEW (OpenGL extension loading), CMake, Ninja, GCC 13+. Optional: Vulkan SDK (Vulkan backend), VMA (Vulkan memory management), Jolt Physics (3D physics), Box2D (2D physics), Assimp (model loading), miniaudio (audio), stb_image (texture loading), nlohmann/json (scene serialization), glm (optional math library), spdlog (logging).</p><h2>Notes</h2><ul><li>The first build requires installing MSYS2 and basic development tools, taking approximately 10-15 minutes.</li><li>If you only need the OpenGL backend, you can skip installing the Vulkan SDK.</li><li>build.py automatically copies MSYS2 DLLs to the output directory so the executable can run directly.</li><li>Debug builds include assertions and address checks, suitable for development; Release builds are for distribution.</li></ul></article>
 </div>
 </div>
 </main>

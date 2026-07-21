@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -192,7 +190,7 @@ auto diffuse = textures / "diffuse.png";</code></pre>
 <a href="./asyncloader.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AsyncLoader</span></a>
 <a href="./vector.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Vector</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>ResourcePath 是 gryce-engine 的虚拟路径系统，将 res:/ 前缀映射到项目根目录。这种设计允许游戏代码使用统一的路径格式，而不关心实际文件系统的布局。ResourcePath 支持路径拼接（operator/）和常用查询（exists, extension, filename）。在构建时，res:/ 根目录通过 set_root() 设置，通常为 CMake 的 CMAKE_SOURCE_DIR。</p><h2>路径解析</h2><p>ResourcePath 的解析流程：1) 去除 res:/ 前缀；2) 与 root() 拼接为绝对路径；3) 规范化路径分隔符（统一为 /）。resolved() 返回的绝对路径可以直接传递给 std::ifstream 或 AssetManager 的加载器。exists() 使用 std::filesystem::exists 检查文件存在性，file_size() 使用 std::filesystem::file_size 获取大小。</p><h2>注意事项</h2><ul><li>set_root 必须在任何路径解析之前调用，通常在 main() 开始时。</li><li>ResourcePath 不支持 ../ 路径遍历，出于安全考虑会被拒绝。</li><li>虚拟路径必须以 res:/ 开头，否则会被当作普通文件路径处理。</li><li>operator/ 自动处理路径分隔符，不需要手动添加 /。</li></ul><h2>相关类</h2><ul><li><a href="./assetmanager.html">AssetManager</a> — 资源管理</li><li><a href="./asyncloader.html">AsyncLoader</a> — 异步加载</li></ul></article>
+<h2>Design Rationale</h2><p>ResourcePath is gryce-engine's virtual path system, mapping the res:/ prefix to the project root directory. This design allows game code to use a unified path format without worrying about the actual filesystem layout. ResourcePath supports path concatenation (operator/) and common queries (exists, extension, filename). At build time, the res:/ root is set via set_root(), typically to CMake's CMAKE_SOURCE_DIR.</p><h2>Path Resolution</h2><p>ResourcePath resolution flow: 1) strip the res:/ prefix; 2) concatenate with root() to form an absolute path; 3) normalize path separators (unified to /). The absolute path returned by resolved() can be passed directly to std::ifstream or AssetManager's loaders. exists() uses std::filesystem::exists to check file existence, and file_size() uses std::filesystem::file_size to get the file size.</p><h2>Caveats</h2><ul><li>set_root must be called before any path resolution, typically at the start of main().</li><li>ResourcePath does not support ../ path traversal, which is rejected for security reasons.</li><li>Virtual paths must start with res:/, otherwise they are treated as ordinary file paths.</li><li>operator/ handles path separators automatically; there is no need to manually add /.</li></ul><h2>Related Classes</h2><ul><li><a href="./assetmanager.html">AssetManager</a> — Asset management</li><li><a href="./asyncloader.html">AsyncLoader</a> — Asynchronous loading</li></ul></article>
 </div>
 </div>
 </main>

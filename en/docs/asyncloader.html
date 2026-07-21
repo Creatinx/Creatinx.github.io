@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -194,7 +192,7 @@ if (ticket.is_ready()) {
 <a href="./assetmanager.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: AssetManager</span></a>
 <a href="./resourcepath.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: ResourcePath</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>AsyncLoader 是 gryce-engine 的异步资源加载器，使用 std::thread 池在后台线程加载资源。它支持两种加载模式：阻塞式（load_async 返回 LoadTicket，通过 is_ready() 检查）和回调式（load_async 传入 on_complete 回调）。AsyncLoader 内部使用生产者-消费者队列：主线程提交加载任务，后台线程从队列取出任务并执行。加载完成后，回调在主线程调用（通过轮询机制）。</p><h2>GPU 上传同步</h2><p>对于需要 GPU 上传的资源（如 Texture、Mesh），AsyncLoader 在后台线程读取文件后，调用 pause_render_thread() 暂停渲染线程，然后在主线程执行 GPU 上传，最后调用 resume_render_thread() 恢复。这种设计避免了多线程同时访问 GPU 资源，但会引入短暂的帧率下降。对于不频繁加载的场景，这种影响可以忽略。</p><h2>注意事项</h2><ul><li>AsyncLoader 的线程数默认为 2，可通过 init() 参数调整。</li><li>LoadTicket 在资源加载完成前持有对任务的引用，不要丢弃未完成的 ticket。</li><li>cancel_all 会取消所有未开始的任务，正在执行的任务会继续到完成。</li><li>progress() 返回的是已提交任务的进度，不包括回调执行时间。</li></ul><h2>相关类</h2><ul><li><a href="./assetmanager.html">AssetManager</a> — 资源管理</li><li><a href="./resourcepath.html">ResourcePath</a> — 路径解析</li></ul></article>
+<h2>Design Rationale</h2><p>AsyncLoader is gryce-engine's asynchronous asset loader, using a std::thread pool to load assets on background threads. It supports two loading modes: blocking (load_async returns a LoadTicket, checked via is_ready()) and callback-based (load_async accepts an on_complete callback). Internally, AsyncLoader uses a producer-consumer queue: the main thread submits loading tasks, and background threads pick up and execute tasks from the queue. On completion, callbacks are invoked on the main thread (via a polling mechanism).</p><h2>GPU Upload Synchronization</h2><p>For assets that require GPU upload (such as Texture and Mesh), AsyncLoader reads the file on a background thread, then calls pause_render_thread() to pause the render thread, performs the GPU upload on the main thread, and finally calls resume_render_thread() to resume. This design avoids concurrent access to GPU resources from multiple threads but introduces brief frame rate drops. For scenes that don't load assets frequently, this impact is negligible.</p><h2>Caveats</h2><ul><li>AsyncLoader's thread count defaults to 2 and can be adjusted via the init() parameter.</li><li>A LoadTicket holds a reference to the task until loading completes; do not discard an unfinished ticket.</li><li>cancel_all cancels all tasks that have not yet started; tasks currently in progress will continue to completion.</li><li>progress() returns the progress of submitted tasks and does not include callback execution time.</li></ul><h2>Related Classes</h2><ul><li><a href="./assetmanager.html">AssetManager</a> — Asset management</li><li><a href="./resourcepath.html">ResourcePath</a> — Path resolution</li></ul></article>
 </div>
 </div>
 </main>

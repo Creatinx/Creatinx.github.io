@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -185,7 +183,7 @@ public:
 <a href="./vulkandevice.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: VulkanDevice</span></a>
 <a href="./vulkanbuffer.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanBuffer</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>VulkanSwapchain 管理 VkSwapchainKHR 的完整生命周期，包括创建、销毁、图像获取和呈现。它处理 surface format 选择（优先选择 VK_FORMAT_B8G8R8A8_UNORM + VK_COLOR_SPACE_SRGB_NONLINEAR_KHR）、present mode 选择（优先选择 VK_PRESENT_MODE_FIFO_KHR）和图像数量确定。当窗口大小改变时，recreate() 销毁旧 swapchain 并创建新 swapchain，同时更新 image views 和 framebuffers。</p><h2>同步</h2><p>VulkanSwapchain 使用两个 semaphore 进行同步：acquire_semaphore 在 acquire_next_image 时信号，present_semaphore 在 present 时等待。这种设计确保 GPU 在渲染完成之前不会呈现图像。VulkanSwapchain 不管理 fence，fence 由调用者（VulkanBackend）负责。</p><h2>注意事项</h2><ul><li>recreate() 必须在窗口大小改变后调用，否则 present 会返回 VK_ERROR_OUT_OF_DATE_KHR。</li><li>acquire_next_image 在窗口最小化时可能返回 VK_ERROR_OUT_OF_DATE_KHR，需要处理。</li><li>image_count() 通常比最小图像数量多 1，用于 triple buffering。</li><li>VulkanSwapchain 析构时自动销毁所有 image views 和 framebuffers。</li></ul><h2>相关类</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan 后端</li><li><a href="./vulkandevice.html">VulkanDevice</a> — 逻辑设备</li></ul></article>
+<h2>Design Principles</h2><p>VulkanSwapchain manages the VkSwapchainKHR lifecycle, including creation, destruction, image acquisition, and presentation. It handles surface format selection (preferring VK_FORMAT_B8G8R8A8_UNORM + VK_COLOR_SPACE_SRGB_NONLINEAR_KHR), present mode selection (preferring VK_PRESENT_MODE_FIFO_KHR), and image count determination. When the window is resized, recreate() destroys the old swapchain and creates a new one, updating image views and framebuffers.</p><h2>Synchronization</h2><p>VulkanSwapchain uses two semaphores for synchronization: acquire_semaphore is signaled during acquire_next_image, and present_semaphore is waited on during present. This design ensures the GPU does not present an image before rendering is complete. VulkanSwapchain does not manage fences; fences are the responsibility of the caller (VulkanBackend).</p><h2>Notes</h2><ul><li>recreate() must be called after the window is resized, otherwise present will return VK_ERROR_OUT_OF_DATE_KHR.</li><li>acquire_next_image may return VK_ERROR_OUT_OF_DATE_KHR when the window is minimized; this must be handled.</li><li>image_count() is typically 1 more than the minimum image count, used for triple buffering.</li><li>Destroying VulkanSwapchain automatically destroys all image views and framebuffers.</li></ul><h2>Related Classes</h2><ul><li><a href="./vulkanbackend.html">VulkanBackend</a> — Vulkan backend</li><li><a href="./vulkandevice.html">VulkanDevice</a> — Logical device</li></ul></article>
 </div>
 </div>
 </main>

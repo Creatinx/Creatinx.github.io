@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -200,7 +198,7 @@ backend.shutdown();</code></pre>
 <a href="./rendercommandbuffer.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: RenderCommandBuffer</span></a>
 <a href="./vulkanbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: VulkanBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>RenderThread 是一个 std::thread 的包装器，专门用于在后台执行渲染命令。它在 start() 中创建线程并进入 thread_loop()，在 stop() 中设置退出标志并等待线程结束。thread_loop() 的核心逻辑是：acquire 命令 → 执行命令 → present → 等待下一帧。wait_for_frame() 允许主线程在提交 Present 命令后阻塞，直到渲染线程完成当前帧，从而实现帧同步。</p><h2>帧率控制</h2><p>set_target_fps() 允许限制渲染线程的最大帧率。当设置为非零值时，渲染线程在每帧结束时计算剩余的睡眠时间，并通过 std::this_thread::sleep_for() 进行补偿。这种简单的帧率控制适合大多数场景，但对于需要精确帧 pacing 的应用，建议使用平台特定的 API（如 NVIDIA 的 WGL_NV_delay_before_swap）。</p><h2>注意事项</h2><ul><li>RenderThread 在 stop() 之前必须确保所有命令已执行完毕。</li><li>不要从渲染线程调用 submit()，这会导致死锁。</li><li>frame_count() 和 last_frame_time_ms() 是统计信息，不保证实时精度。</li><li>target_fps 为 0 时渲染线程以最大速度运行，可能占用大量 CPU。</li></ul><h2>相关类</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — 命令缓冲区</li><li><a href="./irenderbackend.html">IRenderBackend</a> — 渲染后端</li></ul></article>
+<h2>Design Principles</h2><p>RenderThread is a std::thread wrapper dedicated to executing render commands in the background. It creates the thread and enters thread_loop() in start(), and sets the exit flag and waits for the thread to finish in stop(). The core logic of thread_loop() is: acquire commands → execute commands → present → wait for the next frame. wait_for_frame() allows the main thread to block after submitting a Present command until the render thread finishes the current frame, achieving frame synchronization.</p><h2>Frame Rate Control</h2><p>set_target_fps() allows limiting the maximum frame rate of the render thread. When set to a non-zero value, the render thread calculates the remaining sleep time at the end of each frame and compensates via std::this_thread::sleep_for(). This simple frame rate control is suitable for most scenarios, but for applications requiring precise frame pacing, it is recommended to use platform-specific APIs (such as NVIDIA's WGL_NV_delay_before_swap).</p><h2>Notes</h2><ul><li>RenderThread must ensure all commands are fully executed before stop().</li><li>Do not call submit() from the render thread, as this will cause a deadlock.</li><li>frame_count() and last_frame_time_ms() are statistical information and do not guarantee real-time accuracy.</li><li>When target_fps is 0, the render thread runs at maximum speed and may consume a lot of CPU.</li></ul><h2>Related Classes</h2><ul><li><a href="./rendercommandbuffer.html">RenderCommandBuffer</a> — Command buffer</li><li><a href="./irenderbackend.html">IRenderBackend</a> — Render backend</li></ul></article>
 </div>
 </div>
 </main>

@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -190,7 +188,7 @@ if (!PhysicsFactory::is_backend_available(PhysicsBackend::Jolt3D)) {
 <a href="./prefab.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Prefab</span></a>
 <a href="./joltphysicsworld3d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: JoltPhysicsWorld3D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>PhysicsFactory 是 gryce-engine 中物理后端的工厂类，负责根据 CMake 配置和运行时可用性创建物理世界实例。它支持三种后端：Jolt Physics 3D、Box2D 2D 和 BuiltIn 2D。在运行时，PhysicsFactory 通过 is_backend_available() 检查后端是否编译进引擎（通过 CMake 选项控制）。这种设计允许同一套游戏代码在不同构建配置下运行，无需修改物理相关逻辑。</p><h2>后端选择策略</h2><p>当调用 create_world_2d 或 create_world_3d 时，PhysicsFactory 首先检查请求的后端是否可用。如果不可用，返回 nullptr 或降级到 None 后端。None 后端是一个空实现，所有方法均为空操作，允许游戏在没有物理库的情况下编译和运行。available_backends() 返回当前构建中可用的后端列表，用于 UI 中的后端选择。</p><h2>注意事项</h2><ul><li>PhysicsFactory 不是线程安全的，所有调用必须在主线程执行。</li><li>is_backend_available 只检查编译时可用性，不检查运行时库是否加载成功。</li><li>create_world_3d 目前只支持 Jolt3D 和 None 两种后端。</li><li>物理世界的生命周期由调用者管理，PhysicsFactory 只负责创建。</li></ul><h2>相关类</h2><ul><li><a href="./joltphysicsworld3d.html">JoltPhysicsWorld3D</a> — 3D 物理世界</li><li><a href="./box2dworld2d.html">Box2DWorld2D</a> — 2D 物理世界</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — 内置 2D 物理</li></ul></article>
+<h2>Design Rationale</h2><p>PhysicsFactory is the physics backend factory class in gryce-engine, responsible for creating physics world instances based on CMake configuration and runtime availability. It supports three backends: Jolt Physics 3D, Box2D 2D, and BuiltIn 2D. At runtime, PhysicsFactory checks whether a backend is compiled into the engine (controlled by CMake options) via is_backend_available(). This design allows the same game code to run under different build configurations without modifying physics-related logic.</p><h2>Backend Selection Strategy</h2><p>When create_world_2d or create_world_3d is called, PhysicsFactory first checks if the requested backend is available. If not, it returns nullptr or falls back to the None backend. The None backend is a no-op implementation where all methods do nothing, allowing the game to compile and run without any physics library. available_backends() returns the list of backends available in the current build, used for backend selection in the UI.</p><h2>Caveats</h2><ul><li>PhysicsFactory is not thread-safe; all calls must be made on the main thread.</li><li>is_backend_available only checks compile-time availability, not whether the runtime library loaded successfully.</li><li>create_world_3d currently only supports Jolt3D and None backends.</li><li>The physics world's lifetime is managed by the caller; PhysicsFactory is only responsible for creation.</li></ul><h2>Related Classes</h2><ul><li><a href="./joltphysicsworld3d.html">JoltPhysicsWorld3D</a> — 3D physics world</li><li><a href="./box2dworld2d.html">Box2DWorld2D</a> — 2D physics world</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — Built-in 2D physics</li></ul></article>
 </div>
 </div>
 </main>

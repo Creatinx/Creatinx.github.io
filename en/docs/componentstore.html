@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -203,7 +201,7 @@ std::vector&lt;EntityID&gt; entities; // parallel to dense</code></pre>
 <a href="./entity.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Entity</span></a>
 <a href="./isystem.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: ISystem</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>ComponentStore 使用类型擦除的稀疏集（sparse set）来存储组件。每种组件类型 T 对应一个 ComponentPool<T>，内部包含三个数组：dense（实际组件数据）、sparse（entity_id → dense 索引）、entities（dense 索引对应的 entity ID）。稀疏集保证 O(1) 的插入、查找和删除。类型擦除通过 std::unordered_map&lt;std::type_index, std::unique_ptr&lt;IComponentPool&gt;&gt; 实现，允许 ComponentStore 在不知道组件类型的情况下管理所有组件池。</p><h2>内存布局</h2><p>组件数据存储在 dense 数组中，保证内存连续性。当 entity 被销毁时，其组件从 dense 数组中移除，最后一个组件被移动到空缺位置以保持连续性。entity ID 到 dense 索引的映射通过 sparse 数组实现。这种布局对 cache 友好，适合批量遍历（如 ECS 的 query）。</p><h2>注意事项</h2><ul><li>register_component 必须在 add 之前调用，否则 add 会失败。</li><li>remove 只销毁组件数据，不销毁 entity。</li><li>clear 销毁所有组件池，但不释放注册的类型信息。</li><li>query 遍历 dense 数组，保证 O(n) 时间复杂度，其中 n 是拥有该组件的实体数量。</li></ul><h2>相关类</h2><ul><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./world.html">World</a> — 容器</li></ul></article>
+<h2>Design Principles</h2><p>ComponentStore uses type-erased sparse sets to store components. Each component type T has a corresponding ComponentPool<T>, which internally contains three arrays: dense (actual component data), sparse (entity_id to dense index), and entities (entity IDs parallel to the dense array). The sparse set guarantees O(1) insertion, lookup, and removal. Type erasure is implemented through std::unordered_map&lt;std::type_index, std::unique_ptr&lt;IComponentPool&gt;&gt;, allowing ComponentStore to manage all component pools without knowing the component types.</p><h2>Memory Layout</h2><p>Component data is stored in the dense array, ensuring memory contiguity. When an entity is destroyed, its components are removed from the dense array, and the last component is moved into the vacant position to maintain contiguity. The entity ID to dense index mapping is maintained through the sparse array. This layout is cache-friendly and well-suited for bulk traversal (such as ECS queries).</p><h2>Notes</h2><ul><li>register_component must be called before add, otherwise add will fail.</li><li>remove only destroys component data, not the entity itself.</li><li>clear destroys all component pools but does not release registered type information.</li><li>Query traversal over the dense array guarantees O(n) time complexity, where n is the number of entities with that component.</li></ul><h2>Related Classes</h2><ul><li><a href="./entity.html">Entity</a> — Entity handle</li><li><a href="./world.html">World</a> — Container</li></ul></article>
 </div>
 </div>
 </main>

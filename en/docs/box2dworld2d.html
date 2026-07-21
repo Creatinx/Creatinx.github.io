@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -206,7 +204,7 @@ struct BodyDesc2D {
 <a href="./joltphysicsworld3d.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: JoltPhysicsWorld3D</span></a>
 <a href="./builtinphysicsworld2d.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: BuiltInPhysicsWorld2D</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Box2DWorld2D 是 gryce-engine 的 2D 物理后端，基于 Box2D 3.0。它实现了 IPhysicsWorld2D 接口，提供刚体动力学、碰撞检测、关节系统和碰撞回调。Box2DWorld2D 在 init() 中创建 b2World 和 b2ContactListener，在 step() 中以固定时间步长调用 b2World::Step。Box2D 的 solver 使用迭代法求解约束，position_iters 和 velocity_iters 控制迭代次数，默认值分别为 3 和 8。</p><h2>刚体与 Fixture</h2><p>Box2D 中，Body 是物理对象，Fixture 是形状和材质的附加物。一个 Body 可以有多个 Fixture，每个 Fixture 有自己的形状（Circle、Box、Polygon）、密度、摩擦力和弹性。Box2DWorld2D 的 create_body 方法同时创建 Body 和默认 Fixture，destroy_body 销毁 Body 及其所有 Fixture。</p><h2>注意事项</h2><ul><li>Box2D 的 step() 必须在固定时间步长下调用，通常 1/60 秒。</li><li>collision callback 在主线程执行，不要在其中修改物理世界。</li><li>sensor fixture（is_sensor = true）检测碰撞但不产生物理响应。</li><li>Box2D 使用 MKS 单位（米、千克、秒），不要将像素直接作为长度单位。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — 内置物理</li></ul></article>
+<h2>Design Rationale</h2><p>Box2DWorld2D is gryce-engine's 2D physics backend, based on Box2D 3.0. It implements the IPhysicsWorld2D interface, providing rigid body dynamics, collision detection, a joint system, and collision callbacks. Box2DWorld2D creates a b2World and b2ContactListener in init(), and calls b2World::Step at a fixed time step in step(). Box2D's solver uses an iterative method to resolve constraints, with position_iters and velocity_iters controlling the iteration count, defaulting to 3 and 8 respectively.</p><h2>Bodies and Fixtures</h2><p>In Box2D, a Body is the physical object, and a Fixture is an attachment that defines shape and material. A Body can have multiple Fixtures, each with its own shape (Circle, Box, Polygon), density, friction, and restitution. Box2DWorld2D's create_body method creates both the Body and a default Fixture, while destroy_body destroys the Body and all of its Fixtures.</p><h2>Caveats</h2><ul><li>Box2D's step() must be called at a fixed time step, typically 1/60 second.</li><li>Collision callbacks execute on the main thread; do not modify the physics world inside them.</li><li>A sensor fixture (is_sensor = true) detects collisions but does not produce a physical response.</li><li>Box2D uses MKS units (meters, kilograms, seconds); do not use pixels directly as length units.</li></ul><h2>Related Classes</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — Factory</li><li><a href="./builtinphysicsworld2d.html">BuiltInPhysicsWorld2D</a> — Built-in physics</li></ul></article>
 </div>
 </div>
 </main>

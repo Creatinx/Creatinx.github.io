@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -199,7 +197,7 @@ shader.set_mat4("u_mvp", mvp.data());</code></pre>
 <a href="./glbackend.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: GLBackend</span></a>
 <a href="./glmesh.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: GLMesh</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>GLShader 封装了 OpenGL shader program 的完整生命周期：顶点/片段着色器编译、链接、uniform 查找和上传。它在 compile() 中创建 shader object、编译源码、链接 program，并将错误信息通过 spdlog 报告。uniform 位置在首次 set_* 调用时缓存，后续调用直接复用，避免重复的 glGetUniformLocation 查询开销。</p><h2>Uniform 缓存</h2><p>GLShader 内部维护一个 unordered_map&lt;std::string, int&gt; 来缓存 uniform 位置。当调用 set_int / set_float / set_mat4 时，先查找缓存，如果未命中则调用 glGetUniformLocation 并插入缓存。这种设计将 uniform 设置的开销从 O(n) 降低到 O(1)（均摊），其中 n 是 program 中的 uniform 数量。</p><h2>注意事项</h2><ul><li>compile() 必须在 GLBackend 初始化之后调用，因为 shader program 需要活跃的 OpenGL 上下文。</li><li>get_uniform_location() 在 uniform 不存在时返回 -1，调用者应该检查返回值。</li><li>set_mat4 要求传入的 float* 指向 16 个连续 float（列主序）。</li><li>GLShader 析构时自动调用 glDeleteProgram。</li></ul><h2>相关类</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL 后端</li><li><a href="./glmesh.html">GLMesh</a> — 网格渲染</li></ul></article>
+<h2>Design Principles</h2><p>GLShader wraps the complete lifecycle of OpenGL shader programs: vertex/fragment shader compilation, linking, and uniform lookup and upload. In compile(), it creates shader objects, compiles source code, links the program, and reports errors via spdlog. Uniform locations are cached on the first set_* call and reused in subsequent calls, avoiding redundant glGetUniformLocation query overhead.</p><h2>Uniform Caching</h2><p>GLShader internally maintains an unordered_map&lt;std::string, int&gt; to cache uniform locations. When calling set_int / set_float / set_mat4, it first checks the cache; if it's a miss, it calls glGetUniformLocation and inserts it into the cache. This design reduces the overhead of uniform setting from O(n) to O(1) (amortized), where n is the number of uniforms in the program.</p><h2>Notes</h2><ul><li>compile() must be called after GLBackend initialization, because shader programs require an active OpenGL context.</li><li>get_uniform_location() returns -1 if the uniform does not exist; callers should check the return value.</li><li>set_mat4 requires the passed float* to point to 16 consecutive floats (column-major order).</li><li>GLShader automatically calls glDeleteProgram upon destruction.</li></ul><h2>Related Classes</h2><ul><li><a href="./glbackend.html">GLBackend</a> — OpenGL backend</li><li><a href="./glmesh.html">GLMesh</a> — Mesh rendering</li></ul></article>
 </div>
 </div>
 </main>

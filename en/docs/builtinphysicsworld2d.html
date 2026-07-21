@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -198,7 +196,7 @@ struct PolygonShape { std::vector&lt;Vector2f&gt; vertices; };</code></pre>
 <a href="./box2dworld2d.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Box2DWorld2D</span></a>
 <a href="./physicalmaterial.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: PhysicalMaterial</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>BuiltInPhysicsWorld2D 是 gryce-engine 的零依赖 2D 物理后端，用于不需要 Box2D 的轻量级场景。它使用 AABB 宽相（broadphase）检测潜在碰撞对，然后使用 SAT（Separating Axis Theorem）窄相（narrowphase）进行精确碰撞检测。支持 Circle 和 AABB 形状，Polygon 形状使用凸包简化。BuiltInPhysicsWorld2D 的 solver 使用简单的 impulse-based 方法，适合少量刚体（&lt; 100）的场景。</p><h2>性能特性</h2><p>BuiltInPhysicsWorld2D 的 AABB 宽相使用简单的空间分割（每帧重新排序），时间复杂度为 O(n log n)，其中 n 是刚体数量。对于 n &lt; 100 的场景，性能与 Box2D 相当。但对于大量刚体或复杂关节，Box2D 的 island-based solver 更高效。BuiltInPhysicsWorld2D 不支持关节，所有连接必须通过代码手动模拟。</p><h2>注意事项</h2><ul><li>BuiltInPhysicsWorld2D 仅支持 Circle、AABB 和凸 Polygon 形状。</li><li>sleep_threshold 控制刚体何时进入休眠，休眠刚体不参与求解，节省 CPU。</li><li>iterations 控制 solver 的迭代次数，值越高越稳定但越慢。</li><li>BuiltInPhysicsWorld2D 不支持 CCD（连续碰撞检测），快速移动的物体可能穿透。</li></ul><h2>相关类</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — 工厂</li><li><a href="./box2dworld2d.html">Box2DWorld2D</a> — Box2D 物理</li></ul></article>
+<h2>Design Rationale</h2><p>BuiltInPhysicsWorld2D is gryce-engine's zero-dependency 2D physics backend, designed for lightweight scenarios where Box2D is not needed. It uses AABB broadphase to detect potential collision pairs, followed by SAT (Separating Axis Theorem) narrowphase for precise collision detection. It supports Circle and AABB shapes; Polygon shapes are simplified using convex hulls. BuiltInPhysicsWorld2D's solver uses a simple impulse-based approach, suitable for scenes with a small number of rigid bodies (&lt; 100).</p><h2>Performance Characteristics</h2><p>BuiltInPhysicsWorld2D's AABB broadphase uses simple spatial partitioning (re-sorted each frame) with O(n log n) time complexity, where n is the number of rigid bodies. For scenes with n &lt; 100, performance is comparable to Box2D. However, for large numbers of rigid bodies or complex joints, Box2D's island-based solver is more efficient. BuiltInPhysicsWorld2D does not support joints; all connections must be simulated manually in code.</p><h2>Caveats</h2><ul><li>BuiltInPhysicsWorld2D only supports Circle, AABB, and convex Polygon shapes.</li><li>sleep_threshold controls when a rigid body enters sleep; sleeping bodies are excluded from solving to save CPU.</li><li>iterations controls the solver's iteration count; higher values yield more stable results but are slower.</li><li>BuiltInPhysicsWorld2D does not support CCD (continuous collision detection); fast-moving objects may tunnel through each other.</li></ul><h2>Related Classes</h2><ul><li><a href="./physicsfactory.html">PhysicsFactory</a> — Factory</li><li><a href="./box2dworld2d.html">Box2DWorld2D</a> — Box2D physics</li></ul></article>
 </div>
 </div>
 </main>

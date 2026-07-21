@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -201,7 +199,7 @@ for (auto [entity, transform, mesh] : scene.query&lt;Transform, MeshRenderer&gt;
 <a href="./componentstore.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: ComponentStore</span></a>
 <a href="./scene.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Scene</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>ISystem 是 gryce-engine 中所有游戏逻辑系统的基接口。它定义了五个生命周期钩子：init、fixed_update、update、render、cleanup。World 在每个阶段按 priority() 降序调用所有系统的对应钩子。priority() 默认返回 0，值越大执行越早。这种设计允许系统之间的依赖管理，例如物理系统应该在游戏逻辑之前执行，渲染系统应该在所有逻辑之后执行。</p><h2>生命周期</h2><p>init 在 World::init() 时调用一次，用于系统初始化。fixed_update 以固定时间步长调用，适合物理模拟和确定性逻辑。update 以实际帧时间调用，适合动画和游戏逻辑。render 在每帧结束时调用，接收 IRenderBackend* 用于绘制。cleanup 在 World::cleanup() 时调用，用于释放资源。</p><h2>注意事项</h2><ul><li>不要在 init 中调用其他系统的接口，因为系统初始化顺序不确定。</li><li>fixed_update 的时间步长是固定的，不要假设它等于 delta_time。</li><li>render 方法中不要修改游戏状态，这可能导致不一致。</li><li>系统的析构函数在 World 析构时自动调用，不需要手动清理。</li></ul><h2>相关类</h2><ul><li><a href="./world.html">World</a> — 系统容器</li><li><a href="./entity.html">Entity</a> — 实体句柄</li></ul></article>
+<h2>Design Rationale</h2><p>ISystem is the base interface for all game logic systems in gryce-engine. It defines five lifecycle hooks: init, fixed_update, update, render, and cleanup. World invokes each system's corresponding hook in descending order of priority() within each phase. priority() defaults to 0; higher values execute earlier. This design enables dependency management between systems — for example, the physics system should execute before game logic, and the render system should execute after all logic.</p><h2>Lifecycle</h2><p>init is called once during World::init() for system initialization. fixed_update is called at a fixed time step, suitable for physics simulation and deterministic logic. update is called with the actual frame time, suitable for animation and game logic. render is called at the end of each frame, receiving an IRenderBackend* for drawing. cleanup is called during World::cleanup() for resource release.</p><h2>Caveats</h2><ul><li>Do not call other systems' interfaces in init, because the system initialization order is not guaranteed.</li><li>fixed_update uses a fixed time step; do not assume it equals delta_time.</li><li>Do not modify game state inside the render method, as this may lead to inconsistencies.</li><li>System destructors are called automatically when World is destroyed; no manual cleanup is needed.</li></ul><h2>Related Classes</h2><ul><li><a href="./world.html">World</a> — System container</li><li><a href="./entity.html">Entity</a> — Entity handle</li></ul></article>
 </div>
 </div>
 </main>

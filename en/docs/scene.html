@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -195,7 +193,7 @@ Matrix4f world = t.world_matrix();</code></pre>
 <a href="./isystem.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: ISystem</span></a>
 <a href="./transform.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: Transform</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Scene 是 gryce-engine 中的场景图容器，负责 entity 的生命周期管理和父子层级维护。它使用 ComponentStore 作为组件存储后端，通过 entity ID 索引所有组件。Scene 提供 create_entity 和 destroy_entity 操作，以及 find_entity 按名称查找。destroy_entity 递归销毁所有子实体，确保场景图的一致性。</p><h2>查询系统</h2><p>Scene 的 query 方法遍历所有拥有指定组件的实体，返回一个 QueryResult 对象，支持 range-based for 循环。query 内部使用 ComponentStore 的 entities_with 方法，保证 O(n) 时间复杂度，其中 n 是拥有该组件的实体数量。对于多组件查询，Scene 选择组件数量最少的类型作为遍历基础，然后过滤其他组件。</p><h2>注意事项</h2><ul><li>create_entity 返回的 Entity 在 scene 中始终有效，直到 destroy_entity 被调用。</li><li>find_entity 按名称查找，如果有多个同名实体，返回第一个找到的。</li><li>clear 销毁所有实体和组件，但保留注册的类型信息。</li><li>query 在遍历过程中不能修改组件存储（添加/删除组件），否则会导致迭代器失效。</li></ul><h2>相关类</h2><ul><li><a href="./world.html">World</a> — 容器</li><li><a href="./entity.html">Entity</a> — 实体句柄</li><li><a href="./transform.html">Transform</a> — 变换组件</li></ul></article>
+<h2>Design Principles</h2><p>Scene is the scene graph container in gryce-engine, responsible for entity lifecycle management and parent-child hierarchy maintenance. It uses ComponentStore as the component storage backend, indexing all components by entity ID. Scene provides create_entity and destroy_entity operations, as well as find_entity for name-based lookup. destroy_entity recursively destroys all child entities, ensuring scene graph consistency.</p><h2>Query System</h2><p>Scene's query method traverses all entities that have the specified components, returning a QueryResult object that supports range-based for loops. Internally, query uses ComponentStore's entities_with method, guaranteeing O(n) time complexity where n is the number of entities with that component. For multi-component queries, Scene selects the component type with the fewest entities as the traversal base, then filters for the other components.</p><h2>Notes</h2><ul><li>An Entity returned by create_entity remains valid in the scene until destroy_entity is called.</li><li>find_entity searches by name; if multiple entities share the same name, the first match is returned.</li><li>clear destroys all entities and components but retains registered type information.</li><li>Do not modify component storage (add/remove components) during query traversal, as this will invalidate iterators.</li></ul><h2>Related Classes</h2><ul><li><a href="./world.html">World</a> — Container</li><li><a href="./entity.html">Entity</a> — Entity handle</li><li><a href="./transform.html">Transform</a> — Transform component</li></ul></article>
 </div>
 </div>
 </main>

@@ -14,10 +14,8 @@
 
 <link rel="stylesheet" href="../../css/themes.css">
 <link rel="stylesheet" href="../../css/styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body class="min-h-screen transition-colors duration-300">
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b nav-border">
@@ -211,7 +209,7 @@ window.set_event_callback([](const Event& e) {
 <a href="./build-system.html" class="docs-nav-prev px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i><span>Previous: Build System</span></a>
 <a href="./irenderbackend.html" class="docs-nav-next px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm ml-auto"><span>Next: IRenderBackend</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
 </div>
-<h2>设计原理</h2><p>Window 基于 GLFW 3.3+ 构建，提供跨平台的窗口和输入抽象。它不直接暴露 GLFW 对象，而是通过 Event 结构体将所有事件（键盘、鼠标、窗口调整大小）统一传递给单一回调。这种设计允许游戏代码以统一方式处理输入，而不关心底层平台差异。Window 同时管理 OpenGL 上下文或 Vulkan 表面，与渲染后端解耦。</p><h2>事件系统</h2><p>所有输入事件通过 set_event_callback 注册的一个回调函数传递。Event 是一个 tagged union，包含事件类型和具体数据。回调在游戏逻辑的主线程上同步执行，因此可以在回调中直接修改游戏状态。常用事件类型包括：KeyPress、KeyRelease、MouseMove、MouseButtonPress、WindowResize、WindowClose。</p><h2>注意事项</h2><ul><li>Window 必须在主线程创建，这是 GLFW 的限制。</li><li>poll_events() 必须在每帧开始时调用，否则事件会堆积。</li><li>delta_time() 在首次调用时返回 0，之后返回实际帧时间。</li><li>set_vsync(true) 会限制帧率为显示器刷新率，但可能增加输入延迟。</li></ul><h2>相关类</h2><ul><li><a href="./irenderbackend.html">IRenderBackend</a> — 渲染后端接口</li><li><a href="./rendercontext.html">RenderContext</a> — 渲染上下文</li></ul></article>
+<h2>Design Rationale</h2><p>Window is built on top of GLFW 3.3+, providing a cross-platform window and input abstraction. It does not expose GLFW objects directly; instead, it delivers all events (keyboard, mouse, window resize) uniformly through a single callback via an Event struct. This design allows game code to handle input in a unified way without worrying about underlying platform differences. Window also manages the OpenGL context or Vulkan surface, decoupled from the render backend.</p><h2>Event System</h2><p>All input events are delivered through a single callback registered via set_event_callback. Event is a tagged union containing an event type and specific data. The callback executes synchronously on the game logic's main thread, so game state can be modified directly inside the callback. Common event types include: KeyPress, KeyRelease, MouseMove, MouseButtonPress, WindowResize, and WindowClose.</p><h2>Caveats</h2><ul><li>Window must be created on the main thread; this is a GLFW limitation.</li><li>poll_events() must be called at the beginning of each frame; otherwise, events will accumulate.</li><li>delta_time() returns 0 on the first call and the actual frame time thereafter.</li><li>set_vsync(true) limits the frame rate to the monitor's refresh rate but may increase input latency.</li></ul><h2>Related Classes</h2><ul><li><a href="./irenderbackend.html">IRenderBackend</a> — Render backend interface</li><li><a href="./rendercontext.html">RenderContext</a> — Render context</li></ul></article>
 </div>
 </div>
 </main>
